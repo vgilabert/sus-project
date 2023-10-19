@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerAim))]
@@ -11,13 +12,15 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     PlayerMovement playerMovement;
     PlayerAim playerAim;
+
     GunController guncontroller;
+
     // Start is called before the first frame update
     void Start()
     {
-        playerMovement= GetComponent<PlayerMovement>();
-        playerAim= GetComponent<PlayerAim>();
-        guncontroller = GetComponent<GunController>(); 
+        playerMovement = GetComponent<PlayerMovement>();
+        playerAim = GetComponent<PlayerAim>();
+        guncontroller = GetComponent<GunController>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -26,15 +29,33 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + playerMovement.velocity * Time.fixedDeltaTime);
-        playerAim.Aim();
+        //playerAim.Aim();
     }
 
-    private void Update()
+    /*private void Update()
     {
 
         if (Input.GetMouseButton(0))
         {
             guncontroller.Shoot();
+        }
+    }*/
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        Debug.Log("shoot");
+        if (context.started)
+        {
+            guncontroller.Shoot();
+        }
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            playerAim.Aim(context.ReadValue<Vector2>());
+            Debug.Log(context.ReadValue<Vector2>());
         }
     }
 }

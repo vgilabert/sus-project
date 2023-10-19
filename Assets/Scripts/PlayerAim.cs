@@ -12,9 +12,9 @@ public class PlayerAim : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Aim()
+    public void Aim(Vector2 mousePosition)
     {
-        Ray ray = viewCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = viewCamera.ScreenPointToRay(mousePosition);
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
         float rayDistance;
 
@@ -22,7 +22,7 @@ public class PlayerAim : MonoBehaviour
         {
             Vector3 point = ray.GetPoint(rayDistance);
             Debug.DrawLine(ray.origin, point, Color.red);
-            //Debug.DrawRay(ray.origin,ray.direction * 100,Color.red);
+            Debug.DrawRay(ray.origin,ray.direction * 100,Color.red);
             LookAt(point);
         }
     }
