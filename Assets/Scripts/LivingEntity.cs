@@ -11,9 +11,15 @@ public class LivingEntity : MonoBehaviour, IDamageable
 
     public event System.Action OnDeath;
 
+
+    [Header("Optional: ")]
+    [SerializeField]
+    private StatusIndicator statusIndicator;
+
     protected virtual void Start()
     {
         health = startingHealth;
+        statusIndicator.setMaxHealth(startingHealth);
     }
 
     public void TakeHit(float damage, RaycastHit hit)
@@ -25,6 +31,7 @@ public class LivingEntity : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         health -= damage;
+        statusIndicator.SetHealth(health);
         Debug.Log(health);
         if (health <= 0 && !dead)
         {

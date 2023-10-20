@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 public class StatusIndicator : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class StatusIndicator : MonoBehaviour
     private RectTransform healthBarRect;
     [SerializeField]
     private Text healthText;
+    [SerializeField]
+    private Slider slider;
     // Start is called before the first frame update
 
     void Start()
@@ -23,17 +27,23 @@ public class StatusIndicator : MonoBehaviour
         }
     }
 
-    public void SetHealth(int _cur, int _max)
+    public void setMaxHealth(float health)
     {
-        float _value = (float)_cur / _max;
-        healthBarRect.localScale = new Vector3(_value, healthBarRect.localScale.y , healthBarRect.localScale.z);
-        //healthBarRect.GetComponent<Image>().color = Color.Lerp(Color.red, Color.green, _value);
-        healthText.text = _cur + "/" + _max + " HP";
+        if (slider == null)
+            Debug.LogError("Slider not found!");
+        else
+            slider.maxValue = health;
+        slider.value = health;
+    }
+    public void SetHealth(float health)
+    {
+        slider.value = health;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Camera camera = Camera.main;
+        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
     }
 }

@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        Debug.Log("shoot");
+
         if (context.started)
         {
             guncontroller.Shoot();
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             playerAim.Aim(context.ReadValue<Vector2>());
-            Debug.Log(context.ReadValue<Vector2>());
+
         }
     }
 }
