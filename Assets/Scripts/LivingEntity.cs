@@ -19,10 +19,11 @@ public class LivingEntity : MonoBehaviour, IDamageable
     protected virtual void Start()
     {
         health = startingHealth;
-        statusIndicator.setMaxHealth(startingHealth);
+        if(statusIndicator != null)
+            statusIndicator.setMaxHealth(startingHealth);
     }
 
-    public void TakeHit(float damage, RaycastHit hit)
+    public virtual void TakeHit(float damage, RaycastHit hit)
     {
         // Do some stuff here with hit var
         TakeDamage(damage);

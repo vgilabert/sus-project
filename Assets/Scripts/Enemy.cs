@@ -14,6 +14,10 @@ public class Enemy : LivingEntity
     Transform target;
     Material skinMaterial;
 
+
+    public GameObject damageEffect;
+    public GameObject deathEffect; 
+
     Color originalColour;
 
     float attackDistanceThreshold = .5f;
@@ -102,5 +106,18 @@ public class Enemy : LivingEntity
             }
             yield return new WaitForSeconds(refreshRate);
         }
+    }
+
+    public override void TakeHit(float damage, RaycastHit hit)
+    {
+        Vector3 hitDirection = -hit.collider.transform.forward;
+
+        Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
+        if (damage >= health)
+        {
+            Destroy(Instantiate(deathEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
+        }
+
+        base.TakeHit(damage, hit);
     }
 }

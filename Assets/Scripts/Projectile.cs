@@ -5,8 +5,11 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public LayerMask collisionMask;
+    public LayerMask damageMask;
     float speed = 10;
     public float damage = 1;
+
+    public GameObject impactEffect;
 
     public void SetSpeed(float newSpeed)
     {
@@ -37,7 +40,13 @@ public class Projectile : MonoBehaviour
         IDamageable damageableObject = hit.collider.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
+            if (( damageMask & ( 1 << hit.collider.transform.gameObject.layer)) == 0)
+                damage = 0;
             damageableObject.TakeHit(damage, hit);
+        }
+        else
+        {
+            Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.down, transform.right)) as GameObject, 3f);
         }
         GameObject.Destroy(gameObject);
     }
