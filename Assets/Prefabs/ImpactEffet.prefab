@@ -665,7 +665,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 40
+    angle: 20
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -3856,7 +3856,7 @@ ParticleSystem:
     radiusScale: 5
     collidesWith:
       serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 153
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5

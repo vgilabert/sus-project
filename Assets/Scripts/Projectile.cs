@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.down, transform.right)) as GameObject, 3f);
+            Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, transform.forward)) as GameObject, 3f);
         }
         GameObject.Destroy(gameObject);
     }
