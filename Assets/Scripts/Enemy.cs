@@ -1,3 +1,4 @@
+using NavMeshAvoidance;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class Enemy : LivingEntity
 
     public enum State { Idle, Chasing, Attacking };
     State currentState;
+
+    [SerializeField] Avoidance avoidance;
 
     NavMeshAgent pathfinder;
     Transform target;
@@ -30,9 +33,11 @@ public class Enemy : LivingEntity
     protected override void Start()
     {
         base.Start();
+
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponent<Renderer>().material;
         originalColour = skinMaterial.color;
+
 
         currentState = State.Chasing;
         target = GameObject.FindGameObjectWithTag("Player").transform;
