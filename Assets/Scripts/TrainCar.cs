@@ -9,6 +9,8 @@ public class TrainCar : MonoBehaviour, IDamageable
     
     private GameObject _slot;
     
+    [SerializeField] private float _speed = 1f;
+    
     private void Awake()
     {
         _train = GetComponentInParent<Train>();
@@ -17,7 +19,7 @@ public class TrainCar : MonoBehaviour, IDamageable
 
     void FixedUpdate()
     {
-        transform.position += Vector3.forward * (Time.deltaTime * 10);
+        transform.position += Vector3.forward * (Time.deltaTime * _speed);
     }
 
     public void TakeHit(float damage, RaycastHit hit)
