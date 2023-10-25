@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             playerAim.Aim(context.ReadValue<Vector2>());
-            guncontroller.Aim(context.ReadValue<Vector2>());
+            //Debug.Log(context.ReadValue<Vector2>());
         }
     }
 }

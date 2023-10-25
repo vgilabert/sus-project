@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LivingEntity : MonoBehaviour, IDamageable
+public class Entity : MonoBehaviour, IDamageable
 {
 
     public float startingHealth;
@@ -47,6 +47,6 @@ public class LivingEntity : MonoBehaviour, IDamageable
         {
             OnDeath();
         }
-        GameObject.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -1,1 +1,1 @@
-# sus-project
+# SUS Project

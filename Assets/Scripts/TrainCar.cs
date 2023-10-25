@@ -1,28 +1,38 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Splines;
 
-public class TrainCar : MonoBehaviour
+public class TrainCar : MonoBehaviour, IDamageable
 {
-    [SerializeField] SplineContainer track;
+    private Train _train;
+
+    private Turret _turret;
+    
+    private GameObject _slot;
+    
+    private void Awake()
+    {
+        _train = GetComponentInParent<Train>();
+        _slot = transform.Find("Slot").gameObject;
+    }
 
     void FixedUpdate()
     {
-        var native = new NativeSpline(track.Spline);
-        float distance = SplineUtility.GetNearestPoint(native, (float3)transform.position, out float3 nearest, out float t);
-        transform.position = nearest;
-        
-        Vector3 forward = track.EvaluateTangent(t);
-        Vector3 up = track.EvaluateUpVector(t);
+        transform.position += Vector3.forward * (Time.deltaTime * 10);
+    }
 
-        var remappedForward = new Vector3(0, 1, 0);
-        var remappedUp = new Vector3(0, 0, 1);
-        var axisRemapRotation = Quaternion.Inverse(Quaternion.LookRotation(remappedForward, remappedUp));
-        
-        transform.rotation = Quaternion.LookRotation(forward, up) * axisRemapRotation;
-        //transform.rotation = Quaternion.LookRotation(forward, up);
+    public void TakeHit(float damage, RaycastHit hit)
+    {
+        TakeDamage(damage);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _train.TakeDamage(damage);
+    }
+    
+    public void AddTurret(Turret turret)
+    {
+        _turret = turret;
+        _turret.transform.position = _slot.transform.position;
     }
 }
