@@ -187,7 +187,7 @@ MonoBehaviour:
     type: 3}
   msBetweenShots: 100
   muzzleVelocity: 35
-  damage: 10
+  damage: 200
   nextShotTime: 0
 --- !u!1 &1054674904423002381
 GameObject:
