@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 2423503864780448630}
   - component: {fileID: 929331589827555903}
   - component: {fileID: 8234271261223997373}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 0
+  statusIndicator: {fileID: 0}
 --- !u!114 &598704528796067335
 MonoBehaviour:
   m_ObjectHideFlags: 0

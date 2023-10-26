@@ -19,7 +19,7 @@ public class Entity : MonoBehaviour, IDamageable
     protected virtual void Start()
     {
         health = startingHealth;
-        if(statusIndicator != null)
+        if(statusIndicator)
             statusIndicator.setMaxHealth(startingHealth);
     }
 
@@ -32,8 +32,8 @@ public class Entity : MonoBehaviour, IDamageable
     public void TakeDamage(float damage)
     {
         health -= damage;
-        statusIndicator.SetHealth(health);
-        Debug.Log(health);
+        if(statusIndicator)
+            statusIndicator.SetHealth(health);
         if (health <= 0 && !dead)
         {
             Die();

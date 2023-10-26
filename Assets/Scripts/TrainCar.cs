@@ -14,6 +14,7 @@ public class TrainCar : MonoBehaviour, IDamageable
     private void Awake()
     {
         _train = GetComponentInParent<Train>();
+        Debug.Log(_train);
         _slot = transform.Find("Slot").gameObject;
     }
 
