@@ -29,17 +29,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + playerMovement.velocity * Time.fixedDeltaTime);
-        //playerAim.Aim();
     }
-
-    /*private void Update()
-    {
-
-        if (Input.GetMouseButton(0))
-        {
-            guncontroller.Shoot();
-        }
-    }*/
 
     public void OnShoot(InputAction.CallbackContext context)
     {
@@ -55,7 +45,7 @@ public class PlayerController : MonoBehaviour
         if (context.performed)
         {
             playerAim.Aim(context.ReadValue<Vector2>());
-            guncontroller.Aim(context.ReadValue<Vector2>());
+            //Debug.Log(context.ReadValue<Vector2>());
         }
     }
 }
