@@ -17,9 +17,9 @@ namespace NavMeshAvoidance
         
         void Start()
         {
-            ordering.Avoidance = avoidance;
+            //ordering.Avoidance = avoidance;
             
-            var spawnPositions = spawnFormation.GetPositions(Vector3.zero, count, 1);
+            var spawnPositions = spawnFormation.GetPositions(transform.position, count, 1);
             
             for (var i = 0; i < count; i++)
                 DoSpawn(spawnPositions[i]);
