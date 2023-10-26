@@ -145,7 +145,7 @@ public class Enemy : Entity
 
     public void RemoveAgent()
     {
-        Avoidance avoidance = GameObject.FindGameObjectWithTag("CrowdManager").GetComponent<Avoidance>();
+        Avoidance avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         if(avoidance != null) { avoidance.RemoveAgent(pathfinder); }
     }
 }

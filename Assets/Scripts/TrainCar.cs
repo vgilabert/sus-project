@@ -1,14 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshObstacle))]
 public class TrainCar : MonoBehaviour, IDamageable
 {
     private Train _train;
 
-    private Turret _turret;
-    
     private GameObject _slot;
     
+    [SerializeField] private GameObject _turretPrefab;
+
     [SerializeField] private float _speed = 1f;
     
     private void Awake()
@@ -16,6 +18,11 @@ public class TrainCar : MonoBehaviour, IDamageable
         _train = GetComponentInParent<Train>();
         Debug.Log(_train);
         _slot = transform.Find("Slot").gameObject;
+    }
+
+    private void Start()
+    {
+        AddTurret(_turretPrefab);
     }
 
     void FixedUpdate()
@@ -33,9 +40,10 @@ public class TrainCar : MonoBehaviour, IDamageable
         _train.TakeDamage(damage);
     }
     
-    public void AddTurret(Turret turret)
+    public void AddTurret(GameObject turret)
     {
-        _turret = turret;
-        _turret.transform.position = _slot.transform.position;
+        if(!turret)
+            return;
+        Instantiate(turret, _slot.transform.position, Quaternion.identity, transform);
     }
 }

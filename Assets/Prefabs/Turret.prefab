@@ -202,7 +202,7 @@ MonoBehaviour:
     type: 3}
   msBetweenShots: 100
   muzzleVelocity: 100
-  damage: 1
+  damage: 5
   nextShotTime: 0
 --- !u!114 &7603480850021998821
 MonoBehaviour:
@@ -410,7 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe833af6eb259d4b85b4050b648a5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetTag: Player
+  TargetTag: Enemy
   Range: 15
 --- !u!1 &4795104547729391023
 GameObject:
