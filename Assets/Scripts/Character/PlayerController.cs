@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     PlayerMovement playerMovement;
     PlayerAim playerAim;
+    bool isFiring = false; 
 
     GunController guncontroller;
 
@@ -29,6 +30,10 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + playerMovement.velocity * Time.fixedDeltaTime);
+        if (isFiring)
+        {
+            guncontroller.Shoot();
+        }
     }
 
     public void OnShoot(InputAction.CallbackContext context)
@@ -36,7 +41,11 @@ public class PlayerController : MonoBehaviour
 
         if (context.performed)
         {
-            guncontroller.Shoot();
+            isFiring = true;
+        }
+        if (context.canceled)
+        {
+            isFiring = false;
         }
     }
 

@@ -69,7 +69,6 @@ public class TurretController : MonoBehaviour
             }
         }
 
-        Debug.Log(nearestEnemy);
         if (!nearestEnemy)
         {
             return Vector3.zero;

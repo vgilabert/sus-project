@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "Shoot",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "543c67c4-641b-495f-91ee-177a4578bfc4",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -93,7 +93,7 @@
                     "name": "",
                     "id": "376f139b-55b1-4163-bf1c-1973ba75fe20",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Press",
+                    "interactions": "",
                     "processors": "",
                     "groups": "PC",
                     "action": "Shoot",

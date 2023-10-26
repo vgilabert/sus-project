@@ -20,8 +20,7 @@ public class MuzzleFlash : MonoBehaviour {
 		for (int i =0; i < spriteRenderers.Length; i ++) {
 			spriteRenderers[i].sprite = flashSprites[flashSpriteIndex];
 		}
-
-		Invoke ("Deactivate", flashTime);
+		Invoke("Deactivate", flashTime);
 	}
 
 	void Deactivate() {
