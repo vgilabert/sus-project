@@ -115,7 +115,11 @@ public class Enemy : Entity
 
     public override void TakeHit(float damage, RaycastHit hit)
     {
-        Vector3 hitDirection = -hit.collider.transform.forward;
+        Vector3 colliderCenter = hit.collider.transform.position;
+        Vector3 colliderCenterWorld = hit.collider.transform.TransformPoint(hit.collider.transform.position);
+        
+        Vector3 hitDirection = Vector3.Normalize(colliderCenterWorld - hit.point);
+        Debug.Log(hit.point);
 
         Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
         if (damage >= health)

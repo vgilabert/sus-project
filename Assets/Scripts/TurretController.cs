@@ -28,7 +28,7 @@ public class TurretController : MonoBehaviour
         if (_target != Vector3.zero)
         {
             //_canon.transform.LookAt(_target);
-            _canon.transform.rotation = Quaternion.Slerp(_canon.transform.rotation, Quaternion.LookRotation(_target - _canon.transform.position), 0.1f);
+            _canon.transform.rotation = Quaternion.Slerp(_canon.transform.rotation, Quaternion.LookRotation(_target - _canon.transform.position), 0.3f);
         }
     }
 
@@ -36,7 +36,6 @@ public class TurretController : MonoBehaviour
     {
         while (_target != Vector3.zero)
         {
-            Debug.Log("shoot");
             _canon.Shoot();
             yield return new WaitForSeconds(0.3f);
         }
