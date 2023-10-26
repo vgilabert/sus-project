@@ -40,10 +40,11 @@ public class Enemy : Entity
 
 
         currentState = State.Chasing;
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        GetClosestTarget();
+
+        OnDeath += RemoveAgent;
 
         myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-        targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
 
         StartCoroutine(UpdatePath());
     }
@@ -53,8 +54,8 @@ public class Enemy : Entity
 
         if (Time.time > nextAttackTime)
         {
-            float sqrDstToTarget = (target.position - transform.position).sqrMagnitude;
-            if (sqrDstToTarget < Mathf.Pow(attackDistanceThreshold + myCollisionRadius + targetCollisionRadius, 2))
+            
+            if (GetClosestTarget() < Mathf.Pow(attackDistanceThreshold + myCollisionRadius, 2))
             {
                 nextAttackTime = Time.time + timeBetweenAttacks;
                 StartCoroutine(Attack());
@@ -94,6 +95,24 @@ public class Enemy : Entity
         pathfinder.enabled = true;
     }
 
+    float GetClosestTarget()
+    {
+        float sqrDstToTarget = Mathf.Infinity;
+        List<GameObject> targets = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+        foreach(GameObject t in targets) 
+        { 
+            if((t.transform.position - transform.position).sqrMagnitude< sqrDstToTarget)
+            {
+                sqrDstToTarget = (t.transform.position - transform.position).sqrMagnitude;
+                target = t.transform;
+            }
+            
+
+        }
+
+        return sqrDstToTarget;
+    }
+
     IEnumerator UpdatePath()
     {
         float refreshRate = .25f;
@@ -103,7 +122,7 @@ public class Enemy : Entity
             if (currentState == State.Chasing)
             {
                 Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius + attackDistanceThreshold / 2);
+                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + attackDistanceThreshold / 2);
                 if (!dead)
                 {
                     pathfinder.SetDestination(targetPosition);
@@ -113,14 +132,8 @@ public class Enemy : Entity
         }
     }
 
-    public override void TakeHit(float damage, RaycastHit hit)
+    public override void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
-        Vector3 colliderCenter = hit.collider.transform.position;
-        Vector3 colliderCenterWorld = hit.collider.transform.TransformPoint(hit.collider.transform.position);
-        
-        Vector3 hitDirection = Vector3.Normalize(colliderCenterWorld - hit.point);
-        Debug.Log(hit.point);
-
         Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
         if (damage >= health)
         {
@@ -128,5 +141,11 @@ public class Enemy : Entity
         }
 
         base.TakeHit(damage, hit);
+    }
+
+    public void RemoveAgent()
+    {
+        Avoidance avoidance = GameObject.FindGameObjectWithTag("CrowdManager").GetComponent<Avoidance>();
+        if(avoidance != null) { avoidance.RemoveAgent(pathfinder); }
     }
 }

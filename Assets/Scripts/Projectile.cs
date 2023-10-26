@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour
             if (( damageMask & ( 1 << hit.collider.transform.gameObject.layer)) == 0)
                 damage = 0;
             Debug.Log("here : " + damage + " / " + hit.collider.gameObject.GetType());
-            damageableObject.TakeHit(damage, hit);
+            damageableObject.TakeHit(damage, hit, transform.forward);
         }
         else
         {

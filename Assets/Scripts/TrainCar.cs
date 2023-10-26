@@ -23,7 +23,7 @@ public class TrainCar : MonoBehaviour, IDamageable
         transform.position += Vector3.forward * (Time.deltaTime * _speed);
     }
 
-    public void TakeHit(float damage, RaycastHit hit)
+    public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
         TakeDamage(damage);
     }
