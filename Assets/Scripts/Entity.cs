@@ -23,12 +23,6 @@ public class Entity : MonoBehaviour, IDamageable
             statusIndicator.setMaxHealth(startingHealth);
     }
 
-    public virtual void TakeHit(float damage, RaycastHit hit)
-    {
-        // Do some stuff here with hit var
-        TakeDamage(damage);
-    }
-
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -49,4 +43,11 @@ public class Entity : MonoBehaviour, IDamageable
         }
         Destroy(gameObject);
     }
+
+    public virtual void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    {
+        TakeDamage(damage);
+    }
+
+    
 }

@@ -57,8 +57,9 @@ namespace NavMeshAvoidance
                 
                 if (showDebugGizmos)
                     Debug.DrawRay(agentAPos, avoidanceVector, Color.green);
-                
-                agents[q].Move(avoidanceVector.normalized * distance * deltaTime);
+
+                if (agents[q] != null && agents[q].isActiveAndEnabled)
+                    agents[q].Move(avoidanceVector.normalized * distance * deltaTime);
             }
         }
 
