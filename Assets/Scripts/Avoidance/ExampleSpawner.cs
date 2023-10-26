@@ -10,15 +10,17 @@ namespace NavMeshAvoidance
         [SerializeField, Range(1,500)] int count = 16;
         
         [Header("Components links")]
-        [SerializeField] Ordering ordering;
-        [SerializeField] Avoidance avoidance;
+        Ordering ordering;
+        Avoidance avoidance;
 
         readonly IFormation spawnFormation = new SquareFormation();
         
         void Start()
         {
             //ordering.Avoidance = avoidance;
-            
+            ordering = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Ordering>();
+            avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
+
             var spawnPositions = spawnFormation.GetPositions(transform.position, count, 1);
             
             for (var i = 0; i < count; i++)
@@ -29,10 +31,11 @@ namespace NavMeshAvoidance
         {
             var spawned = Instantiate(agentPrefab, position, Quaternion.identity);
             var agent = spawned.GetComponent<NavMeshAgent>();
-                
+
             if(ordering != null)
                 ordering.AddAgent(agent);
-            avoidance.AddAgent(agent);
+            if(avoidance != null)
+                avoidance.AddAgent(agent);
         }
     }
 }

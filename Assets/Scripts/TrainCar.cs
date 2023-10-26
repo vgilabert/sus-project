@@ -8,13 +8,20 @@ public class TrainCar : MonoBehaviour, IDamageable
     private Train _train;
 
     private GameObject _slot;
-    
+
+    [SerializeField] private GameObject _hitEffect;
     [SerializeField] private GameObject _turretPrefab;
 
     [SerializeField] private float _speed = 1f;
     
     private void Awake()
     {
+        if(_hitEffect == null)
+        {
+            _hitEffect = new GameObject();
+            Debug.LogWarning("Hit Effect not set in train car " + this.name);
+        }
+
         _train = GetComponentInParent<Train>();
         Debug.Log(_train);
         _slot = transform.Find("Slot").gameObject;
@@ -32,6 +39,8 @@ public class TrainCar : MonoBehaviour, IDamageable
 
     public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
+        if(hitDirection != default)
+            Destroy(Instantiate(_hitEffect.gameObject, hit.point, Quaternion.FromToRotation(-Vector3.forward, hitDirection)) as GameObject, 3f);
         TakeDamage(damage);
     }
 

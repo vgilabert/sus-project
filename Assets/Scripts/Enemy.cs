@@ -11,7 +11,7 @@ public class Enemy : Entity
     public enum State { Idle, Chasing, Attacking };
     State currentState;
 
-    [SerializeField] Avoidance avoidance;
+    Avoidance avoidance;
 
     NavMeshAgent pathfinder;
     Transform target;
@@ -38,6 +38,7 @@ public class Enemy : Entity
         skinMaterial = GetComponent<Renderer>().material;
         originalColour = skinMaterial.color;
 
+        OnDeath += RemoveAgent;
 
         currentState = State.Chasing;
         GetClosestTarget();
@@ -46,6 +47,7 @@ public class Enemy : Entity
 
         myCollisionRadius = GetComponent<CapsuleCollider>().radius;
 
+        avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         StartCoroutine(UpdatePath());
     }
 
