@@ -14,6 +14,9 @@ public class TurretController : MonoBehaviour
     
     [SerializeField] bool drawDebugGizmos = true;
     
+    [Range(0f, 1f)]
+    [SerializeField] float rotationSpeed = 0.1f;
+    
     private void Awake()
     {
         _canon = GetComponentInChildren<Gun>();
@@ -28,7 +31,7 @@ public class TurretController : MonoBehaviour
         _target = GetNearestEnemy();
         if (_target != Vector3.zero)
         {
-            _canon.transform.rotation = Quaternion.Slerp(_canon.transform.rotation, Quaternion.LookRotation(_target - _canon.transform.position), 0.3f);
+            _canon.transform.rotation = Quaternion.Slerp(_canon.transform.rotation, Quaternion.LookRotation(_target - _canon.transform.position), rotationSpeed);
         }
     }
 

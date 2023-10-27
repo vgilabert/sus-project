@@ -101,7 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 100
   statusIndicator: {fileID: 5829336366291717963}
-  avoidance: {fileID: 0}
   damageEffect: {fileID: 2018796105630114699, guid: 3068ef756c327774c8ca28524c6b5e14,
     type: 3}
   deathEffect: {fileID: 1008666860469710620, guid: ff1830c317057e841b80d6f15d4bd997,
@@ -139,7 +138,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
