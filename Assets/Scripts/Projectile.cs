@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -37,19 +35,17 @@ public class Projectile : MonoBehaviour
 
     void OnHitObject(RaycastHit hit)
     {
-        Debug.Log(hit.collider.gameObject.name);
         IDamageable damageableObject = hit.collider.GetComponent<IDamageable>();
         if (damageableObject != null)
         {
             if (( damageMask & ( 1 << hit.collider.transform.gameObject.layer)) == 0)
                 damage = 0;
-            Debug.Log("here : " + damage + " / " + hit.collider.gameObject.GetType());
             damageableObject.TakeHit(damage, hit, transform.forward);
         }
         else
         {
             Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, transform.forward)) as GameObject, 3f);
         }
-        GameObject.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
