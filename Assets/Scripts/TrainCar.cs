@@ -32,10 +32,10 @@ public class TrainCar : MonoBehaviour, IDamageable
         AddTurret(_turretPrefab);
     }
 
-    void FixedUpdate()
-    {
-        transform.position += Vector3.forward * (Time.deltaTime * _speed);
-    }
+    // void FixedUpdate()
+    // {
+    //     transform.position += Vector3.forward * (Time.deltaTime * _speed);
+    // }
 
     public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {

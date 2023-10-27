@@ -48,6 +48,4 @@ public class Entity : MonoBehaviour, IDamageable
     {
         TakeDamage(damage);
     }
-
-    
 }

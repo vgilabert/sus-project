@@ -13,6 +13,8 @@ public class TurretController : MonoBehaviour
     
     [SerializeField] float Range = 10f;
     
+    [SerializeField] bool drawDebugGizmos = true;
+    
     private void Awake()
     {
         _canon = GetComponentInChildren<Gun>();
@@ -79,6 +81,7 @@ public class TurretController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if(!drawDebugGizmos) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, Range);
     }
