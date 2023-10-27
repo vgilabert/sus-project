@@ -12,8 +12,6 @@ public class TrainCar : MonoBehaviour, IDamageable
     [SerializeField] private GameObject _hitEffect;
     [SerializeField] private GameObject _turretPrefab;
 
-    [SerializeField] private float _speed = 1f;
-    
     private void Awake()
     {
         if(_hitEffect == null)
@@ -32,15 +30,10 @@ public class TrainCar : MonoBehaviour, IDamageable
         AddTurret(_turretPrefab);
     }
 
-    // void FixedUpdate()
-    // {
-    //     transform.position += Vector3.forward * (Time.deltaTime * _speed);
-    // }
-
     public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
         if(hitDirection != default)
-            Destroy(Instantiate(_hitEffect.gameObject, hit.point, Quaternion.FromToRotation(-Vector3.forward, hitDirection)) as GameObject, 3f);
+            Destroy(Instantiate(_hitEffect.gameObject, hit.point, Quaternion.FromToRotation(-Vector3.forward, hitDirection)), 3f);
         TakeDamage(damage);
     }
 

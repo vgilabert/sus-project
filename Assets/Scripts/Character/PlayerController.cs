@@ -3,33 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerAim))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(GunController))]
 public class PlayerController : MonoBehaviour
 {
     Rigidbody rb;
-    PlayerMovement playerMovement;
     PlayerAim playerAim;
-    bool isFiring = false; 
+    bool isFiring; 
 
     GunController guncontroller;
+    
+    public float speed = 20f;
+    public Vector3 velocity;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerMovement = GetComponent<PlayerMovement>();
         playerAim = GetComponent<PlayerAim>();
         guncontroller = GetComponent<GunController>();
         rb = GetComponent<Rigidbody>();
     }
-
-
+    
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 moveInput = context.ReadValue<Vector2>();
+        velocity = new Vector3(moveInput.x, 0, moveInput.y) * speed;
+    }
+    
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + playerMovement.velocity * Time.fixedDeltaTime);
+        rb.velocity = new Vector3(velocity.x, rb.velocity.y, velocity.z) * (speed * Time.fixedDeltaTime);
         if (isFiring)
         {
             guncontroller.Shoot();
