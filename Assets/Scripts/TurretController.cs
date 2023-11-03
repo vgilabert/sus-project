@@ -29,6 +29,7 @@ public class TurretController : MonoBehaviour
         _target = GetNearestEnemy();
         if (_target != Vector3.zero)
         {
+            //_canon.transform.LookAt(_target);
             _canon.transform.rotation = Quaternion.Slerp(_canon.transform.rotation, Quaternion.LookRotation(_target - _canon.transform.position), 0.3f);
         }
     }

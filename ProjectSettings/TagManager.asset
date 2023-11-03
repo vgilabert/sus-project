@@ -6,7 +6,6 @@ TagManager:
   tags:
   - CrowdManager
   - Enemy
-  - Train
   layers:
   - Default
   - TransparentFX

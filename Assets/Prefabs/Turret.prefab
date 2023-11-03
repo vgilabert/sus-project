@@ -563,8 +563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTag: Enemy
-  Range: 15
-  drawDebugGizmos: 0
+  Range: 70
+  drawDebugGizmos: 1
 --- !u!1 &5470572655909536597
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,5 +874,5 @@ MonoBehaviour:
     type: 3}
   msBetweenShots: 100
   muzzleVelocity: 35
-  damage: 15
+  damage: 10
   nextShotTime: 0
