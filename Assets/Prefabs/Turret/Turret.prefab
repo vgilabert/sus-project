@@ -563,8 +563,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetTag: Enemy
-  Range: 70
-  drawDebugGizmos: 1
+  Range: 75
+  drawDebugGizmos: 0
+  rotationSpeed: 1
 --- !u!1 &5470572655909536597
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +874,6 @@ MonoBehaviour:
   projectile: {fileID: 9005923340285644825, guid: a696547b4e1747247859c98c32defb40,
     type: 3}
   msBetweenShots: 100
-  muzzleVelocity: 35
-  damage: 10
+  muzzleVelocity: 80
+  damage: 15
   nextShotTime: 0

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MuzzleFlash))]
@@ -20,10 +18,7 @@ public class Gun : MonoBehaviour
     {
         flash = GetComponent<MuzzleFlash>();
     }
-    private void FixedUpdate()
-    {
-        
-    }
+    
     public void Shoot()
     {
 
