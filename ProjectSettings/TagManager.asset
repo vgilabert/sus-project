@@ -7,6 +7,7 @@ TagManager:
   - CrowdManager
   - Enemy
   - Train
+  - Loco
   layers:
   - Default
   - TransparentFX

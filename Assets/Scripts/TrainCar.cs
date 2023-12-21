@@ -26,7 +26,7 @@ public class TrainCar : MonoBehaviour, IDamageable
 
     private void Start()
     {
-        AddTurret(_turretPrefab);
+        //AddTurret(_turretPrefab);
     }
 
     public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)

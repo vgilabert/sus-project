@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using System.Collections.Generic;
 using Dreamteck.Splines;
@@ -10,7 +10,7 @@ public enum CartType
     Gatling
 }
 
-public class Train : MonoBehaviour
+public class MyTrain : MonoBehaviour
 {
     List<GameObject> carts;
     
@@ -76,6 +76,7 @@ public class Train : MonoBehaviour
             locomotiveFollower.SetPercent(lastPosition);
             locomotiveFollower.followSpeed = speed;
         }
+        Time.timeScale = isPaused ? 0 : 1;
     }
 
     public void AddCart(bool isGatling)
@@ -95,7 +96,19 @@ public class Train : MonoBehaviour
         SplinePositioner splinePositioner = cart.GetComponent<SplinePositioner>();
         splinePositioner.spline = spline;
         splinePositioner.followTarget = carts[^1].GetComponent<SplineTracer>();
-        splinePositioner.followTargetDistance = carts.Count == 1 ? 2 : 1.5f;
+        splinePositioner.followTargetDistance = carts.Count == 1 ? 3.5f : 2.5f;
+        splinePositioner.followLoop = true;
         carts.Add(cart);
+    }
+    
+    public Vector3 GetCenter()
+    {
+        Vector3 center = Vector3.zero;
+        foreach (GameObject cart in carts)
+        {
+            center += cart.transform.position;
+        }
+        center /= carts.Count;
+        return center;
     }
 }
