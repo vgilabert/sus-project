@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 72ef1862fc2cacd4488f5c9e71752712
+=======
+guid: 15b9a2f615903d24b887fd0975cb2a93
+>>>>>>> POC
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

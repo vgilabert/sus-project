@@ -6,3 +6,13 @@ TextScriptImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+<<<<<<< HEAD
+=======
+AssetOrigin:
+  serializedVersion: 1
+  productId: 61926
+  packageName: Dreamteck Splines
+  packageVersion: 3.0.5
+  assetPath: Assets/Dreamteck/Splines/Editor/changelog.txt
+  uploadId: 593615
+>>>>>>> POC
