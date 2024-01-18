@@ -1,7 +1,5 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 MoveDirection {get; set;}
     private Vector2 AimDirection {get; set;}
     private Vector2 MousePosition {get; set;}
-
 
     public void FixedUpdate()
     {
@@ -75,6 +72,5 @@ public class PlayerMovement : MonoBehaviour
             AimDirection = context.ReadValue<Vector2>();
             AimDirection.Normalize();
         }
-        
     }
 }
