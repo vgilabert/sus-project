@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(SplinePositioner), typeof(TurretController))]
 public class Cart : MonoBehaviour
 {
-    protected CartType cartType;
+    public CartType cartType{ get; set; }
     
     protected int ameliorationLVL;
     
@@ -16,6 +16,4 @@ public class Cart : MonoBehaviour
     protected float damage;
 
     protected bool passiveUnlocked;
-
-    [SerializeField] protected TurretController turretController;
 }

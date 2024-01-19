@@ -17,8 +17,7 @@ public class TrainManager : MonoBehaviour
     
     [Header("Carts Prefabs"), Space(5)]
     [SerializeField] GameObject locomotivePrefab;
-    [SerializeField] GameObject gatlingPrefab;
-    [SerializeField] GameObject missilePrefab;
+    [SerializeField] GameObject cartPrefab;
     [SerializeField] GameObject missileTurretPrefab;
     [SerializeField] GameObject gatlingTurretPrefab;
     
@@ -43,14 +42,24 @@ public class TrainManager : MonoBehaviour
         locomotive.transform.position = spline.EvaluatePosition(0);
         locomotiveFollower.spline = spline;
         locomotiveFollower.followSpeed = speed;
+        locomotive.GetComponent<Cart>().cartType = CartType.Locomotive;
         carts.Add(locomotive);
     }
     
     void AddCart(bool isGatling)
     {
-        GameObject cart = Instantiate(isGatling ? gatlingPrefab : missilePrefab, transform);
+        GameObject cart = Instantiate(cartPrefab, transform);
         SetCartSpline(cart);
-        SetTurretController(cart, isGatling ? CartType.Gatling : CartType.Missile);
+        if (isGatling)
+        {
+            cart.GetComponent<Cart>().cartType = CartType.Gatling;
+            SetGatlingTurretController(cart, gatlingTurretPrefab);
+        }
+        else
+        {
+            cart.GetComponent<Cart>().cartType = CartType.Missile;
+            SetMissileTurretController(cart, missileTurretPrefab);
+        }
         carts.Add(cart);
     }
 
@@ -62,9 +71,27 @@ public class TrainManager : MonoBehaviour
         splinePositioner.followTargetDistance = carts.Count == 1 ? 2 : 1.5f;
     }
 
-    void SetTurretController(GameObject cart, CartType type)
+    void SetGatlingTurretController(GameObject cart, GameObject turretPrefab)
     {
-        TurretController controller = cart.AddComponent<TurretController>();
-        controller.SetControllerData(cart.GetComponent<Cart>(), type == CartType.Gatling ? gatlingTurretPrefab : missileTurretPrefab);
+        TurretController controller = cart.AddComponent<GatlingController>();
+        controller.SetControllerData(cart, turretPrefab);
+    }
+    
+    void SetMissileTurretController(GameObject cart, GameObject turretPrefab)
+    {
+        TurretController controller = cart.AddComponent<MissileController>();
+        controller.SetControllerData(cart, turretPrefab);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            AddCart(false);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            AddCart(true);
+        }
     }
 }
