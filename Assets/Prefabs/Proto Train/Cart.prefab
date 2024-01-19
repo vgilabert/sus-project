@@ -45,7 +45,6 @@ GameObject:
   - component: {fileID: 4365611083499831464}
   - component: {fileID: 4848407052081905368}
   - component: {fileID: 3706860722967526838}
-  - component: {fileID: -8582700864604668299}
   - component: {fileID: 363988676167221866}
   m_Layer: 0
   m_Name: Cart
@@ -274,18 +273,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &-8582700864604668299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5812104687809487121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1c66988b4bc59b409f05fdc774a824d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &363988676167221866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,4 +285,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75609373a52b7c14489879e4df34f7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretController: {fileID: 0}

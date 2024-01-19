@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 5761525531518545375}
   - component: {fileID: 9070490890036947940}
   - component: {fileID: 4125619243115940950}
-  - component: {fileID: -8855383978485612026}
   - component: {fileID: 5520519819475112868}
   m_Layer: 0
   m_Name: Locomotive
@@ -360,18 +359,6 @@ MonoBehaviour:
   _followTargetDirection: -1
   _position: 0
   _mode: 0
---- !u!114 &-8855383978485612026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2775865428634822071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1c66988b4bc59b409f05fdc774a824d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5520519819475112868
 MonoBehaviour:
   m_ObjectHideFlags: 0

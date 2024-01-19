@@ -8,6 +8,8 @@ namespace Weapons
         public LayerMask damageMask;
         protected float Speed { get; private set; }
         protected float BaseDamage { get; private set; }
+        
+        protected float Height { get; private set; }
 
         [SerializeField]
         protected GameObject impactEffect;
@@ -18,6 +20,7 @@ namespace Weapons
         {
             BaseDamage = gun.damage;
             Speed = gun.muzzleVelocity;
+            Height = gun.rocketHeight;
         }
 
         protected virtual void CheckCollisions(float moveDistance)

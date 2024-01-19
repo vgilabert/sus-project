@@ -21,7 +21,7 @@ PrefabInstance:
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
       propertyPath: msBetweenShots
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
