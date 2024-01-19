@@ -37,7 +37,6 @@ public abstract class IDamageable : MonoBehaviour
         
     protected virtual void Die()
     {
-        Debug.Log("Dies");
         IsDead = true;
         OnDeath?.Invoke();
         Destroy(gameObject);

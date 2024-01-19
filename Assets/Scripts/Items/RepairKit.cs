@@ -7,7 +7,7 @@ namespace Items
         public RepairKit(int amount = 1) : base(amount)
         { }
         
-        protected override void Consume()
+        public override void Consume()
         {
             Debug.Log("Consumed RepairKit");
         }

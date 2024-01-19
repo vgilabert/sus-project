@@ -583,6 +583,7 @@ GameObject:
   - component: {fileID: 1260757308}
   - component: {fileID: 1260757309}
   - component: {fileID: 1260757312}
+  - component: {fileID: 1260757313}
   - component: {fileID: 1260757310}
   - component: {fileID: 1260757311}
   m_Layer: 0
@@ -748,6 +749,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ffa6973f-ea77-4589-b415-196e0d4eb1cd
     m_ActionName: Player Action/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1260757313}
+        m_TargetAssemblyTypeName: Player.ConsumablesController, Assembly-CSharp
+        m_MethodName: OnUseItem1
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7fe097a3-8d43-4c7f-915a-4e6d1ef1d576
+    m_ActionName: Player Action/UseItem1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1260757313}
+        m_TargetAssemblyTypeName: Player.ConsumablesController, Assembly-CSharp
+        m_MethodName: OnUseItem2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 32daa451-2145-4509-94df-fa2e08e6c185
+    m_ActionName: Player Action/UseItem2[/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1260757313}
+        m_TargetAssemblyTypeName: Player.ConsumablesController, Assembly-CSharp
+        m_MethodName: OnUseItem3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 75a9e2b9-e6cd-48a9-8801-504068224fa9
+    m_ActionName: Player Action/UseItem3[/Keyboard/3]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Action
@@ -766,6 +815,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 1953017871}
+--- !u!114 &1260757313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260757306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718cc9021635d2a408b3a19bf14220f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1331513392
 GameObject:
   m_ObjectHideFlags: 0

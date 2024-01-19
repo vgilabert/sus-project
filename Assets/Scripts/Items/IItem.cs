@@ -10,4 +10,12 @@ namespace Items
             Amount = amount;
         }
     }
+    
+    public enum ItemType
+    {
+        Gravel,
+        TrainBooster,
+        AirStrike,
+        RepairKit
+    }
 }

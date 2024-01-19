@@ -18,36 +18,25 @@ public class LootBox : IDamageable
 
     private void GenerateLoot()
     {
-        var lootType = (LootType)Random.Range(0, 4);
-        Debug.Log(lootType);
-        int amount;
+        var lootType = (ItemType)Random.Range(0, 4);
+        int amount = 0;
         
         switch (lootType)
         {
-            case LootType.Gravel:
+            case ItemType.Gravel:
                 amount = Random.Range(10, 25);
-                Inventory.Instance.AddItem(new Gravel(amount));
                 break;
-            case LootType.TrainBooster:
+            case ItemType.TrainBooster:
                 amount = 1;
-                Inventory.Instance.AddItem(new TrainBooster(amount));
                 break;
-            case LootType.AirStrike:
+            case ItemType.AirStrike:
                 amount = 1;
-                Inventory.Instance.AddItem(new AirStrike(amount));
                 break;
-            case LootType.RepairKit:
+            case ItemType.RepairKit:
                 amount = Random.Range(1, 2);
-                Inventory.Instance.AddItem(new RepairKit(amount));
                 break;
         }
-    }
-
-    enum LootType
-    {
-        Gravel,
-        TrainBooster,
-        AirStrike,
-        RepairKit
+        
+        Inventory.Instance.UpdateItem(lootType, amount);
     }
 }
