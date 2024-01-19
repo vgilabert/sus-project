@@ -1,12 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Dreamteck.Splines;
 using UnityEngine;
 
-
-
+[RequireComponent(typeof(SplinePositioner), typeof(TurretController))]
 public class Cart : MonoBehaviour
 {
-    CartType cartType;
+    protected CartType cartType;
     
     protected int ameliorationLVL;
     
@@ -15,4 +16,6 @@ public class Cart : MonoBehaviour
     protected float damage;
 
     protected bool passiveUnlocked;
+
+    [SerializeField] protected TurretController turretController;
 }

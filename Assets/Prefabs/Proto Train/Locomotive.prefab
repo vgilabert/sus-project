@@ -29,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2775865428634822071}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.741572, z: 0, w: 0.6708733}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.706612, y: 0.8, z: -7.17053}
   m_LocalScale: {x: 1, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 95.731, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4692483495989568553
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -193,11 +193,11 @@ MonoBehaviour:
   targetRigidbody2D: {fileID: 0}
   targetTransform: {fileID: 2897829216978841044}
   _result:
-    position: {x: -4.706612, y: 0, z: -7.17053}
-    up: {x: 0, y: 1, z: 0}
-    forward: {x: 0.9950014, y: 0, z: -0.09986122}
-    color: {r: 1, g: 1, b: 1, a: 1}
-    size: 1
+    position: {x: 0, y: 0, z: 0}
+    up: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    size: 0
     percent: 0
   _finalResult:
     position: {x: -4.706612, y: 0, z: -7.17053}
