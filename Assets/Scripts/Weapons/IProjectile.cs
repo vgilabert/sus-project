@@ -20,7 +20,7 @@ namespace Weapons
             Speed = gun.muzzleVelocity;
         }
 
-        protected virtual void CheckCollisions(float moveDistance)
+        protected void CheckCollisions(float moveDistance)
         {
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
