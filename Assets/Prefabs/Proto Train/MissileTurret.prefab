@@ -26,6 +26,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
+      propertyPath: flyDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
+        type: 3}
       propertyPath: rocketHeight
       value: 2
       objectReference: {fileID: 0}
@@ -37,7 +42,7 @@ PrefabInstance:
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
       propertyPath: muzzleVelocity
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7152848677540177982, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}

@@ -1,16 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Weapons;
 
 public class TurretController : MonoBehaviour
 {
-    GameObject turret;
-    Gun gun;
-    Cart cart;
+    private GameObject turret;
+    private Gun gun;
+    private Cart cart;
 
-    Transform turretAnchor;
+    private Transform turretAnchor;
+    
+    private Transform Target { get; set; }
 
     public void SetControllerData(GameObject c, GameObject turretPrefab)
     {
@@ -22,30 +21,34 @@ public class TurretController : MonoBehaviour
 
     void Update()
     {
-        
+        UpdateTarget();
+        UpdateRotation();
+        gun.Shoot(Target);
+    }
+    
+    private void UpdateTarget()
+    {
+        var targetPos = GameObject.Find("coucou").transform;
         if (cart.cartType == CartType.Gatling)
         {
-            Aim();
-            gun.Shoot();
+            Target = targetPos;
         }
         else if (cart.cartType == CartType.Missile)
         {
-            Vector3 targetPostition = GetTargetPosition();
-            turret.transform.LookAt(targetPostition);
-            gun.Shoot(targetPostition);
+            Target = targetPos;
         }
     }
 
-    protected virtual void Aim()
+    protected void UpdateRotation()
     {
-        GameObject coucou = GameObject.Find("coucou");
-        Vector3 targetPostition = new Vector3(coucou.transform.position.x, turret.transform.position.y, coucou.transform.position.z);
-        turret.transform.LookAt(targetPostition);
-    }
-    
-    protected virtual Vector3 GetTargetPosition()
-    {
-        GameObject coucou = GameObject.Find("coucou");
-        return new Vector3(coucou.transform.position.x, turret.transform.position.y, coucou.transform.position.z);
+        if (cart.cartType == CartType.Gatling)
+        {
+            turret.transform.LookAt(new Vector3(Target.position.x, turret.transform.position.y, Target.position.z));
+        }
+        else if (cart.cartType == CartType.Missile)
+        {
+            turret.transform.LookAt(Target);
+        }
+        
     }
 }

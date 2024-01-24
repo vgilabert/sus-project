@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Weapons
 {
@@ -7,31 +8,55 @@ namespace Weapons
         public Transform muzzle;
         public IProjectile projectile;
 
-        public float msBetweenShots = 100;
-        public float muzzleVelocity = 35;
-        public float damage = 10;
-        public float rocketHeight;
-
-        public float nextShotTime;
-        public void Shoot()
+        
+        [SerializeField]
+        private float msBetweenShots = 100;
+        [SerializeField]
+        
+        private float damage = 10;
+        public float Damage
         {
-            if (Time.time > nextShotTime)
-            {
-                nextShotTime = Time.time + msBetweenShots / 1000;
-                IProjectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
-                newProjectile.Initialize(this);
-                Destroy(newProjectile.gameObject, 3f);
-            }
+            get => damage;
+            private set => damage = value;
+        }
+        
+        [Header("Gatling Settings")]
+        
+        [SerializeField]
+        private float muzzleVelocity = 35;
+        public float MuzzleVelocity
+        {
+            get => muzzleVelocity;
+            private set => muzzleVelocity = value;
+        }
+        
+        [Header("Rocket Settings")]
+        
+        [SerializeField]
+        private float rocketHeight;
+        public float RocketHeight
+        {
+             get => rocketHeight;
+             private set => rocketHeight = value;
+        }
+        
+        [SerializeField]
+        private float flyDuration;
+        public float FlyDuration
+        {
+            get => flyDuration;
+            private set => flyDuration = value;
         }
 
-        public void Shoot(Vector3 target)
+        private float shootTimer;
+
+        public void Shoot(Transform target = null)
         {
-            if (Time.time > nextShotTime)
+            if (Time.time > shootTimer)
             {
-                nextShotTime = Time.time + msBetweenShots / 1000;
+                shootTimer = Time.time + msBetweenShots / 1000;
                 IProjectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation);
-                newProjectile.Initialize(this);
-                newProjectile.GetComponent<Rocket>().Target = target;
+                newProjectile.Initialize(this, target);
             }
         }
     }

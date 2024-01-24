@@ -20,13 +20,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 83f52eb811f15324ba72f9c2998ce026, type: 2}
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
+      propertyPath: rocketHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
+        type: 3}
       propertyPath: msBetweenShots
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
       propertyPath: muzzleVelocity
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 7152848677540177982, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}

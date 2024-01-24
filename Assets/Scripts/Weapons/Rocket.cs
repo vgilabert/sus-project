@@ -14,24 +14,33 @@ namespace Weapons
 
         float Duration;
         
-        private float t;
 
-        private void Start()
+        public void Start()
         {
             start = transform.position;
-            Duration = Speed;
-            t = 0;
         }
 
         public override void Update()
         {
             UpdateRocketPosition();
         }
-        
+
+        public override void Initialize(Gun gun, Transform target = null)
+        {
+            if (target)
+            {
+                Target = target.position;
+            }
+            BaseDamage = gun.Damage;
+            Height = gun.RocketHeight;
+            Duration = gun.FlyDuration;
+        }
+
         private void UpdateRocketPosition()
         {
             Vector3 previous = transform.position;
             timeElapsed += Time.deltaTime;
+            // log every parameters used to compute the parabola
             transform.position = Parabola(start, Target, Height, timeElapsed / Duration);
 
             // rotate the rocket towards the tangent of the parabola

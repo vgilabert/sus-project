@@ -1,14 +1,27 @@
+using System;
 using UnityEngine;
 
 namespace Weapons
 {
     public class Bullet : IProjectile
     {
+
+        private void Start()
+        {
+            Destroy(gameObject, 3f);
+        }
+
         public override void Update()
         {
             float moveDistance = Speed * Time.deltaTime;
             CheckCollisions(moveDistance);
             transform.Translate(Vector3.forward * moveDistance);
+        }
+
+        public override void Initialize(Gun gun, Transform target = null)
+        {
+            BaseDamage = gun.Damage;
+            Speed = gun.MuzzleVelocity;
         }
 
         protected override void OnHit(RaycastHit hit)

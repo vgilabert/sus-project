@@ -53,12 +53,12 @@ public class TrainManager : MonoBehaviour
         if (isGatling)
         {
             cart.GetComponent<Cart>().cartType = CartType.Gatling;
-            SetGatlingTurretController(cart, gatlingTurretPrefab);
+            SetTurretController(cart, gatlingTurretPrefab);
         }
         else
         {
             cart.GetComponent<Cart>().cartType = CartType.Missile;
-            SetMissileTurretController(cart, missileTurretPrefab);
+            SetTurretController(cart, missileTurretPrefab);
         }
         carts.Add(cart);
     }
@@ -71,15 +71,9 @@ public class TrainManager : MonoBehaviour
         splinePositioner.followTargetDistance = carts.Count == 1 ? 2 : 1.5f;
     }
 
-    void SetGatlingTurretController(GameObject cart, GameObject turretPrefab)
+    void SetTurretController(GameObject cart, GameObject turretPrefab)
     {
-        TurretController controller = cart.AddComponent<GatlingController>();
-        controller.SetControllerData(cart, turretPrefab);
-    }
-    
-    void SetMissileTurretController(GameObject cart, GameObject turretPrefab)
-    {
-        TurretController controller = cart.AddComponent<MissileController>();
+        TurretController controller = cart.AddComponent<TurretController>();
         controller.SetControllerData(cart, turretPrefab);
     }
 

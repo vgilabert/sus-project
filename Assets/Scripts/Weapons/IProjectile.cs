@@ -6,22 +6,17 @@ namespace Weapons
     {
         public LayerMask collisionMask;
         public LayerMask damageMask;
-        protected float Speed { get; private set; }
-        protected float BaseDamage { get; private set; }
+        protected float Speed { get; set; }
+        protected float BaseDamage { get; set; }
         
-        protected float Height { get; private set; }
+        protected float Height { get; set; }
 
         [SerializeField]
         protected GameObject impactEffect;
 
         public abstract void Update();
 
-        public void Initialize(Gun gun)
-        {
-            BaseDamage = gun.damage;
-            Speed = gun.muzzleVelocity;
-            Height = gun.rocketHeight;
-        }
+        public abstract void Initialize(Gun gun, Transform target = null);
 
         protected virtual void CheckCollisions(float moveDistance)
         {
