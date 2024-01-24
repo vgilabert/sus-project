@@ -31,7 +31,7 @@ public class Enemy : IDamageable
 
     protected void Start()
     {
-        
+        base.Start();
 
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponent<Renderer>().material;
