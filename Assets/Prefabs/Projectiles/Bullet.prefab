@@ -186,8 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   damageMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   impactEffect: {fileID: 0}
