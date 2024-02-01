@@ -16,7 +16,7 @@ public abstract class IDamageable : MonoBehaviour
     }
 
 
-    public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    public virtual void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
         TakeDamage(damage);
     }

@@ -20,7 +20,7 @@ public class FindNearest : MonoBehaviour
 
     public void Start()
     {
-        ExampleSpawner spawner = Object.FindObjectOfType<ExampleSpawner>();
+        ExampleSpawner spawner = FindFirstObjectByType<ExampleSpawner>();
 
         GameObject[] t = GameObject.FindGameObjectsWithTag ("Player");
         for (int i = 0; i < t.Length; i++) { Targets.Add(t[i].transform); }

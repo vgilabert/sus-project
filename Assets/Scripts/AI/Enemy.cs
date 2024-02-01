@@ -29,7 +29,7 @@ public class Enemy : IDamageable
     float myCollisionRadius;
     float targetCollisionRadius;
 
-    protected void Start()
+    protected override void Start()
     {
         base.Start();
 
@@ -133,7 +133,7 @@ public class Enemy : IDamageable
         }
     }
 
-    public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    public override void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
         Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
         if (damage >= health)
