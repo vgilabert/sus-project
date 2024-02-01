@@ -29,7 +29,7 @@ namespace Weapons
             IDamageable damageableObject = hit.collider.GetComponent<IDamageable>();
             if (damageableObject != null)
             {
-                bool isHit = (damageMask & (1 << hit.collider.transform.gameObject.layer)) == 0;
+                bool isHit = (damageMask & (1 << hit.collider.transform.gameObject.layer)) != 0;
                 damageableObject.TakeHit(isHit?BaseDamage:0, hit, transform.forward);
             }
             else

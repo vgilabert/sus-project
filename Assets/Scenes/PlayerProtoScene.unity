@@ -1181,8 +1181,8 @@ MonoBehaviour:
   projectile: {fileID: 5051383775591187868, guid: 14b4dac1ce1664949af6ad17a62ab87d,
     type: 3}
   msBetweenShots: 100
-  damage: 10
-  muzzleVelocity: 35
+  damage: 1
+  muzzleVelocity: 30
   rocketHeight: 0
   flyDuration: 0
 --- !u!1660057539 &9223372036854775807

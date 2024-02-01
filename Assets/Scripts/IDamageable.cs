@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class IDamageable : MonoBehaviour
 {
 
-    public float startingHealth;
+    [SerializeField] private float maxHealth;
     protected float health;
     protected bool dead;
 
@@ -11,19 +12,18 @@ public abstract class IDamageable : MonoBehaviour
 
     protected virtual void Start()
     {
-        health = startingHealth;
+        health = maxHealth;
     }
 
 
     public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
-        // Do something
+        TakeDamage(damage);
     }
 
     public void TakeDamage(float damage)
     {
         health -= damage;
-        Debug.Log(health);
         if (health <= 0 && !dead)
         {
             Die();
@@ -37,6 +37,6 @@ public abstract class IDamageable : MonoBehaviour
         {
             OnDeath();
         }
-        GameObject.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

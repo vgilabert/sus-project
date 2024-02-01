@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1b8590ec55eea478c2b707c902a6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 100
+  maxHealth: 3
   damageEffect: {fileID: 2018796105630114699, guid: 3068ef756c327774c8ca28524c6b5e14,
     type: 3}
   deathEffect: {fileID: 1008666860469710620, guid: ff1830c317057e841b80d6f15d4bd997,
