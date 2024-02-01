@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 public abstract class IDamageable : MonoBehaviour
 {
-    public StatusIndicator statusIndicator;
+    private StatusIndicator statusIndicator;
     
     [SerializeField] private float maxHealth;
     protected float health;
@@ -31,7 +31,7 @@ public abstract class IDamageable : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         health -= damage;
         if (health <= 0 && !dead)

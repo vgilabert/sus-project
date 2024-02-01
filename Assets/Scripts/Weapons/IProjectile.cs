@@ -18,7 +18,7 @@ namespace Weapons
 
         public abstract void Initialize(Gun gun, Transform target = null);
 
-        protected virtual void CheckCollisions(float moveDistance)
+        protected void CheckCollisions(float moveDistance)
         {
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;

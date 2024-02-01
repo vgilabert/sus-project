@@ -34,7 +34,7 @@ namespace Weapons
             }
             else
             {
-                Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, transform.forward)) as GameObject, 3f);
+                Destroy(Instantiate(impactEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, transform.forward)), 3f);
             }
             Destroy(gameObject);
         }
