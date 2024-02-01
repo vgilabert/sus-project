@@ -1,12 +1,42 @@
 using UnityEngine;
 
-namespace Weapons
+public abstract class IDamageable : MonoBehaviour
 {
-    public class IDamageable : MonoBehaviour
+
+    public float startingHealth;
+    protected float health;
+    protected bool dead;
+
+    public event System.Action OnDeath;
+
+    protected virtual void Start()
     {
-        public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection)
+        health = startingHealth;
+    }
+
+
+    public void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    {
+        // Do something
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log(health);
+        if (health <= 0 && !dead)
         {
-            // Do something
+            Die();
         }
+    }
+
+    protected void Die()
+    {
+        dead = true;
+        if (OnDeath != null)
+        {
+            OnDeath();
+        }
+        GameObject.Destroy(gameObject);
     }
 }
