@@ -52,23 +52,18 @@ public class Enemy : IDamageable
 
     void Update()
     {
-
         if (Time.time > nextAttackTime)
         {
-            
             if (GetClosestTarget() < Mathf.Pow(attackDistanceThreshold + myCollisionRadius, 2))
             {
                 nextAttackTime = Time.time + timeBetweenAttacks;
                 StartCoroutine(Attack());
             }
-
         }
-
     }
 
     IEnumerator Attack()
     {
-
         currentState = State.Attacking;
         pathfinder.enabled = false;
 
@@ -83,7 +78,6 @@ public class Enemy : IDamageable
 
         while (percent <= 1)
         {
-
             percent += Time.deltaTime * attackSpeed;
             float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
             transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
@@ -107,10 +101,7 @@ public class Enemy : IDamageable
                 sqrDstToTarget = (t.transform.position - transform.position).sqrMagnitude;
                 target = t.transform;
             }
-            
-
         }
-
         return sqrDstToTarget;
     }
 
@@ -135,13 +126,20 @@ public class Enemy : IDamageable
 
     public override void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
     {
-        Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
-        if (damage >= health)
+        if (damageEffect)
         {
-            Destroy(Instantiate(deathEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
+            Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
         }
-
-        base.TakeHit(damage, hit);
+        base.TakeHit(damage, hit, hitDirection);
+    }
+    
+    protected override void Die()
+    {
+        if (deathEffect)
+        {
+            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, 10f);
+        }
+        base.Die();
     }
 
     public void RemoveAgent()

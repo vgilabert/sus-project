@@ -30,7 +30,7 @@ public abstract class IDamageable : MonoBehaviour
         }
     }
 
-    protected void Die()
+    protected virtual void Die()
     {
         dead = true;
         if (OnDeath != null)
