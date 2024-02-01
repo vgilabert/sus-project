@@ -15,7 +15,8 @@ public class Enemy : IDamageable
     NavMeshAgent pathfinder;
     Transform target;
     Material skinMaterial;
-
+    
+    PlayerStats player;
 
     public GameObject damageEffect;
     public GameObject deathEffect; 
@@ -33,6 +34,7 @@ public class Enemy : IDamageable
     {
         base.Start();
 
+        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponent<Renderer>().material;
         originalColour = skinMaterial.color;
@@ -84,10 +86,12 @@ public class Enemy : IDamageable
 
             yield return null;
         }
-
+        
         skinMaterial.color = originalColour;
         currentState = State.Chasing;
         pathfinder.enabled = true;
+
+        player.TakeHit(1, new RaycastHit(), dirToTarget.normalized);
     }
 
     float GetClosestTarget()

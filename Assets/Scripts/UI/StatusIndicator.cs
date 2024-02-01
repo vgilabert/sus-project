@@ -27,7 +27,7 @@ public class StatusIndicator : MonoBehaviour
         }
     }
 
-    public void setMaxHealth(float health)
+    public void SetMaxHealth(float health)
     {
         if (slider == null)
             Debug.LogError("Slider not found!");
@@ -35,6 +35,7 @@ public class StatusIndicator : MonoBehaviour
             slider.maxValue = health;
         slider.value = health;
     }
+    
     public void SetHealth(float health)
     {
         slider.value = health;
