@@ -28,7 +28,7 @@ public class TurretController : MonoBehaviour
     
     private void UpdateTarget()
     {
-        var targetPos = GameObject.Find("coucou").transform;
+        var targetPos = GameObject.Find("coucou")?.transform;
         if (cart.cartType == CartType.Gatling)
         {
             Target = targetPos;

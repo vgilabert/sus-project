@@ -29,9 +29,12 @@ public class TrainManager : MonoBehaviour
     GameObject locomotive;
     SplineFollower locomotiveFollower;
     
+    private EndlessTerrain endlessTerrain;
+    
     void Start()
     {
         carts = new List<GameObject>();
+        endlessTerrain = FindFirstObjectByType<EndlessTerrain>();
         InitializeLocomotive();
     }
     
@@ -44,6 +47,7 @@ public class TrainManager : MonoBehaviour
         locomotiveFollower.followSpeed = speed;
         locomotive.GetComponent<Cart>().cartType = CartType.Locomotive;
         carts.Add(locomotive);
+        endlessTerrain.viewer = locomotive.transform;
     }
     
     void AddCart(bool isGatling)
