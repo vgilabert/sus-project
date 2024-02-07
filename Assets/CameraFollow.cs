@@ -22,6 +22,10 @@ public class CameraFollow : MonoBehaviour
         }
         else
         {
+            if (!player)
+            {
+                return;
+            }
             // Find the middle between the player and the cart
             var target = (cart.transform.position + player.transform.position) / 2;
             transform.position = target + offset;

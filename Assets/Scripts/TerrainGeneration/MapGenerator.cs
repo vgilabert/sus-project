@@ -38,7 +38,7 @@ using System.Collections.Generic;
 	 {
 		 MapData mapData = GenerateMapData(Vector2.zero);
 
-		 MapDisplay display = FindObjectOfType<MapDisplay>();
+		 MapDisplay display = FindFirstObjectByType<MapDisplay>();
 		 display.DrawMesh(
 			 MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
 				 levelOfDetail));

@@ -10,6 +10,8 @@ public class TurretController : MonoBehaviour
     private Transform turretAnchor;
     
     private Transform Target { get; set; }
+    
+    public float Range { get; set; }
 
     public void SetControllerData(GameObject c, GameObject turretPrefab)
     {
@@ -23,24 +25,48 @@ public class TurretController : MonoBehaviour
     {
         UpdateTarget();
         UpdateRotation();
-        gun.Shoot(Target);
+        if (Target)
+            gun.Shoot(Target);
     }
     
     private void UpdateTarget()
     {
-        var targetPos = GameObject.Find("coucou")?.transform;
-        if (cart.cartType == CartType.Gatling)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, Range);
+        
+        Collider nearestEnemy = null;
+        float minDistance = Mathf.Infinity;
+        foreach (var hitCollider in hitColliders)
         {
-            Target = targetPos;
+            if (!hitCollider.gameObject.CompareTag("Enemy"))
+            {
+                continue;
+            }
+
+            Vector3 pos = hitCollider.gameObject.transform.position;
+            
+            float distance = Vector3.Distance(transform.position, pos);
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestEnemy = hitCollider;
+            }
         }
-        else if (cart.cartType == CartType.Missile)
+
+        if (!nearestEnemy)
         {
-            Target = targetPos;
+            Target = null;
+        }
+        else
+        {
+            Target = nearestEnemy.transform;
         }
     }
 
+
     protected void UpdateRotation()
     {
+        if  (!Target) return;
         if (cart.cartType == CartType.Gatling)
         {
             turret.transform.LookAt(new Vector3(Target.position.x, turret.transform.position.y, Target.position.z));

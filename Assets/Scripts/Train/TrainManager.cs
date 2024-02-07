@@ -79,15 +79,16 @@ public class TrainManager : MonoBehaviour
     {
         TurretController controller = cart.AddComponent<TurretController>();
         controller.SetControllerData(cart, turretPrefab);
+        controller.Range = 40;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             AddCart(false);
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             AddCart(true);
         }

@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using TerrainGeneration;
+using Unity.AI.Navigation;
 
 public class EndlessTerrain : MonoBehaviour {
 
-	public const float maxViewDst = 450;
+	public const float maxViewDst = 150;
 	public Transform viewer;
 	public Material mapMaterial;
 
@@ -15,13 +16,16 @@ public class EndlessTerrain : MonoBehaviour {
 	int chunkSize;
 	int chunksVisibleInViewDst;
 
-	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
-	List<TerrainChunk> terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
+	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new();
+	List<TerrainChunk> terrainChunksVisibleLastUpdate = new ();
 
+	static NavMeshSurface navMeshSurface;
 	void Start() {
-		mapGenerator = FindObjectOfType<MapGenerator> ();
+		mapGenerator = FindFirstObjectByType<MapGenerator> ();
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
+		navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+
 	}
 
 	void Update() {
@@ -93,6 +97,7 @@ public class EndlessTerrain : MonoBehaviour {
 			GenerateRoad (meshData, position);
 			meshFilter.mesh = meshData.CreateMesh ();
 			meshCollider.sharedMesh = meshFilter.mesh;
+			navMeshSurface.BuildNavMesh();
 		}
 
 		public void GenerateRoad(MeshData meshData, Vector2 centre)
