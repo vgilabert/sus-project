@@ -121,6 +121,7 @@ Transform:
   - {fileID: 3614014718471653539}
   - {fileID: 5233320706512305629}
   - {fileID: 8970800958984275770}
+  - {fileID: 3490813377005625974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &19361057143859620
@@ -243,7 +244,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3190104608647007191}
-        m_TargetAssemblyTypeName: PlayerMMovement, Assembly-CSharp
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Move
         m_Mode: 0
         m_Arguments:
@@ -290,7 +291,7 @@ MonoBehaviour:
     m_ActionName: 'Player Action/Shoot[/Mouse/leftButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player Action
+  m_DefaultActionMap: Player Actions
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &3545807927464135075
@@ -567,6 +568,149 @@ MonoBehaviour:
   muzzleVelocity: 30
   rocketHeight: 0
   flyDuration: 0
+--- !u!1001 &3716823814456378417
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2151176943786088738}
+    m_Modifications:
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406210817796040936, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      propertyPath: m_Name
+      value: Inventory
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8406210817796040936, guid: d149a9c2d51f47b44a0042eee3d32f72,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4150267281263673973}
+  m_SourcePrefab: {fileID: 100100000, guid: d149a9c2d51f47b44a0042eee3d32f72, type: 3}
+--- !u!4 &3490813377005625974 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 280652354661426759, guid: d149a9c2d51f47b44a0042eee3d32f72,
+    type: 3}
+  m_PrefabInstance: {fileID: 3716823814456378417}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4774936091027049715 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8203082981036689602, guid: d149a9c2d51f47b44a0042eee3d32f72,
+    type: 3}
+  m_PrefabInstance: {fileID: 3716823814456378417}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132999263758183641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca3e494ad18b4d3288bf607759588940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &5132999263758183641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8406210817796040936, guid: d149a9c2d51f47b44a0042eee3d32f72,
+    type: 3}
+  m_PrefabInstance: {fileID: 3716823814456378417}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4150267281263673973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5132999263758183641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 88eb2e4cc0f48a448b16fea65c4ee03a,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4774936091027049715}
+        m_TargetAssemblyTypeName: Player.Inventory, Assembly-CSharp
+        m_MethodName: OnUseItem
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 955b9e9c-edca-460f-b8e5-455a2df3df90
+    m_ActionName: 'Inventory Actions/UseItem1[/Keyboard/1]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Inventory Actions
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &6109395019127823281
 PrefabInstance:
   m_ObjectHideFlags: 0

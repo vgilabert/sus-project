@@ -10,20 +10,13 @@ public class StatusIndicator : MonoBehaviour
     [SerializeField]
     private RectTransform healthBarRect;
     [SerializeField]
-    private Text healthText;
-    [SerializeField]
     private Slider slider;
-    // Start is called before the first frame update
 
     void Start()
     {
         if (healthBarRect == null)
         {
             Debug.LogError("No health Bar");
-        }
-        if (healthText == null)
-        {
-            Debug.LogError("No health Text");
         }
     }
 
@@ -41,7 +34,6 @@ public class StatusIndicator : MonoBehaviour
         slider.value = health;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Camera camera = Camera.main;
