@@ -2,7 +2,7 @@
     "name": "Player Actions",
     "maps": [
         {
-            "name": "Player Actions",
+            "name": "PlayerActions",
             "id": "35e58533-f71e-4fb8-a7e7-38829bc735b7",
             "actions": [
                 {
@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UseItem",
+                    "type": "Button",
+                    "id": "ed5fd6ac-7fb8-4a77-8610-c10eb0b8c66e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Aim",
@@ -48,7 +57,7 @@
                 {
                     "name": "2D Vector",
                     "id": "c11f9366-abaa-482f-9c12-b770472d5af5",
-                    "path": "2DVector(mode=1)",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -80,7 +89,7 @@
                 },
                 {
                     "name": "Left",
-                    "id": "5ad48274-5bf2-415d-b5e0-ec3bb96def48",
+                    "id": "90c39280-4f4f-43ea-b9ab-8832485ab85e",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -91,7 +100,7 @@
                 },
                 {
                     "name": "Right",
-                    "id": "21ff2c5b-a3f4-4014-87ad-c379dcbdcb71",
+                    "id": "68a26334-a955-4437-a807-0778ffc257ff",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -130,6 +139,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "73853d80-29d5-4f5a-97c5-3eb5fd3bac94",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "",
+                    "action": "UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c23b9122-c181-4c6e-bdf4-211575fc82bd",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "",
+                    "action": "UseItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d87996c-ae8b-42ac-8b26-206499f7c3c3",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "Scale(factor=3)",
+                    "groups": "",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
