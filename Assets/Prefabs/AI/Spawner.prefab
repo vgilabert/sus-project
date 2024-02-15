@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5406947482505453976}
   - component: {fileID: 694855031262995768}
+  - component: {fileID: 6350080619889172889}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6380343645842555357}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.1, y: -27.123714, z: 62.9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,8 +45,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8563242b4996b6488553510c6488515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentPrefab: {fileID: 2713592266248541957, guid: addc57e2df99f0440b83a00eb61a5a4e,
+  agentPrefab: {fileID: 8836296599140491715, guid: d7f17b5c43069df4ea989be43b3520a8,
     type: 3}
   count: 50
-  ordering: {fileID: 0}
-  avoidance: {fileID: 0}
+  spawnOnAwake: 0
+  spawnPosition: {x: 0, y: 0, z: 0}
+--- !u!135 &6350080619889172889
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6380343645842555357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

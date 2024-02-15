@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CrowdManager
   - Enemy
+  - Train
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,6 @@ TagManager:
   - Enemy
   - Train
   - LootBox
-  - 
-  - 
-  - 
   - 
   - 
   - 

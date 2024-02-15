@@ -44,8 +44,6 @@ public class Enemy : IDamageable
         currentState = State.Chasing;
         GetClosestTarget();
 
-        OnDeath += RemoveAgent;
-
         myCollisionRadius = GetComponent<CapsuleCollider>().radius;
 
         avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();

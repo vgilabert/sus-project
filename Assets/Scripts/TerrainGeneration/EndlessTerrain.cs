@@ -1,12 +1,15 @@
+using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dreamteck.Splines;
+using PimDeWitte.UnityMainThreadDispatcher;
 using TerrainGeneration;
 using Unity.AI.Navigation;
 
-public class EndlessTerrain : MonoBehaviour {
 
+public class EndlessTerrain : MonoBehaviour
+{
 	public const float maxViewDst = 150;
 	public Transform viewer;
 	public Material mapMaterial;
@@ -18,21 +21,22 @@ public class EndlessTerrain : MonoBehaviour {
 
 	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new();
 	List<TerrainChunk> terrainChunksVisibleLastUpdate = new ();
-
+	
 	static NavMeshSurface navMeshSurface;
+	
+	
+
 	void Start() {
 		mapGenerator = FindFirstObjectByType<MapGenerator> ();
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
 		navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
-
 	}
 
 	void Update() {
 		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z);
-		UpdateVisibleChunks ();
+		UpdateVisibleChunks();
 	}
-		
 	void UpdateVisibleChunks() {
 
 		for (int i = 0; i < terrainChunksVisibleLastUpdate.Count; i++) {
@@ -52,8 +56,12 @@ public class EndlessTerrain : MonoBehaviour {
 					if (terrainChunkDictionary [viewedChunkCoord].IsVisible ()) {
 						terrainChunksVisibleLastUpdate.Add (terrainChunkDictionary [viewedChunkCoord]);
 					}
-				} else {
-					terrainChunkDictionary.Add (viewedChunkCoord, new TerrainChunk (viewedChunkCoord, chunkSize, transform, mapMaterial));
+				} 
+				else
+				{
+					
+					terrainChunkDictionary.Add(viewedChunkCoord,new TerrainChunk(viewedChunkCoord,chunkSize, transform, mapMaterial));
+
 				}
 
 			}
@@ -69,8 +77,7 @@ public class EndlessTerrain : MonoBehaviour {
 		MeshRenderer meshRenderer;
 		MeshFilter meshFilter;
 		MeshCollider meshCollider;
-
-
+		
 		public TerrainChunk(Vector2 coord, int size, Transform parent, Material material) {
 			position = coord * size;
 			bounds = new Bounds(position,Vector2.one * size);
@@ -78,29 +85,51 @@ public class EndlessTerrain : MonoBehaviour {
 
 			meshObject = new GameObject("Terrain Chunk");
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
+			meshRenderer.material = material;
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
-			meshRenderer.material = material;
 
 			meshObject.transform.position = positionV3;
 			meshObject.transform.parent = parent;
+			
+			
 			SetVisible(false);
 
-			mapGenerator.RequestMapData(position, OnMapDataReceived);
+			Task.Run(() =>
+			{
+				mapGenerator.RequestMapData(position, OnMapDataReceived);
+			});
 		}
 
-		void OnMapDataReceived(MapGenerator.MapData mapData) {
-			mapGenerator.RequestMeshData (mapData, OnMeshDataReceived);
+		void OnMapDataReceived(MapGenerator.MapData mapData)
+		{
+			Task.Run(() =>
+			{
+				mapGenerator.RequestMeshData(mapData, OnMeshDataReceived);
+			});
 		}
 
-		void OnMeshDataReceived(MeshData meshData) {
-			GenerateRoad (meshData, position);
-			meshFilter.mesh = meshData.CreateMesh ();
-			meshCollider.sharedMesh = meshFilter.mesh;
-			navMeshSurface.BuildNavMesh();
-		}
+		 void OnMeshDataReceived(MeshData meshData)
+		 {
+			 Task.Run(() =>
+			 {
+				 GenerateRoad(meshData, position, OnRoadGenerated); 
+			 });
+		 }
 
-		public void GenerateRoad(MeshData meshData, Vector2 centre)
+		 void OnRoadGenerated(MeshData meshData)
+		 {
+			 UnityMainThreadDispatcher.Instance().Enqueue(() =>
+			 {
+				 meshFilter.mesh = meshData.CreateMesh();
+				 meshCollider.sharedMesh = meshFilter.mesh;
+				 navMeshSurface.BuildNavMesh();
+			 });
+		 }
+
+		 
+
+		 public void GenerateRoad(MeshData meshData, Vector2 centre, Action<MeshData> onRoadGenerated)
 		{
 			List<Vector3> points = SplineToWorldPoints(mapGenerator.spline);
 			for (int i = 0; i < points.Count; i++)
@@ -113,11 +142,11 @@ public class EndlessTerrain : MonoBehaviour {
 					if (distance < mapGenerator.pathWidth)
 					{
 						var newHeight = 0 + mapGenerator.roadSlopeCurve.Evaluate(distance / mapGenerator.pathWidth) * vertex.y;
-						//var newHeight = 0;
 						meshData.vertices[j] = new Vector3(vertex.x, newHeight, vertex.z);
 					}
 				}
 			}
+			onRoadGenerated?.Invoke(meshData);
 		}
     
 		private List<Vector3> SplineToWorldPoints(SplineComputer spline)
