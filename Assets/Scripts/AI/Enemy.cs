@@ -34,7 +34,7 @@ public class Enemy : IDamageable
         base.Start();
 
         pathfinder = GetComponent<NavMeshAgent>();
-        skinMaterial = GetComponent<Renderer>().material;
+        skinMaterial = GetComponentInChildren<Renderer>().material;
         originalColour = skinMaterial.color;
 
         OnDeath += RemoveAgent;
@@ -42,7 +42,7 @@ public class Enemy : IDamageable
         currentState = State.Chasing;
         GetClosestTarget();
 
-        myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+        myCollisionRadius = GetComponent<SphereCollider>().radius;
 
         avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         StartCoroutine(UpdatePath());
@@ -83,7 +83,8 @@ public class Enemy : IDamageable
             yield return null;
         }
         
-        target.GetComponent<IDamageable>().TakeHit(1, new RaycastHit(), dirToTarget.normalized);
+        if (target)
+            target.GetComponent<IDamageable>().TakeHit(1, new RaycastHit(), dirToTarget.normalized);
         
         skinMaterial.color = originalColour;
         currentState = State.Chasing;

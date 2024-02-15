@@ -14,24 +14,28 @@ public sealed class Spawner : MonoBehaviour
     Avoidance avoidance;
     FindNearest finder;
     
+    Transform enemiesParent;
+    
     public bool spawnOnAwake = false;
+    public bool hasSpawned = false;
 
     readonly IFormation spawnFormation = new SquareFormation();
     public Vector3 spawnPosition;
 
     void Start()
     {
+        enemiesParent = GameObject.Find("Enemies").transform;
         //ordering.Avoidance = avoidance;
         ordering = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Ordering>();
         avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         finder = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<FindNearest>();
-        GameObject[] t = GameObject.FindGameObjectsWithTag("Player");
         if (spawnOnAwake)
             TriggerSpawn();
     }
     
     public void TriggerSpawn()
     {
+        hasSpawned = true;
         for (var i = 0; i < count; i++)
         {
             var spawnPositions = spawnFormation.GetPositions(spawnPosition, count, 1);
@@ -41,7 +45,7 @@ public sealed class Spawner : MonoBehaviour
 
     Transform DoSpawn(Vector3 position)
     {
-        var spawned = Instantiate(agentPrefab, position, Quaternion.identity);
+        var spawned = Instantiate(agentPrefab, position, Quaternion.identity, enemiesParent);
         var agent = spawned.GetComponent<NavMeshAgent>();
 
         if (ordering != null)
@@ -56,6 +60,10 @@ public sealed class Spawner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (spawnOnAwake || hasSpawned)
+        {
+            return;
+        }
         if (other.CompareTag("Train"))
         {
             TriggerSpawn();
