@@ -34,7 +34,8 @@ public class EndlessTerrain : MonoBehaviour
 	}
 
 	void Update() {
-		viewerPosition = new Vector2 (viewer.position.x, viewer.position.z);
+		if (viewer)
+			viewerPosition = new Vector2 (viewer.position.x, viewer.position.z);
 		UpdateVisibleChunks();
 	}
 	void UpdateVisibleChunks() {

@@ -121,7 +121,6 @@ using System.Collections.Generic;
 		 var spawnManager = FindFirstObjectByType<SpawnManager>();
 		 var points = spline.GetPoints();
 
-		 Debug.Log(points.Length);
 		 for (int i = 1; i < points.Length; i++)
 		 {
 			 var pos = spline.EvaluatePosition(i);
