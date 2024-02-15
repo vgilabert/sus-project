@@ -8,6 +8,7 @@ public class LootBox : IDamageable
     
     protected override void Start()
     {
+        base.Start();
         GenerateLoot();
     }
     

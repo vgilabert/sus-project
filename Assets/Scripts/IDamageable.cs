@@ -13,13 +13,12 @@ public abstract class IDamageable : MonoBehaviour
 
     protected virtual void Start()
     {
+        health = maxHealth;
         statusIndicator = transform.GetComponentInChildren<StatusIndicator>();
         if (statusIndicator)
         {
             statusIndicator.SetMaxHealth(maxHealth);
         }
-
-        health = maxHealth;
     }
 
     public virtual void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
