@@ -6,7 +6,6 @@ using Dreamteck.Splines;
 using PimDeWitte.UnityMainThreadDispatcher;
 using TerrainGeneration;
 using Unity.AI.Navigation;
-using UnityEngine.AI;
 
 
 public class EndlessTerrain : MonoBehaviour
@@ -22,12 +21,16 @@ public class EndlessTerrain : MonoBehaviour
 
 	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new();
 	List<TerrainChunk> terrainChunksVisibleLastUpdate = new ();
-
 	
+	static NavMeshSurface navMeshSurface;
+	
+	
+
 	void Start() {
 		mapGenerator = FindFirstObjectByType<MapGenerator> ();
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
+		navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
 	}
 
 	void Update() {
@@ -75,8 +78,6 @@ public class EndlessTerrain : MonoBehaviour
 		MeshFilter meshFilter;
 		MeshCollider meshCollider;
 		
-		static NavMeshSurface navMeshSurface;
-
 		public TerrainChunk(Vector2 coord, int size, Transform parent, Material material) {
 			position = coord * size;
 			bounds = new Bounds(position,Vector2.one * size);
@@ -87,15 +88,11 @@ public class EndlessTerrain : MonoBehaviour
 			meshRenderer.material = material;
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
-			navMeshSurface = meshObject.AddComponent<NavMeshSurface>();
-			navMeshSurface.collectObjects = CollectObjects.Volume;
-			navMeshSurface.size = new Vector3(size, size, size);
-			navMeshSurface.navMeshData = new NavMeshData();
-			navMeshSurface.BuildNavMesh();
-			
 
 			meshObject.transform.position = positionV3;
 			meshObject.transform.parent = parent;
+			
+			
 			SetVisible(false);
 
 			Task.Run(() =>
@@ -114,14 +111,10 @@ public class EndlessTerrain : MonoBehaviour
 
 		 void OnMeshDataReceived(MeshData meshData)
 		 {
-
 			 Task.Run(() =>
 			 {
 				 GenerateRoad(meshData, position, OnRoadGenerated); 
 			 });
-			 
-			 
-			 
 		 }
 
 		 void OnRoadGenerated(MeshData meshData)
@@ -133,9 +126,10 @@ public class EndlessTerrain : MonoBehaviour
 				 navMeshSurface.BuildNavMesh();
 			 });
 		 }
-		
 
-		public void GenerateRoad(MeshData meshData, Vector2 centre,Action<MeshData> onRoadGenerated)
+		 
+
+		 public void GenerateRoad(MeshData meshData, Vector2 centre, Action<MeshData> onRoadGenerated)
 		{
 			List<Vector3> points = SplineToWorldPoints(mapGenerator.spline);
 			for (int i = 0; i < points.Count; i++)
@@ -148,7 +142,6 @@ public class EndlessTerrain : MonoBehaviour
 					if (distance < mapGenerator.pathWidth)
 					{
 						var newHeight = 0 + mapGenerator.roadSlopeCurve.Evaluate(distance / mapGenerator.pathWidth) * vertex.y;
-						//var newHeight = 0;
 						meshData.vertices[j] = new Vector3(vertex.x, newHeight, vertex.z);
 					}
 				}

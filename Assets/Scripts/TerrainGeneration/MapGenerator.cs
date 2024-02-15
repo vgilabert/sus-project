@@ -31,10 +31,16 @@ using System.Collections.Generic;
 	 public SplineComputer spline;
 	 public int pathWidth;
 	 public AnimationCurve roadSlopeCurve;
+	 public GameObject spawner;
 
 	 Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new ();
 	 Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new ();
-	 
+
+	 private void Start()
+	 {
+		 GenerateSpawners();
+	 }
+
 	 public void DrawMapInEditor()
 	 {
 		 MapData mapData = GenerateMapData(Vector2.zero);
@@ -108,6 +114,24 @@ using System.Collections.Generic;
 			 lacunarity, offset + centre, Noise.NormalizeMode.Global);
 
 		 return new MapData(noiseMap);
+	 }
+	 
+	 private void GenerateSpawners()
+	 {
+		 var spawnManager = FindFirstObjectByType<SpawnManager>();
+		 var points = spline.GetPoints();
+
+		 Debug.Log(points.Length);
+		 for (int i = 1; i < points.Length; i++)
+		 {
+			 var pos = spline.EvaluatePosition(i);
+			 var tangent = spline.GetPointTangent(i);
+			 var normal = Vector3.Cross(tangent, Vector3.up).normalized;
+			 Spawner sp = Instantiate(spawner, pos, Quaternion.identity, spawnManager.transform).GetComponent<Spawner>();
+			 sp.count = 10;
+			 sp.spawnOnAwake = false;
+			 sp.spawnPosition = pos + normal * pathWidth * 0.85f;
+		 }
 	 }
 
 	 void OnValidate()
