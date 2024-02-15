@@ -63,6 +63,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drone
       objectReference: {fileID: 0}
+    - target: {fileID: 4133070966157413170, guid: a366d4e752a8bb64fa82966a181c0aa9,
+        type: 3}
+      propertyPath: m_Speed
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5832266031626607318, guid: a366d4e752a8bb64fa82966a181c0aa9,
         type: 3}
       propertyPath: maxHealth

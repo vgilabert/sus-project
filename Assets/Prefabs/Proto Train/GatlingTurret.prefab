@@ -15,9 +15,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6216352678882250621, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 83f52eb811f15324ba72f9c2998ce026, type: 2}
+    - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
+        type: 3}
+      propertyPath: damage
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7041432236832533449, guid: aaa71a08235a7d847bbc18cdb4f9a36b,
         type: 3}
       propertyPath: rocketHeight

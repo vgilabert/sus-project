@@ -11,7 +11,7 @@ public enum CartType
     Locomotive
 }
 
-public class TrainManager : MonoBehaviour
+public class TrainManager : IDamageable
 {
     List<GameObject> carts;
     
@@ -30,9 +30,10 @@ public class TrainManager : MonoBehaviour
     SplineFollower locomotiveFollower;
     
     private EndlessTerrain endlessTerrain;
-    
-    void Start()
+
+    protected override void Start()
     {
+        base.Start();
         carts = new List<GameObject>();
         endlessTerrain = FindFirstObjectByType<EndlessTerrain>();
         InitializeLocomotive();
@@ -40,7 +41,7 @@ public class TrainManager : MonoBehaviour
     
     void InitializeLocomotive()
     {
-        locomotive = Instantiate(locomotivePrefab);
+        locomotive = Instantiate(locomotivePrefab, transform);
         locomotiveFollower = locomotive.GetComponent<SplineFollower>();
         locomotive.transform.position = spline.EvaluatePosition(0);
         locomotiveFollower.spline = spline;

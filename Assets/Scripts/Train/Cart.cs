@@ -5,7 +5,7 @@ using Dreamteck.Splines;
 using UnityEngine;
 
 [RequireComponent(typeof(SplinePositioner))]
-public class Cart : MonoBehaviour
+public class Cart : IDamageable
 {
     public CartType cartType{ get; set; }
     
@@ -16,4 +16,9 @@ public class Cart : MonoBehaviour
     protected float damage;
 
     protected bool passiveUnlocked;
+
+    public override void TakeHit(float dmg, RaycastHit hit, Vector3 hitDirection = default)
+    {
+        transform.GetComponentInParent<TrainManager>().TakeHit(dmg, hit, hitDirection);
+    }
 }

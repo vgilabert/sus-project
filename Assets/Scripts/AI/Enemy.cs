@@ -16,14 +16,13 @@ public class Enemy : IDamageable
     Transform target;
     Material skinMaterial;
     
-    PlayerStats player;
 
     public GameObject damageEffect;
     public GameObject deathEffect; 
 
     Color originalColour;
 
-    float attackDistanceThreshold = .5f;
+    public float attackDistanceThreshold = 2f;
     float timeBetweenAttacks = 1;
 
     float nextAttackTime;
@@ -34,7 +33,6 @@ public class Enemy : IDamageable
     {
         base.Start();
 
-        player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerStats>();
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponent<Renderer>().material;
         originalColour = skinMaterial.color;
@@ -75,7 +73,7 @@ public class Enemy : IDamageable
         float percent = 0;
 
         skinMaterial.color = Color.red;
-
+        
         while (percent <= 1)
         {
             percent += Time.deltaTime * attackSpeed;
@@ -85,17 +83,19 @@ public class Enemy : IDamageable
             yield return null;
         }
         
+        target.GetComponent<IDamageable>().TakeHit(1, new RaycastHit(), dirToTarget.normalized);
+        
         skinMaterial.color = originalColour;
         currentState = State.Chasing;
         pathfinder.enabled = true;
-
-        player.TakeHit(1, new RaycastHit(), dirToTarget.normalized);
     }
 
     float GetClosestTarget()
     {
         float sqrDstToTarget = Mathf.Infinity;
-        List<GameObject> targets = new List<GameObject>(GameObject.FindGameObjectsWithTag("Player"));
+        List<GameObject> targets = new();
+        targets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+        targets.AddRange(GameObject.FindGameObjectsWithTag("Train"));
         foreach(GameObject t in targets) 
         { 
             if((t.transform.position - transform.position).sqrMagnitude< sqrDstToTarget)
