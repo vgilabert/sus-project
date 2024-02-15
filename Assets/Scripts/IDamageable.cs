@@ -9,7 +9,7 @@ public abstract class IDamageable : MonoBehaviour
     protected float health;
     protected bool dead;
 
-    public event System.Action OnDeath;
+    public static event System.Action OnDeath;
 
     protected virtual void Start()
     {

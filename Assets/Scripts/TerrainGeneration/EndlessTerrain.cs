@@ -6,6 +6,7 @@ using Dreamteck.Splines;
 using PimDeWitte.UnityMainThreadDispatcher;
 using TerrainGeneration;
 using Unity.AI.Navigation;
+using UnityEngine.AI;
 
 
 public class EndlessTerrain : MonoBehaviour
@@ -22,13 +23,11 @@ public class EndlessTerrain : MonoBehaviour
 	Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new();
 	List<TerrainChunk> terrainChunksVisibleLastUpdate = new ();
 
-	static NavMeshSurface navMeshSurface;
 	
 	void Start() {
 		mapGenerator = FindFirstObjectByType<MapGenerator> ();
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
-		navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
 	}
 
 	void Update() {
@@ -75,6 +74,8 @@ public class EndlessTerrain : MonoBehaviour
 		MeshRenderer meshRenderer;
 		MeshFilter meshFilter;
 		MeshCollider meshCollider;
+		
+		static NavMeshSurface navMeshSurface;
 
 		public TerrainChunk(Vector2 coord, int size, Transform parent, Material material) {
 			position = coord * size;
@@ -83,9 +84,15 @@ public class EndlessTerrain : MonoBehaviour
 
 			meshObject = new GameObject("Terrain Chunk");
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
+			meshRenderer.material = material;
 			meshFilter = meshObject.AddComponent<MeshFilter>();
 			meshCollider = meshObject.AddComponent<MeshCollider>();
-			meshRenderer.material = material;
+			navMeshSurface = meshObject.AddComponent<NavMeshSurface>();
+			navMeshSurface.collectObjects = CollectObjects.Volume;
+			navMeshSurface.size = new Vector3(size, size, size);
+			navMeshSurface.navMeshData = new NavMeshData();
+			navMeshSurface.BuildNavMesh();
+			
 
 			meshObject.transform.position = positionV3;
 			meshObject.transform.parent = parent;

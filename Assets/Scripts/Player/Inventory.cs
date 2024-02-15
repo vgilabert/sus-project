@@ -7,12 +7,15 @@ namespace Player
 {
     public class Inventory : MonoBehaviour
     {
+        public int Scrap { get; private set; }
+        
         public List<IConsumable> consumables;
         
         private void OnEnable()
         {
             LootBox.OnLootBoxDestroyed += OnLoot;
             IConsumable.OnConsumed += RemoveItem;
+            Enemy.OnDeath += OnEnemyDeath;
         }
 
         private void Start()
@@ -40,6 +43,24 @@ namespace Player
                 {
                     consumables[index].Activate();
                 }
+            }
+        }
+        
+        private void OnEnemyDeath()
+        {
+            addScrap(1);
+        }
+        
+        private void addScrap(int amount)
+        {
+            Scrap += amount;
+        }
+        
+        private void removeScrap(int amount)
+        {
+            if (Scrap - amount < 0)
+            {
+                Scrap = 0;
             }
         }
         
