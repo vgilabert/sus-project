@@ -128,7 +128,8 @@ using System.Collections.Generic;
 			 var tangent = spline.GetPointTangent(i);
 			 var normal = Vector3.Cross(tangent, Vector3.up).normalized;
 			 Spawner sp = Instantiate(spawner, pos, Quaternion.identity, spawnManager.transform).GetComponent<Spawner>();
-			 sp.count = 10;
+			 sp.count = spawnManager.spawnCount;
+			 sp.agentPrefab = spawnManager.dronePrefab;
 			 sp.spawnOnAwake = false;
 			 sp.spawnPosition = pos + normal * pathWidth * 0.85f;
 		 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Items;
 using UnityEngine;
@@ -7,7 +9,13 @@ namespace Player
 {
     public class Inventory : MonoBehaviour
     {
-        public int Scrap { get; private set; }
+        [SerializeField]
+        private int scrap;
+
+        public int Scrap {
+            get => scrap;
+            private set => scrap = value;
+        }
         
         public List<IConsumable> consumables;
         
@@ -26,8 +34,18 @@ namespace Player
                 new RepairKit(0),
                 new TrainBoost(0)
             };
+            StartCoroutine(nameof(GenerateScrap));
         }
         
+        private IEnumerator GenerateScrap()
+        {
+            while (gameObject.activeInHierarchy)
+            {
+                yield return new WaitForSeconds(1);
+                addScrap(10);
+            }
+        }
+
         private void OnLoot(IConsumable item)
         {
             AddItem(item);

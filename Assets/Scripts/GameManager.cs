@@ -24,15 +24,9 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
     }
-    void Start()
-    {
-
-
-    }
     
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isGamePaused = !isGamePaused;
@@ -43,7 +37,6 @@ public class GameManager : MonoBehaviour
         {
 
         }
-
     }
    
     public void SetGamePause(bool pause)

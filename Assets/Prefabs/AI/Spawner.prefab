@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 8836296599140491715, guid: d7f17b5c43069df4ea989be43b3520a8,
     type: 3}
-  count: 50
+  count: 80
   spawnOnAwake: 0
   spawnPosition: {x: 0, y: 0, z: 0}
 --- !u!135 &6350080619889172889
