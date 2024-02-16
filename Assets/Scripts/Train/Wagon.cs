@@ -51,7 +51,6 @@ namespace Train
             JobHandle jobHandle = findClosestJob.Schedule();
             jobHandle.Complete();
 
-            Debug.Log(TargetIndex);
             if (CrowdController.Instance.GetEnemyList().Count >= TargetIndex + 1)
             {
                 Target = CrowdController.Instance.GetEnemyList()[TargetIndex];

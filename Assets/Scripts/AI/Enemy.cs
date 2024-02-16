@@ -141,6 +141,7 @@ public class Enemy : IDamageable
         {
             Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, 10f);
         }
+        CrowdController.Instance.RemoveAgent(this);
         base.Die();
     }
 
@@ -148,6 +149,5 @@ public class Enemy : IDamageable
     {
         Avoidance avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         if(avoidance != null) { avoidance.RemoveAgent(pathfinder); }
-        CrowdController.Instance.RemoveAgent(this);
     }
 }
