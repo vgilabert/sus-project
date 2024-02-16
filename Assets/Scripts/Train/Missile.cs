@@ -1,14 +1,21 @@
 using System.Collections;
+using Train.UpgradesStats;
 using UnityEngine;
 
 namespace Train
 {
     public class Missile : Wagon
     {
-        [SerializeField] private float explosionRadius;
+        private float explosionRadius;
         
         [SerializeField] private float rangeMin;
         [SerializeField] private float rangeMax;
+
+        protected override void InitializeTurretStats()
+        {
+            base.InitializeTurretStats();
+            explosionRadius = turretStats[TurretLevel - 1].explosionRadius;
+        }
 
         protected override IEnumerator Shoot()
         {
@@ -20,11 +27,11 @@ namespace Train
                 if (distance <= explosionRadius)
                 {
                     StartCoroutine(ShowExplosion(enemy.transform.position));
-                    enemy.GetComponent<Enemy>().TakeHit(damage, new RaycastHit());
+                    enemy.GetComponent<Enemy>().TakeHit(ActualDamage, new RaycastHit());
                 }
             }
 
-            yield return new WaitForSeconds(timeBetweenShots);
+            yield return new WaitForSeconds(TimeBetweenShots);
             CanShoot = true;
         }
         
@@ -40,7 +47,7 @@ namespace Train
         {
             showExplosion = true;
             explosionPosition = position;
-            yield return new WaitForSeconds(timeBetweenShots);
+            yield return new WaitForSeconds(TimeBetweenShots);
             showExplosion = false;
         }
         

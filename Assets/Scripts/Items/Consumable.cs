@@ -18,13 +18,13 @@ namespace Items
             this.amount = amount;
         }
         
-        public virtual void Activate()
+        public void Activate()
         {
             Init();
             if (itemFlow != null)
             {
                 Debug.Log("Starting flow for " + name);
-                itemFlow.StartFlow(_success =>OnConsumed?.Invoke(this));
+                itemFlow.StartFlow(_success => OnConsumed?.Invoke(this));
             }
             else
             {

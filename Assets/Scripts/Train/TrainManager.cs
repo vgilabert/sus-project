@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Dreamteck.Splines;
+using Items;
+using Train;
 using UnityEngine;
 
 
@@ -12,7 +14,7 @@ public enum WagonType
 public class TrainManager : IDamageable
 {
     private GameObject engine;
-    private List<GameObject> wagons;
+    private List<Wagon> wagons;
     private SplineFollower engineFollower;
 
     
@@ -26,10 +28,17 @@ public class TrainManager : IDamageable
     [SerializeField] SplineComputer spline;
     [SerializeField] float speed;
     
+    protected void OnEnable()
+    {
+        TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
+        TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
+        RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
+    }
+    
     protected override void Start()
     {
         base.Start();
-        wagons = new List<GameObject>();
+        wagons = new List<Wagon>();
         InitializeEngine();
     }
     
@@ -40,20 +49,19 @@ public class TrainManager : IDamageable
         engineFollower = engine.GetComponent<SplineFollower>();
         engineFollower.spline = spline;
         engineFollower.followSpeed = speed;
-        wagons.Add(engine);
     }
 
     void AddCart(WagonType type)
     {
-        GameObject wagon;
+        Wagon wagon;
         
         switch (type)
         {
             case WagonType.Missile:
-                wagon = Instantiate(missilePrefab, transform);
+                wagon = Instantiate(missilePrefab, transform).GetComponent<Wagon>();
                 break;
             case WagonType.Gatling:
-                wagon = Instantiate(gatlingPrefab, transform);
+                wagon = Instantiate(gatlingPrefab, transform).GetComponent<Wagon>();
                 break;
             default:
                 return;
@@ -62,12 +70,19 @@ public class TrainManager : IDamageable
         wagons.Add(wagon);
     }
 
-    void SetPositionOnSpline(GameObject cart)
+    void SetPositionOnSpline(Wagon wagon)
     {
-        SplinePositioner splinePositioner = cart.GetComponent<SplinePositioner>();
+        SplinePositioner splinePositioner = wagon.GetComponent<SplinePositioner>();
         splinePositioner.spline = spline;
-        splinePositioner.followTarget = wagons[^1].GetComponent<SplineTracer>();
-        splinePositioner.followTargetDistance = wagons.Count == 1 ? 2 : 1.5f;
+        if (wagons.Count == 0)
+        {
+            splinePositioner.followTarget = engine.GetComponent<SplineTracer>();
+        }
+        else
+        {
+            splinePositioner.followTarget = wagons[^1].GetComponent<SplineTracer>();
+        }
+        splinePositioner.followTargetDistance = wagons.Count == 0 ? 2 : 1.5f;
     }
 
     void Update()
@@ -80,5 +95,30 @@ public class TrainManager : IDamageable
         {
             AddCart(WagonType.Missile);
         }
+    }
+    
+    protected void BoostStartedHandler(float damageBoost, float fireRateBoost)
+    {
+        foreach (var wagon in wagons)
+        {
+            wagon.ApplyBoost(damageBoost, fireRateBoost);
+        }
+    }
+
+    protected void BoostEndedHandler()
+    {
+        foreach (var wagon in wagons)
+        {
+            wagon.RemoveBoost();
+        }
+    }
+    
+    protected void RepairKitUsedHandler(float repairAmount)
+    {
+        if (health < MaxHealth)
+        {
+            health += repairAmount;
+        }
+        
     }
 }

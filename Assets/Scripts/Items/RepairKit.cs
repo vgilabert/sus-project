@@ -9,11 +9,12 @@ namespace Items
             name = nameof(RepairKit);
         }
         
-        public override void Activate()
+        protected override void Init()
         {
-            // TODO: Implement repair kit logic
-            Debug.Log("repair kit");
-            base.Activate();
+            if (itemFlow == null)
+            {
+                itemFlow = GameObject.FindFirstObjectByType<RepairKitFlow>();
+            }
         }
         
     }

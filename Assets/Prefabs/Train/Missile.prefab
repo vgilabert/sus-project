@@ -278,10 +278,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
-  damage: 1
-  timeBetweenShots: 1.6
   rotationSpeed: 5
-  explosionRadius: 5
+  turretStats:
+  - {fileID: 11400000, guid: 40f7887559150c248a6a1bfda6207f44, type: 2}
+  - {fileID: 11400000, guid: b1bd8c46f6141374fadaf83d6549a772, type: 2}
+  - {fileID: 11400000, guid: 1f23276e5a7203e499f1aee78f8b4414, type: 2}
   rangeMin: 8
   rangeMax: 20
   showRangeGizmos: 1

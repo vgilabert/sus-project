@@ -41,7 +41,7 @@ public class Enemy : IDamageable
         currentState = State.Chasing;
         GetClosestTarget();
 
-        myCollisionRadius = GetComponent<SphereCollider>().radius;
+        myCollisionRadius = 1;
 
         avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         StartCoroutine(UpdatePath());

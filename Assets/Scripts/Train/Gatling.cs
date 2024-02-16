@@ -1,5 +1,7 @@
 using System.Collections;
+using Train.UpgradesStats;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Train
 {
@@ -10,9 +12,9 @@ namespace Train
         protected override IEnumerator Shoot()
         {
             CanShoot = false;
-            Target.TakeHit(damage, new RaycastHit());
+            Target.TakeHit(ActualDamage, new RaycastHit());
             
-            yield return new WaitForSeconds(timeBetweenShots);
+            yield return new WaitForSeconds(TimeBetweenShots);
             CanShoot = true;
         }
 

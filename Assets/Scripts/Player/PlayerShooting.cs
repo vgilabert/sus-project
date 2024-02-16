@@ -19,7 +19,7 @@ namespace Player
         {
             if (IsShooting)
             {
-                gun.Shoot();
+                //gun.Shoot();
             }
         }
         

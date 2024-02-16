@@ -30,9 +30,9 @@ namespace Player
         {
             consumables = new List<IConsumable>
             {
-                new AirStrike(0),
-                new RepairKit(0),
-                new TrainBoost(0)
+                new AirStrike(1),
+                new RepairKit(1),
+                new TrainBoost(1)
             };
             StartCoroutine(nameof(GenerateScrap));
         }

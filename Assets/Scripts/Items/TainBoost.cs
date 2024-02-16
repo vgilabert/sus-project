@@ -9,9 +9,12 @@ namespace Items
             name = nameof(TrainBoost);
         }
         
-        public override void Activate()
+        protected override void Init()
         {
-            Debug.Log("train boost");
+            if (itemFlow == null)
+            {
+                itemFlow = GameObject.FindFirstObjectByType<TrainBoostFlow>();
+            }
         }
     }
 }
