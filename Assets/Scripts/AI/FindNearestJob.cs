@@ -5,9 +5,11 @@ using Unity.Jobs;
 // We'll use Unity.Mathematics.float3 instead of Vector3,
 // and we'll use Unity.Mathematics.math.distancesq instead of Vector3.sqrMagnitude.
 using Unity.Mathematics;
+using UnityEngine;
 
 
 // Include the BurstCompile attribute to Burst compile the job.
+
 [BurstCompile]
     public struct FindNearestJob : IJob
     {
@@ -51,3 +53,43 @@ using Unity.Mathematics;
             }
         }
     }
+
+
+[BurstCompile]
+public struct AvoidanceJob : IJob
+{
+    [ReadOnly] public NativeArray<float3> AgentPositions;
+    public NativeArray<Vector3> AvoidanceVectors;
+    public float maxAvoidanceDistance;
+    public float strength;
+
+    public void Execute()
+    {
+        var agentsTotal = AgentPositions.Length;
+        for (var q = 0; q < agentsTotal; q++)
+        {
+            var agentAPos = AgentPositions[q];
+
+            var avoidanceVector = float3.zero;
+
+            for (var w = 0; w < agentsTotal; w++)
+            {
+                var agentBPos = AgentPositions[w];
+
+                var direction = agentAPos - agentBPos;
+                var sqrDistance = math.distancesq(agentAPos, agentBPos);
+
+                var weakness = sqrDistance / (maxAvoidanceDistance * maxAvoidanceDistance);
+
+                if (weakness > 1f)
+                    continue;
+
+                direction.y = 0; // i do not sure we need to use Y coord in navmesh directions, so ignoring it
+
+                avoidanceVector += math.lerp(direction * strength, float3.zero, weakness);
+            }
+
+            AvoidanceVectors[q] = avoidanceVector;
+        }
+    }
+}

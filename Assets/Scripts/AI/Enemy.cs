@@ -6,11 +6,10 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : IDamageable
-{
+{ 
     public enum State { Idle, Chasing, Attacking };
     State currentState;
-
-    Avoidance avoidance;
+    Avoidance avoidance;    
 
     NavMeshAgent pathfinder;
     Transform target;

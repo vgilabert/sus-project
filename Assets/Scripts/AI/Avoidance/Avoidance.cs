@@ -1,12 +1,18 @@
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.GraphicsBuffer;
 
 namespace NavMeshAvoidance
 {
     public sealed class Avoidance : MonoBehaviour 
     {
         readonly List<NavMeshAgent> agents = new List<NavMeshAgent>();
+        NativeArray<float3> agentsPositions;
+
 
         [Tooltip("Agents will ignore others with distance greather than this value. Bigger value can decrease performance.")]
         [SerializeField, Range(0.1f, 100f)] float maxAvoidanceDistance = 3f;
@@ -25,7 +31,50 @@ namespace NavMeshAvoidance
             sqrMaxAvoidanceDistance = Mathf.Pow(maxAvoidanceDistance, 2);
         }
 
-        void Update() => CalcualteAvoidance();
+        void Start()
+        {
+            agentsPositions = new NativeArray<float3>(agents.Count, Allocator.Persistent);
+        }
+
+        public void Ondestroy()
+        {
+            agentsPositions.Dispose();
+
+        }
+
+        void Update()
+        {
+            var deltaTime = Time.deltaTime;
+
+            if (agentsPositions.Length != agents.Count)
+            {
+                agentsPositions.Dispose();
+                agentsPositions = new NativeArray<float3>(agents.Count, Allocator.Persistent);
+            }
+
+
+            for (int i = 0; i < agents.Count; i++)
+            {
+                // Vector3 is implicitly converted to float3
+                agentsPositions[i] = agents[i].transform.position;
+            }
+
+            AvoidanceJob job = new AvoidanceJob
+            {
+                AgentPositions = agentsPositions,
+                maxAvoidanceDistance = maxAvoidanceDistance,
+                strength = strength,
+                AvoidanceVectors = new NativeArray<Vector3>(agents.Count, Allocator.TempJob)
+            };
+
+            JobHandle jobHandle = job.Schedule();
+            jobHandle.Complete();
+
+            for(int i = 0; i < agents.Count; i++)
+            {
+                agents[i].Move(job.AvoidanceVectors[i].normalized * distance * deltaTime);
+            }
+        }
 
         void CalcualteAvoidance()
         {

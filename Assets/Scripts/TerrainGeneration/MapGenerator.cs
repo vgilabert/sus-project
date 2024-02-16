@@ -29,6 +29,7 @@ using System.Collections.Generic;
 	 
 	 [Header("Path Settings")]
 	 public SplineComputer spline;
+
 	 public int pathWidth;
 	 public AnimationCurve roadSlopeCurve;
 	 public GameObject spawner;
@@ -49,7 +50,6 @@ using System.Collections.Generic;
 		 display.DrawMesh(
 			 MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
 				 levelOfDetail));
-	 
 	 }
 
 	 public void RequestMapData(Vector2 centre, Action<MapData> callback)
