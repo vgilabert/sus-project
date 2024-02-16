@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4848407052081905368}
   - component: {fileID: 3706860722967526838}
   - component: {fileID: 363988676167221866}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cart
   m_TagString: Train
   m_Icon: {fileID: 0}
