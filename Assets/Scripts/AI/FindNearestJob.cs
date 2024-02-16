@@ -54,6 +54,47 @@ using UnityEngine;
         }
     }
 
+[BurstCompile]
+public struct FindClosestTarget : IJob
+{
+    // All of the data which a job will access should 
+    // be included in its fields. In this case, the job needs
+    // three arrays of float3.
+
+    // Array and collection fields that are only read in
+    // the job should be marked with the ReadOnly attribute.
+    // Although not strictly necessary in this case, marking data  
+    // as ReadOnly may allow the job scheduler to safely run 
+    // more jobs concurrently with each other.
+    // (See the "Intro to jobs" for more detail.)
+
+    [ReadOnly] public NativeArray<float3> TargetPositions;
+    [ReadOnly] public float3 SeekerPosition;
+
+    // For SeekerPositions[i], we will assign the nearest 
+    // target position to NearestTargetPositions[i].
+    public int NearestTargetIndex;
+
+    // 'Execute' is the only method of the IJob interface.
+    // When a worker thread executes the job, it calls this method.
+    public void Execute()
+    {
+        // Compute the square distance from each seeker to every target.
+        float nearestDistSq = float.MaxValue;
+        for (int j = 0; j < TargetPositions.Length; j++)
+        {
+            float3 targetPos = TargetPositions[j];
+            float distSq = math.distancesq(SeekerPosition, targetPos);
+            if (distSq < nearestDistSq)
+            {
+                nearestDistSq = distSq;
+                NearestTargetIndex = j;
+            }
+        }
+}
+}
+
+
 
 [BurstCompile]
 public struct AvoidanceJob : IJob
