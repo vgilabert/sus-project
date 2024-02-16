@@ -1,33 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+using Train;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    private Cart cart;
-    private PlayerStats player;
+    private Engine _engine;
+    private PlayerStats _player;
     public Vector3 offset;
     
     void Start()
     {
-        cart = FindFirstObjectByType<Cart>();
-        player = FindFirstObjectByType<PlayerStats>();
+        _engine = FindFirstObjectByType<Engine>();
+        _player = FindFirstObjectByType<PlayerStats>();
     }
     
     void Update()
     {
-        if (!cart)
+        if (!_engine)
         {
-            cart = FindFirstObjectByType<Cart>();
+            _engine = FindFirstObjectByType<Engine>();
         }
         else
         {
-            if (!player)
+            if (!_player)
             {
                 return;
             }
             // Find the middle between the player and the cart
-            var target = (cart.transform.position + player.transform.position) / 2;
+            var target = (_engine.transform.position + _player.transform.position) / 2;
             transform.position = target + offset;
             transform.LookAt(target);
         }
