@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Mathematics;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.AI;
 
 public  class CrowdController :MonoBehaviour
 {
@@ -14,13 +11,19 @@ public  class CrowdController :MonoBehaviour
         get
         {
             if (instance == null)
-                Debug.LogError("Game Manager not found!");
+                Debug.LogError("Crowd controller not found!");
             return instance;
         }
     }
 
-    List<Enemy> enemyList;
+    List<Enemy> enemyList = new List<Enemy>();
     NativeArray<float3> enemyPositions;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -31,7 +31,7 @@ public class Enemy : IDamageable
     protected override void Start()
     {
         base.Start();
-
+        CrowdController.Instance.AddAgent(this);
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponentInChildren<Renderer>().material;
         originalColour = skinMaterial.color;
@@ -141,6 +141,7 @@ public class Enemy : IDamageable
         {
             Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, 10f);
         }
+        CrowdController.Instance.RemoveAgent(this);
         base.Die();
     }
 
