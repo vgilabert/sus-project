@@ -84,37 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6628375657573882230
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6664811768398159773}
-  m_Layer: 0
-  m_Name: MuzzleEnd
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6664811768398159773
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6628375657573882230}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5221351614578460281}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9042517095459137048
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,8 +114,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.65}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.4}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6664811768398159773}
+  m_Children: []
   m_Father: {fileID: 3865674404081932558}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1577224111163988301
@@ -257,6 +225,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2277776978976270995, guid: 79c7c18dc56c55447afbd1ffdfde0773,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c1e9d68570b2c548b34aba291b3380e, type: 2}
     - target: {fileID: 5812104687809487121, guid: 79c7c18dc56c55447afbd1ffdfde0773,
         type: 3}
       propertyPath: m_Name
@@ -306,8 +279,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   damage: 1
-  timeBetweenShots: 2.5
+  timeBetweenShots: 1.6
   rotationSpeed: 5
+  explosionRadius: 5
   rangeMin: 8
   rangeMax: 20
   showRangeGizmos: 1
