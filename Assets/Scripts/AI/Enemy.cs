@@ -31,7 +31,7 @@ public class Enemy : IDamageable
     protected override void Start()
     {
         base.Start();
-
+        CrowdController.Instance.AddAgent(this);
         pathfinder = GetComponent<NavMeshAgent>();
         skinMaterial = GetComponentInChildren<Renderer>().material;
         originalColour = skinMaterial.color;
@@ -148,5 +148,6 @@ public class Enemy : IDamageable
     {
         Avoidance avoidance = GameObject.FindGameObjectWithTag("CrowdManager")?.GetComponent<Avoidance>();
         if(avoidance != null) { avoidance.RemoveAgent(pathfinder); }
+        CrowdController.Instance.RemoveAgent(this);
     }
 }
