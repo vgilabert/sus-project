@@ -130,7 +130,7 @@ using System.Collections.Generic;
 			 sp.count = spawnManager.spawnCount;
 			 sp.agentPrefab = spawnManager.dronePrefab;
 			 sp.spawnOnAwake = false;
-			 sp.spawnPosition = pos + normal * pathWidth * 0.85f;
+			 sp.spawnPositionOffset = pos + normal * pathWidth * 0.85f;
 		 }
 	 }
 

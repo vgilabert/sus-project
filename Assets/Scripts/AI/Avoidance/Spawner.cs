@@ -2,6 +2,7 @@
 using NavMeshAvoidance;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 public sealed class Spawner : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public sealed class Spawner : MonoBehaviour
     public bool hasSpawned = false;
 
     readonly IFormation spawnFormation = new SquareFormation();
-    public Vector3 spawnPosition;
+    public Vector3 spawnPositionOffset; 
 
     void Start()
     {
@@ -38,7 +39,7 @@ public sealed class Spawner : MonoBehaviour
         hasSpawned = true;
         for (var i = 0; i < count; i++)
         {
-            var spawnPositions = spawnFormation.GetPositions(spawnPosition, count, 1);
+            var spawnPositions = spawnFormation.GetPositions(transform.position + spawnPositionOffset, count, 1);
             DoSpawn(spawnPositions[i]);
         }
     }
@@ -48,6 +49,12 @@ public sealed class Spawner : MonoBehaviour
         var spawned = Instantiate(agentPrefab, position, Quaternion.identity, enemiesParent);
         var agent = spawned.GetComponent<NavMeshAgent>();
 
+        // check if the enemy is on a navmesh
+        if (!agent.isOnNavMesh)
+        {
+            Debug.LogWarning("Agent not on navmesh");
+            return null;
+        }
         if (ordering != null)
             ordering.AddAgent(agent);
         if (avoidance != null)
