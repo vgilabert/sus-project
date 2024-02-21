@@ -17,11 +17,9 @@ public sealed class Spawner : MonoBehaviour
     
     Transform enemiesParent;
     
-    public bool spawnOnAwake = false;
-    public bool hasSpawned = false;
+    public bool spawnOnAwake;
 
     readonly IFormation spawnFormation = new SquareFormation();
-    public Vector3 spawnPositionOffset; 
 
     void Start()
     {
@@ -36,10 +34,9 @@ public sealed class Spawner : MonoBehaviour
     
     public void TriggerSpawn()
     {
-        hasSpawned = true;
         for (var i = 0; i < count; i++)
         {
-            var spawnPositions = spawnFormation.GetPositions(transform.position + spawnPositionOffset, count, 1);
+            var spawnPositions = spawnFormation.GetPositions(transform.position, count, 1);
             DoSpawn(spawnPositions[i]);
         }
     }
@@ -52,8 +49,16 @@ public sealed class Spawner : MonoBehaviour
         // check if the enemy is on a navmesh
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("Agent not on navmesh");
-            return null;
+            if (NavMesh.SamplePosition(position, out var hit, 100, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+            }
+            else
+            {
+                Debug.LogError("No navmesh found");
+                Destroy(spawned);
+                return null;
+            }
         }
         if (ordering != null)
             ordering.AddAgent(agent);
@@ -63,17 +68,5 @@ public sealed class Spawner : MonoBehaviour
             finder.AddAgent(spawned.transform);
 
         return spawned.transform;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (spawnOnAwake || hasSpawned)
-        {
-            return;
-        }
-        if (other.CompareTag("Train"))
-        {
-            TriggerSpawn();
-        }
     }
 }

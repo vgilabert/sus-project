@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Collections.Generic;
  using System.Threading.Tasks;
+ using AI;
  using Dreamteck.Splines;
  using TerrainGeneration;
  using UnityEditor.AssetImporters;
@@ -32,14 +33,13 @@ using System.Collections.Generic;
 
 	 public int pathWidth;
 	 public AnimationCurve roadSlopeCurve;
-	 public GameObject spawner;
 
 	 Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new ();
 	 Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new ();
 
 	 private void Start()
 	 {
-		 GenerateSpawners();
+		 SpawnManager.Instance.GenerateSpawners(spline);
 	 }
 
 	 public void DrawMapInEditor()
@@ -114,24 +114,6 @@ using System.Collections.Generic;
 			 lacunarity, offset + centre, Noise.NormalizeMode.Global);
 
 		 return new MapData(noiseMap);
-	 }
-	 
-	 private void GenerateSpawners()
-	 {
-		 var spawnManager = FindFirstObjectByType<SpawnManager>();
-		 var points = spline.GetPoints();
-
-		 for (int i = 1; i < points.Length; i++)
-		 {
-			 var pos = spline.EvaluatePosition(i);
-			 var tangent = spline.GetPointTangent(i);
-			 var normal = Vector3.Cross(tangent, Vector3.up).normalized;
-			 Spawner sp = Instantiate(spawner, pos, Quaternion.identity, spawnManager.transform).GetComponent<Spawner>();
-			 sp.count = spawnManager.spawnCount;
-			 sp.agentPrefab = spawnManager.dronePrefab;
-			 sp.spawnOnAwake = false;
-			 sp.spawnPositionOffset = pos + normal * pathWidth * 0.85f;
-		 }
 	 }
 
 	 void OnValidate()

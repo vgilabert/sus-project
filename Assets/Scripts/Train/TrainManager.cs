@@ -41,7 +41,7 @@ public class TrainManager : IDamageable
         wagons = new List<Wagon>();
         InitializeEngine();
     }
-    
+
     void InitializeEngine()
     {
         engine = Instantiate(enginePrefab, transform);
@@ -87,6 +87,8 @@ public class TrainManager : IDamageable
 
     void Update()
     {
+        var enginePos = engineFollower.result.percent;
+        ProgressManager.Instance.UpdateProgress(enginePos);
         if (Input.GetKeyDown(KeyCode.E))
         {
             AddCart(WagonType.Gatling);
