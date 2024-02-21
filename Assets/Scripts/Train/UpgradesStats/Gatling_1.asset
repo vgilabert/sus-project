@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gatling_1
   m_EditorClassIdentifier: 
   cost: 0
-  damage: 1
+  damage: 3
   timeBetweenShots: 0.15
   explosionRadius: 0
   piercingAmmo: 0

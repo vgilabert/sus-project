@@ -1,6 +1,7 @@
 using System.Collections;
 using Train.UpgradesStats;
 using UnityEngine;
+using VFX_Controllers;
 
 namespace Train
 {
@@ -10,6 +11,8 @@ namespace Train
         
         [SerializeField] private float rangeMin;
         [SerializeField] private float rangeMax;
+        
+        [SerializeField] private GameObject RocketEffect;
 
         protected override void InitializeTurretStats()
         {
@@ -20,18 +23,26 @@ namespace Train
         protected override IEnumerator Shoot()
         {
             CanShoot = false;
+            var trail = Instantiate(RocketEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
+            var trailScript = trail.GetComponent<RocketEffect>();
+            trailScript.SetTargetPosition(Target.transform.position);
+            
+            var timeToWait = trailScript.FlightDuration / 2;
+            yield return new WaitForSeconds(timeToWait);
+            
             var enemies = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (var enemy in enemies)
             {
-                var distance = Vector3.Distance(transform.position, enemy.transform.position);
+                var distance = Vector3.Distance(Target.transform.position, enemy.transform.position);
                 if (distance <= explosionRadius)
                 {
                     StartCoroutine(ShowExplosion(enemy.transform.position));
-                    enemy.GetComponent<Enemy>().TakeHit(ActualDamage, new RaycastHit());
+                    if (enemy)
+                        enemy.GetComponent<Enemy>().TakeHit(ActualDamage, new RaycastHit());
                 }
             }
 
-            yield return new WaitForSeconds(TimeBetweenShots);
+            yield return new WaitForSeconds(TimeBetweenShots - timeToWait);
             CanShoot = true;
         }
         

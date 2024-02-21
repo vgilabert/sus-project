@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8656110371759031993}
   - component: {fileID: 3515917152019884001}
   m_Layer: 0
-  m_Name: FBX_LineTrace
+  m_Name: FBX_BulletEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

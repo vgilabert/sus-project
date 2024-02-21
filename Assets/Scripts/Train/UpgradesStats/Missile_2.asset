@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Missile_2
   m_EditorClassIdentifier: 
   cost: 300
-  damage: 2
+  damage: 5
   timeBetweenShots: 1.6
   explosionRadius: 5
   piercingAmmo: 0

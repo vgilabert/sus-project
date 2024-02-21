@@ -2,6 +2,7 @@ using System.Collections;
 using Train.UpgradesStats;
 using UnityEngine;
 using UnityEngine.Serialization;
+using VFX_Controllers;
 
 namespace Train
 {
@@ -16,7 +17,7 @@ namespace Train
             CanShoot = false;
             var trail = Instantiate(BulletTrailEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             Destroy(trail, 0.5f);
-            var trailScript = trail.GetComponent<LineTrace>();
+            var trailScript = trail.GetComponent<BulletEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
             Target.TakeHit(ActualDamage, new RaycastHit());
             

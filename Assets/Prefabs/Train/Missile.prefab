@@ -108,4 +108,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f23276e5a7203e499f1aee78f8b4414, type: 2}
   rangeMin: 8
   rangeMax: 20
+  RocketEffect: {fileID: 6564854149081687911, guid: 691cb33fb9ced0c448808e803ee2dd35,
+    type: 3}
   showRangeGizmos: 1
