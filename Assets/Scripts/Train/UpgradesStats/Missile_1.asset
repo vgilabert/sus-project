@@ -15,5 +15,5 @@ MonoBehaviour:
   cost: 0
   damage: 1
   timeBetweenShots: 1.6
-  explosionRadius: 7
+  explosionRadius: 3
   piercingAmmo: 0

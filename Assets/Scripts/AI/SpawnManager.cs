@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace AI
@@ -10,8 +11,9 @@ namespace AI
     {
         public GameObject spawnerPrefab;
         public GameObject dronePrefab;
-        [Range(0, 500)]
-        public int spawnCount;
+        [Range(0, 10)]
+        public int baseSpawnCount;
+        public float spawnCountIncrease = 1;
         
         private List<Spawner> _spawners = new();
         private SplineComputer _spline;
@@ -31,11 +33,11 @@ namespace AI
             var spawnManager = FindFirstObjectByType<SpawnManager>();
             var points = spline.GetPoints();
 
-            for (int i = 1; i < points.Length; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 var pos = spline.EvaluatePosition(i);
                 Spawner sp = Instantiate(spawnerPrefab, pos , Quaternion.identity, spawnManager.transform).GetComponent<Spawner>();
-                sp.count = spawnManager.spawnCount;
+                sp.count = (int) (baseSpawnCount + (i * spawnCountIncrease));
                 sp.agentPrefab = spawnManager.dronePrefab;
                 sp.spawnOnAwake = false;
                 _spawners.Add(sp);

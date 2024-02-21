@@ -58,7 +58,6 @@ namespace Train
                 SeekerPosition = transform.position,
                 NearestTargetIndex = TargetIndex
             };
-            
             JobHandle jobHandle = findClosestJob.Schedule();
             jobHandle.Complete();
 
