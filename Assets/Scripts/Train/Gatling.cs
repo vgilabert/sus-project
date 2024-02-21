@@ -15,6 +15,7 @@ namespace Train
         {
             CanShoot = false;
             var trail = Instantiate(BulletTrailEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
+            Destroy(trail, 0.5f);
             var trailScript = trail.GetComponent<LineTrace>();
             trailScript.SetTargetPosition(Target.transform.position);
             Target.TakeHit(ActualDamage, new RaycastHit());

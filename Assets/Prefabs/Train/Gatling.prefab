@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
-  rotationSpeed: 5
+  rotationSpeed: 10
   turretStats:
   - {fileID: 11400000, guid: 40f7887559150c248a6a1bfda6207f44, type: 2}
   - {fileID: 11400000, guid: e4f7aa430b91b8b4f9edced79d5031fc, type: 2}
