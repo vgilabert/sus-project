@@ -73,10 +73,9 @@ namespace Train
 
             TargetIndex = findClosestJob.NearestTargetIndex;
 
-            Debug.Log("Target Index :" + findClosestJob.NearestTargetIndex[0]);
-
-            if (CrowdController.Instance.GetEnemyList().Count >= TargetIndex[0] + 1)
+            if (CrowdController.Instance.GetEnemyList().Count >= (TargetIndex[0] + 1) && TargetIndex[0]>0)
             {
+                Debug.Log("Target Index :" + TargetIndex[0]);
                 Target = CrowdController.Instance.GetEnemyList()[TargetIndex[0]];
             }
         }
