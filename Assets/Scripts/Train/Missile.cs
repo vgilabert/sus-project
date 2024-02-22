@@ -30,7 +30,7 @@ namespace Train
             var trailScript = trail.GetComponent<RocketEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
             
-            var timeToWait = trailScript.FlightDuration / 2;
+            var timeToWait = trailScript.FlightDuration;
             yield return new WaitForSeconds(timeToWait);
             
             ProcessExplosion();
@@ -41,26 +41,17 @@ namespace Train
 
         private void ProcessExplosion()
         {
-            // Get the list of enemies
             List<Enemy> enemyList = CrowdController.Instance.GetEnemyList();
 
-            // Create a copy of the enemy list
             List<Enemy> enemiesCopy = new List<Enemy>(enemyList);
 
-            // Loop through the copied list to avoid modification during iteration
             foreach (Enemy enemy in enemiesCopy)
             {
-                // Calculate the distance between the explosion and the enemy
                 float distanceToEnemy = Vector3.Distance(Target.transform.position, enemy.transform.position);
 
-                // Check if the enemy is within the explosion radius
                 if (distanceToEnemy <= explosionRadius)
                 {
-                    // Apply damage to the enemy
                     enemy.TakeHit(ActualDamage);
-
-                    // Optionally, remove the enemy from the list if needed
-                    // CrowdController.Instance.RemoveAgent(enemy);
                 }
             }
         }

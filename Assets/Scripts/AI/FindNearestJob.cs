@@ -76,6 +76,7 @@ public struct FindClosestTarget : IJob
     public NativeArray<int> NearestTargetIndex;
     public float maxDistance;
     public float minDistance;
+    
     public void Execute()
     {
         // Compute the distance from each seeker to every target.

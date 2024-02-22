@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 0
   damage: 3
-  timeBetweenShots: 1.5
+  timeBetweenShots: 0.8
   explosionRadius: 3
   piercingAmmo: 0
   maxDistance: 40

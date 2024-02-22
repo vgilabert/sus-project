@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 3
-  FlightDuration: 0.5
+  FlightDuration: 0.8
 --- !u!96 &3515917152019884001
 TrailRenderer:
   serializedVersion: 3
