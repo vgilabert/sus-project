@@ -17,12 +17,14 @@ namespace AI
         
         private List<Spawner> _spawners = new();
         private SplineComputer _spline;
+        
+        private double _lastTriggerPositionPercent = 0;
 
         private void FixedUpdate()
         {
             if (_spline)
             {
-                _spline.CheckTriggers(0, ProgressManager.Instance.GetProgress());
+                _spline.CheckTriggers(_lastTriggerPositionPercent, ProgressManager.Instance.GetProgress());
             }
         }
 
@@ -61,12 +63,14 @@ namespace AI
 
         private void TriggerSpawnEvent(SplineUser user, int index)
         {
+            var triggerPosition = _spline.GetPointPercent(index);
+            _lastTriggerPositionPercent = triggerPosition;
             var spawnerIndex = index + 1;
             if (spawnerIndex >= _spawners.Count)
             {
                 return;
             }
-            _spawners[spawnerIndex].TriggerSpawn();
+            _spawners[spawnerIndex].TriggerSpawnDelayed(0.01f);
         }
     }
 }

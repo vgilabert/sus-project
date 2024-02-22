@@ -40,6 +40,22 @@ public sealed class Spawner : MonoBehaviour
             DoSpawn(spawnPositions[i]);
         }
     }
+    
+    // Do the same as trigger spawn but delay the spawns over multiple frames
+    public void TriggerSpawnDelayed(float delay)
+    {
+        StartCoroutine(SpawnDelayed(delay));
+    }
+    
+    System.Collections.IEnumerator SpawnDelayed(float delay)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            var spawnPositions = spawnFormation.GetPositions(transform.position, count, 1);
+            DoSpawn(spawnPositions[i]);
+            yield return new WaitForSeconds(delay);
+        }
+    }
 
     Transform DoSpawn(Vector3 position)
     {

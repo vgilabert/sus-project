@@ -133,10 +133,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2713888517204822053}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bf836823b0d21744bc2f60780691d9e, type: 3}
+  m_Script: {fileID: 11500000, guid: b7932dd4635875f4f8c3e3ff27be9ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 20
 --- !u!114 &3190104608647007191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59fe55afd3932094fb8cb8fe2a2a69ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 2081612214752555485}
+  bulletEffect: {fileID: 6564854149081687911, guid: 1bee4d825208afc4581ef51a64cbb4e7,
+    type: 3}
+  msBetweenShots: 100
+  damage: 10
 --- !u!136 &574736233980755765
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -213,7 +216,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &4636005227824210809
 MonoBehaviour:
@@ -490,7 +493,6 @@ GameObject:
   - component: {fileID: 8970800958984275770}
   - component: {fileID: 7603621849858502312}
   - component: {fileID: 7944002953571605106}
-  - component: {fileID: 2081612214752555485}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -564,26 +566,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2081612214752555485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6394529084493439970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c62a3646b62913f459c4c37ceec08a7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  muzzle: {fileID: 6699890414348760782}
-  projectile: {fileID: 5051383775591187868, guid: 14b4dac1ce1664949af6ad17a62ab87d,
-    type: 3}
-  msBetweenShots: 100
-  damage: 1
-  muzzleVelocity: 30
-  rocketHeight: 0
-  flyDuration: 0
 --- !u!1001 &1811520452249868475
 PrefabInstance:
   m_ObjectHideFlags: 0
