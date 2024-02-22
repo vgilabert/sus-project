@@ -12,7 +12,8 @@ public class Enemy : IDamageable
     Avoidance avoidance;    
 
     NavMeshAgent pathfinder;
-    Transform target;
+    Vector3 target;
+    int targetIndex;
     Material skinMaterial;
     
 
@@ -39,7 +40,6 @@ public class Enemy : IDamageable
         OnDeath += RemoveAgent;
 
         currentState = State.Chasing;
-        GetClosestTarget();
 
         myCollisionRadius = 1;
 
@@ -51,7 +51,8 @@ public class Enemy : IDamageable
     {
         if (Time.time > nextAttackTime)
         {
-            if (GetClosestTarget() < Mathf.Pow(attackDistanceThreshold + myCollisionRadius, 2))
+            var distanceToTarget = (target - transform.position).sqrMagnitude;
+            if (distanceToTarget < Mathf.Pow(attackDistanceThreshold + myCollisionRadius, 2))
             {
                 nextAttackTime = Time.time + timeBetweenAttacks;
                 StartCoroutine(Attack());
@@ -65,8 +66,8 @@ public class Enemy : IDamageable
         pathfinder.enabled = false;
 
         Vector3 originalPosition = transform.position;
-        Vector3 dirToTarget = (target.position - transform.position).normalized;
-        Vector3 attackPosition = target.position - dirToTarget * (myCollisionRadius);
+        Vector3 dirToTarget = (target - transform.position).normalized;
+        Vector3 attackPosition = target - dirToTarget * (myCollisionRadius);
 
         float attackSpeed = 3;
         float percent = 0;
@@ -82,29 +83,17 @@ public class Enemy : IDamageable
             yield return null;
         }
         
-        if (target)
-            target.GetComponent<IDamageable>().TakeHit(1, new RaycastHit(), dirToTarget.normalized);
+        CrowdController.Instance.GetTarget(targetIndex).TakeHit(1);
         
         skinMaterial.color = originalColour;
         currentState = State.Chasing;
         pathfinder.enabled = true;
     }
 
-    float GetClosestTarget()
+    public void SetNearestTargetPositionAndIndex(Vector3 position, int index)
     {
-        float sqrDstToTarget = Mathf.Infinity;
-        List<GameObject> targets = new();
-        targets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
-        targets.AddRange(GameObject.FindGameObjectsWithTag("Train"));
-        foreach(GameObject t in targets) 
-        { 
-            if((t.transform.position - transform.position).sqrMagnitude< sqrDstToTarget)
-            {
-                sqrDstToTarget = (t.transform.position - transform.position).sqrMagnitude;
-                target = t.transform;
-            }
-        }
-        return sqrDstToTarget;
+        target = position;
+        targetIndex = index;
     }
 
     IEnumerator UpdatePath()
@@ -115,8 +104,8 @@ public class Enemy : IDamageable
         {
             if (currentState == State.Chasing)
             {
-                Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + attackDistanceThreshold / 2);
+                Vector3 dirToTarget = (target - transform.position).normalized;
+                Vector3 targetPosition = target - dirToTarget * (myCollisionRadius + attackDistanceThreshold / 2);
                 if (!dead)
                 {
                     pathfinder.SetDestination(targetPosition);
@@ -126,13 +115,13 @@ public class Enemy : IDamageable
         }
     }
 
-    public override void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    public override void TakeHit(float damage, Vector3 hitDirection = default)
     {
         if (damageEffect)
         {
-            Destroy(Instantiate(damageEffect.gameObject, hit.point, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
+            Destroy(Instantiate(damageEffect.gameObject, transform.position, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
         }
-        base.TakeHit(damage, hit, hitDirection);
+        base.TakeHit(damage, hitDirection);
     }
     
     protected override void Die()

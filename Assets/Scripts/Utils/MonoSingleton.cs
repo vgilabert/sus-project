@@ -19,7 +19,7 @@ namespace Utils
             {
                 Debug.LogError($"Only one instance of {typeof(T)} available");
             }
-            instance = FindObjectOfType<T>();
+            instance = FindFirstObjectByType<T>();
             exist = true;
             OnStarted?.Invoke();
         }

@@ -56,7 +56,7 @@ public sealed class Spawner : MonoBehaviour
             else
             {
                 Debug.LogError("No navmesh found");
-                Destroy(spawned);
+                //Destroy(spawned);
                 return null;
             }
         }

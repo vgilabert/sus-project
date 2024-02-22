@@ -17,3 +17,5 @@ MonoBehaviour:
   timeBetweenShots: 0.13
   explosionRadius: 0
   piercingAmmo: 0
+  maxDistance: 800
+  minDistance: 0

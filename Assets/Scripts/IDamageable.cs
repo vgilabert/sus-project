@@ -22,7 +22,7 @@ public abstract class IDamageable : MonoBehaviour
         }
     }
 
-    public virtual void TakeHit(float damage, RaycastHit hit, Vector3 hitDirection = default)
+    public virtual void TakeHit(float damage, Vector3 hitDirection = default)
     {
         TakeDamage(damage);
         if (statusIndicator)
@@ -45,7 +45,7 @@ public abstract class IDamageable : MonoBehaviour
         dead = true;
         if (OnDeath != null)
         {
-            OnDeath();
+            OnDeath.Invoke();
         }
         Destroy(gameObject);
     }

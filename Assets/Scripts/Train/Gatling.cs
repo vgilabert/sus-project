@@ -19,7 +19,7 @@ namespace Train
             Destroy(trail, 0.5f);
             var trailScript = trail.GetComponent<BulletEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
-            Target.TakeHit(ActualDamage, new RaycastHit());
+            Target.TakeHit(ActualDamage);
             
             yield return new WaitForSeconds(TimeBetweenShots);
             CanShoot = true;

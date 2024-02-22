@@ -39,7 +39,7 @@ namespace Player
             {
                 shootTimer = Time.time + msBetweenShots / 1000;
                 Vector3 shootingDirection = transform.forward;
-                IDamageable[] entities = FindObjectsOfType<IDamageable>();
+                IDamageable[] entities = FindObjectsByType<IDamageable>(FindObjectsSortMode.None);
 
                 List<IDamageable> entitiesInSight = new();
                 foreach (IDamageable entity in entities)
@@ -81,7 +81,7 @@ namespace Player
                     return;
                 
                 trailScript.SetTargetPosition(closestEnemy.transform.position);
-                closestEnemy.TakeHit(Damage, new RaycastHit());
+                closestEnemy.TakeHit(Damage);
                 
             }
 

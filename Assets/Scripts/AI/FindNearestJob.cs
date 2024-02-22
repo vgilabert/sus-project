@@ -30,6 +30,7 @@ using UnityEngine;
         // For SeekerPositions[i], we will assign the nearest 
         // target position to NearestTargetPositions[i].
         public NativeArray<float3> NearestTargetPositions;
+        public NativeArray<int> NearestTargetIndex;
 
         // 'Execute' is the only method of the IJob interface.
         // When a worker thread executes the job, it calls this method.
@@ -48,6 +49,7 @@ using UnityEngine;
                     {
                         nearestDistSq = distSq;
                         NearestTargetPositions[i] = targetPos;
+                        NearestTargetIndex[i] = j;
                     }
                 }
             }
@@ -93,7 +95,27 @@ public struct FindClosestTarget : IJob
     }
 }
 
+[BurstCompile]
+public struct ExplosionJob : IJob
+{
+    [ReadOnly] public float3 explosionPosition;
+    [ReadOnly] public float explosionRadius;
+    [ReadOnly] public NativeArray<float3> TargetPositions;
+    public NativeArray<int> targetIndex;
 
+    public void Execute()
+    {
+        for (int i = 0; i < TargetPositions.Length; i++)
+        {
+            float3 enemyPos = TargetPositions[i];
+            float distSq = math.distancesq(explosionPosition, enemyPos);
+            if (distSq < explosionRadius * explosionRadius)
+            {
+                targetIndex[i] = i;
+            }
+        }
+    }
+}
 
 [BurstCompile]
 public struct AvoidanceJob : IJob

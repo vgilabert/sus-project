@@ -15,6 +15,7 @@ public class FindNearest : MonoBehaviour
     NativeArray<float3> TargetPositions;
     NativeArray<float3> SeekerPositions;
     NativeArray<float3> NearestTargetPositions;
+    NativeArray<int> NearestTargetIndex;
 
     List<Transform> Targets = new List<Transform>();
     List<Transform> Agents = new List<Transform>();
@@ -30,6 +31,7 @@ public class FindNearest : MonoBehaviour
         TargetPositions = new NativeArray<float3>(Targets.Count, Allocator.Persistent);
         SeekerPositions = new NativeArray<float3>(Agents.Count, Allocator.Persistent);
         NearestTargetPositions = new NativeArray<float3>(Agents.Count, Allocator.Persistent);
+        NearestTargetIndex = new NativeArray<int>(Agents.Count, Allocator.Persistent);
     }
 
     // We are responsible for disposing of our allocations
@@ -39,6 +41,7 @@ public class FindNearest : MonoBehaviour
         TargetPositions.Dispose();
         SeekerPositions.Dispose();
         NearestTargetPositions.Dispose();
+        NearestTargetIndex.Dispose();
     }
 
 

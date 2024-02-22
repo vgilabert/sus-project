@@ -30,7 +30,7 @@ namespace Weapons
             if (damageableObject != null)
             {
                 bool isHit = (damageMask & (1 << hit.collider.transform.gameObject.layer)) != 0;
-                damageableObject.TakeHit(isHit?BaseDamage:0, hit, transform.forward);
+                damageableObject.TakeHit(isHit?BaseDamage:0, transform.forward);
             }
             else
             {
