@@ -29,6 +29,9 @@ public  class CrowdController :MonoBehaviour
     void OnDestroy()
     {
         enemyPositions.Dispose();
+        targetPositions.Dispose();
+        NearestTargetPositions.Dispose();
+        NearestTargetIndex.Dispose(); 
     }
     private void Awake()
     {
@@ -50,6 +53,8 @@ public  class CrowdController :MonoBehaviour
         if (enemyPositions.Length != enemyList.Count)
         {
             enemyPositions.Dispose();
+            NearestTargetPositions.Dispose();
+            NearestTargetIndex.Dispose();
             enemyPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
             NearestTargetPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
             NearestTargetIndex = new NativeArray<int>(enemyList.Count, Allocator.Persistent);
