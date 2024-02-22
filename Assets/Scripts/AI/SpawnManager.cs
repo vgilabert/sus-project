@@ -61,13 +61,11 @@ namespace AI
 
         private void TriggerSpawnEvent(SplineUser user, int index)
         {
-            Debug.Log(index);
             var spawnerIndex = index + 1;
             if (spawnerIndex >= _spawners.Count)
             {
                 return;
             }
-            Debug.Log("Triggered");
             _spawners[spawnerIndex].TriggerSpawn();
         }
     }

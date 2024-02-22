@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 currentVelocity;
     
     private Vector2 MoveDirection {get; set;}
-    private Vector2 AimDirection {get; set;}
+    public Vector2 AimDirection {get; private set;}
     private Vector2 MousePosition {get; set;}
 
     public void FixedUpdate()
