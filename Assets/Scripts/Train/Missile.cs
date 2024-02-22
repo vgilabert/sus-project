@@ -12,10 +12,7 @@ namespace Train
     public class Missile : Wagon
     {
         private float explosionRadius;
-        
-        [SerializeField] private float rangeMin;
-        [SerializeField] private float rangeMax;
-        
+
         [SerializeField] private GameObject RocketEffect;
 
         NativeArray<int> targetIndex; 
@@ -92,13 +89,13 @@ namespace Train
         private void OnDrawGizmos()
         {
             if (!showRangeGizmos) return;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, rangeMin);
-            Gizmos.DrawWireSphere(transform.position, rangeMax);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].maxDistance);
+            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].minDistance);
             
             if (showExplosion)
             {
-                Gizmos.color = Color.green;
+                Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(explosionPosition, explosionRadius);
             }
         }

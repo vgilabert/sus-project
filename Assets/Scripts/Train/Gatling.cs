@@ -8,8 +8,6 @@ namespace Train
 {
     public class Gatling : Wagon
     {
-        [SerializeField] private float range;
-
         [SerializeField] private GameObject BulletTrailEffect;
         
         protected override IEnumerator Shoot()
@@ -32,8 +30,8 @@ namespace Train
         private void OnDrawGizmos()
         {
             if (!showRangeGizmos) return;
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, range);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].maxDistance);
         }
         
         #endregion

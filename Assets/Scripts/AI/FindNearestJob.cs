@@ -78,17 +78,18 @@ public struct FindClosestTarget : IJob
     public float minDistance;
     public void Execute()
     {
-        // Compute the square distance from each seeker to every target.
-        float nearestDistSq = float.MaxValue;
+        // Compute the distance from each seeker to every target.
+        float nearestDist = float.MaxValue;
         NearestTargetIndex[0] = -int.MaxValue;
         for (int j = 0; j < TargetPositions.Length; j++)
         {
             float3 targetPos = TargetPositions[j];
-            float distSq = math.distancesq(SeekerPosition, targetPos);
-
-            if (distSq < nearestDistSq && distSq <maxDistance && distSq > minDistance)
+            // Get the distance from the seeker to the target.
+            float dist = math.distance(SeekerPosition, targetPos);
+                
+            if (dist < nearestDist && dist < maxDistance && dist > minDistance)
             {
-                nearestDistSq = distSq;
+                nearestDist = dist;
                 NearestTargetIndex[0] = j;
             }
         }

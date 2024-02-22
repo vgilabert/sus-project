@@ -99,4 +99,4 @@ MonoBehaviour:
   range: 20
   BulletTrailEffect: {fileID: 6564854149081687911, guid: 1bee4d825208afc4581ef51a64cbb4e7,
     type: 3}
-  showRangeGizmos: 0
+  showRangeGizmos: 1
