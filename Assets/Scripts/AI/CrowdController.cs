@@ -18,7 +18,10 @@ public  class CrowdController :MonoBehaviour
 
     List<Enemy> enemyList = new List<Enemy>();
     NativeArray<float3> enemyPositions;
-
+    void OnDestroy()
+    {
+        enemyPositions.Dispose();
+    }
     private void Awake()
     {
         instance = this;

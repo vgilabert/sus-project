@@ -1,6 +1,7 @@
 using System.Collections;
 using Dreamteck.Splines;
 using Train.UpgradesStats;
+using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
@@ -23,19 +24,25 @@ namespace Train
         [SerializeField] protected float rotationSpeed;
         
         [SerializeField] protected TurretStat[] turretStats;
-        
-        int TargetIndex { get; set; }
+
+        NativeArray<int> TargetIndex { get; set; }
 
         protected override void Start()
         {
             base.Start();
             _turretObject = transform.GetChild(0).gameObject;
+            TargetIndex = new NativeArray<int>(1, Allocator.Persistent);
             InitializeTurretStats();
+        }
+
+        void OnDestroy()
+        {
+            TargetIndex.Dispose();
         }
         
         protected virtual void Update()
         {
-            if (!Target)
+            if (!Target && CrowdController.Instance.GetEnemyList().Count >0)
                 FindTarget();
             UpdateTurretRotation();
             if (CanShoot && Target && IsFacingTarget)
@@ -56,16 +63,22 @@ namespace Train
             {
                 TargetPositions = CrowdController.Instance.GetEnemyPositions(),
                 SeekerPosition = transform.position,
-                NearestTargetIndex = TargetIndex
+                NearestTargetIndex = TargetIndex,
+                maxDistance = turretStats[TurretLevel - 1].maxDistance,
+                minDistance = turretStats[TurretLevel - 1].minDistance
+
             };
             JobHandle jobHandle = findClosestJob.Schedule();
             jobHandle.Complete();
 
-            if (CrowdController.Instance.GetEnemyList().Count >= TargetIndex + 1)
+            TargetIndex = findClosestJob.NearestTargetIndex;
+
+            Debug.Log("Target Index :" + findClosestJob.NearestTargetIndex[0]);
+
+            if (CrowdController.Instance.GetEnemyList().Count >= TargetIndex[0] + 1)
             {
-                Target = CrowdController.Instance.GetEnemyList()[TargetIndex];
+                Target = CrowdController.Instance.GetEnemyList()[TargetIndex[0]];
             }
-            
         }
 
         protected virtual void UpdateTurretRotation()

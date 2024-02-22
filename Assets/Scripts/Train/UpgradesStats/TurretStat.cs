@@ -9,5 +9,7 @@ namespace Train.UpgradesStats
         public float timeBetweenShots;
         public float explosionRadius;
         public bool piercingAmmo;
+        public float maxDistance;
+        public float minDistance;
     }
 }

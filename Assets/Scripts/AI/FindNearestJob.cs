@@ -71,27 +71,26 @@ public struct FindClosestTarget : IJob
     [ReadOnly] public NativeArray<float3> TargetPositions;
     [ReadOnly] public float3 SeekerPosition;
 
-    // For SeekerPositions[i], we will assign the nearest 
-    // target position to NearestTargetPositions[i].
-    public int NearestTargetIndex;
-
-    // 'Execute' is the only method of the IJob interface.
-    // When a worker thread executes the job, it calls this method.
+    public NativeArray<int> NearestTargetIndex;
+    public float maxDistance;
+    public float minDistance;
     public void Execute()
     {
         // Compute the square distance from each seeker to every target.
         float nearestDistSq = float.MaxValue;
+        NearestTargetIndex[0] = -1;
         for (int j = 0; j < TargetPositions.Length; j++)
         {
             float3 targetPos = TargetPositions[j];
             float distSq = math.distancesq(SeekerPosition, targetPos);
-            if (distSq < nearestDistSq)
+
+            if (distSq < nearestDistSq && distSq <maxDistance && distSq > minDistance)
             {
                 nearestDistSq = distSq;
-                NearestTargetIndex = j;
+                NearestTargetIndex[0] = j;
             }
         }
-}
+    }
 }
 
 
