@@ -124,6 +124,8 @@ public class EndlessTerrain : MonoBehaviour
 			 {
 				 meshFilter.mesh = meshData.CreateMesh();
 				 meshCollider.sharedMesh = meshFilter.mesh;
+				 meshRenderer.material = mapGenerator.terrainMaterial;
+				 meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
 				 navMeshSurface.BuildNavMesh();
 			 });
 		 }

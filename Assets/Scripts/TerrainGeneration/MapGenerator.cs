@@ -25,6 +25,9 @@ using System.Collections.Generic;
 
 	 public float meshHeightMultiplier;
 	 public AnimationCurve meshHeightCurve;
+	 
+	 public Material terrainMaterial;
+	 public Vector2 textureScale;
 
 	 public bool autoUpdate;
 	 
