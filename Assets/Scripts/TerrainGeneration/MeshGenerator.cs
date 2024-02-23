@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace TerrainGeneration
 {
 	public static class MeshGenerator {
 
-		public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve _heightCurve, int levelOfDetail) {
-			AnimationCurve heightCurve = new AnimationCurve (_heightCurve.keys);
+		public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve meshHeightCurve, int levelOfDetail, Vector2 position, List<Vector3> roadPath = null, int pathWidth = 0, AnimationCurve roadSlopeCurve = null) {
+			
+			AnimationCurve heightCurve = new AnimationCurve (meshHeightCurve.keys);
 
 			int width = heightMap.GetLength (0);
 			int height = heightMap.GetLength (1);
@@ -14,13 +16,28 @@ namespace TerrainGeneration
 
 			int meshSimplificationIncrement = (levelOfDetail == 0)?1:levelOfDetail * 2;
 			int verticesPerLine = (width - 1) / meshSimplificationIncrement + 1;
+			
+			Vector3 positionV3 = new Vector3(position.x,0,position.y);
 
 			MeshData meshData = new MeshData (verticesPerLine, verticesPerLine);
 			int vertexIndex = 0;
 
 			for (int y = 0; y < height; y += meshSimplificationIncrement) {
 				for (int x = 0; x < width; x += meshSimplificationIncrement) {
-					meshData.vertices [vertexIndex] = new Vector3 (topLeftX + x, heightCurve.Evaluate (heightMap [x, y]) * heightMultiplier, topLeftZ - y);
+					Vector3 vertexPosition = new Vector3 (topLeftX + x, heightCurve.Evaluate (heightMap [x, y]) * heightMultiplier, topLeftZ - y);
+					Vector3 worldVertexPosition = vertexPosition + positionV3;
+					
+					if (roadPath != null && roadSlopeCurve != null) {
+						foreach (Vector3 roadPoint in roadPath) {
+							float distanceToRoad = Vector3.Distance(new Vector3(worldVertexPosition.x, 0, worldVertexPosition.z), new Vector3(roadPoint.x, 0, roadPoint.z));
+							if (distanceToRoad < pathWidth) {
+								vertexPosition.y = 0f; // Set vertex height to 0 around road path
+								//break; // Exit loop after adjusting height for efficiency
+							}
+						}
+					}
+
+					meshData.vertices[vertexIndex] = vertexPosition;
 					meshData.uvs [vertexIndex] = new Vector2 (x / (float)width, y / (float)height);
 
 					if (x < width - 1 && y < height - 1) {

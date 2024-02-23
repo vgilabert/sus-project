@@ -56,7 +56,7 @@ namespace TerrainGeneration
 		{
 			Task.Run(() =>
 			{
-				mapGenerator.RequestMeshData(mapData, OnMeshDataReceived);
+				mapGenerator.RequestMeshData(mapData, position, OnMeshDataReceived);
 				Debug.Log("OnMapDataReceived");
 			});
 		}

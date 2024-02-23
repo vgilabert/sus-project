@@ -107,60 +107,16 @@ public class EndlessTerrain : MonoBehaviour
 		{
 			Task.Run(() =>
 			{
-				mapGenerator.RequestMeshData(mapData, OnMeshDataReceived);
+				mapGenerator.RequestMeshData(mapData, position, OnMeshDataReceived);
 			});
 		}
-
-		 void OnMeshDataReceived(MeshData meshData)
-		 {
-			 Task.Run(() =>
-			 {
-				 GenerateRoad(meshData, position, OnRoadGenerated); 
-			 });
-		 }
-
-		 void OnRoadGenerated(MeshData meshData)
-		 {
-			 UnityMainThreadDispatcher.Instance().Enqueue(() =>
-			 {
-				 meshFilter.mesh = meshData.CreateMesh();
-				 meshCollider.sharedMesh = meshFilter.mesh;
-				 meshRenderer.material = mapGenerator.terrainMaterial;
-				 meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
-				 navMeshSurface.BuildNavMesh();
-				 
-			 });
-		 }
-		 
-		 public void GenerateRoad(MeshData meshData, Vector2 centre, Action<MeshData> onRoadGenerated)
+		void OnMeshDataReceived(MeshData meshData)
 		{
-			List<Vector3> points = SplineToWorldPoints(mapGenerator.spline);
-			for (int i = 0; i < points.Count; i++)
-			{
-				Vector3 point = points[i];
-				for (int j = 0; j < meshData.vertices.Length; j++)
-				{
-					Vector3 vertex = meshData.vertices[j];
-					var distance = Vector3.Distance(point, new Vector3(vertex.x, 0, vertex.z) + new Vector3(centre.x, 0, centre.y));
-					if (distance < mapGenerator.pathWidth)
-					{
-						var newHeight = 0 + mapGenerator.roadSlopeCurve.Evaluate(distance / mapGenerator.pathWidth) * vertex.y;
-						meshData.vertices[j] = new Vector3(vertex.x, newHeight, vertex.z);
-					}
-				}
-			}
-			onRoadGenerated?.Invoke(meshData);
-		}
-
-		 private List<Vector3> SplineToWorldPoints(SplineComputer spline)
-		{
-			List<Vector3> points = new List<Vector3>();
-			for (int i = 0; i < 100; i += 2)
-			{
-				var percent = i / 100f;
-				points.Add(spline.EvaluatePosition(percent));
-			}
-			return points;
+			meshFilter.mesh = meshData.CreateMesh();
+			meshCollider.sharedMesh = meshFilter.mesh;
+			meshRenderer.material = mapGenerator.terrainMaterial;
+			meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
+			navMeshSurface.BuildNavMesh();
 		}
 
 		public void UpdateTerrainChunk() {

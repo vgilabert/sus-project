@@ -37,6 +37,7 @@ using System.Collections.Generic;
 	 [Header("Path Settings")]
 	 public SplineComputer spline;
 
+	 private List<Vector3> roadPath;
 	 public int pathWidth;
 	 public AnimationCurve roadSlopeCurve;
 
@@ -46,6 +47,7 @@ using System.Collections.Generic;
 	 private void Start()
 	 {
 		 SpawnManager.Instance.GenerateSpawners(spline);
+		 SetRoadPath();
 	 }
 
 	 public void DrawMapInEditor()
@@ -55,7 +57,7 @@ using System.Collections.Generic;
 		 MapDisplay display = FindFirstObjectByType<MapDisplay>();
 		 display.DrawMesh(
 			 MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-				 levelOfDetail));
+				 levelOfDetail, Vector3.zero, roadPath, pathWidth, roadSlopeCurve));
 	 }
 
 	 public void RequestMapData(Vector2 centre, Action<MapData> callback)
@@ -75,18 +77,18 @@ using System.Collections.Generic;
 		 }
 	 }
 
-	 public void RequestMeshData(MapData mapData, Action<MeshData> callback)
+	 public void RequestMeshData(MapData mapData, Vector2 position, Action<MeshData> callback)
 	 {
 		 Task.Run(() =>
 		 {
-			 MeshDataThread(mapData, callback);
+			 MeshDataThread(mapData, position, callback);
 		 });
 	 }
 
-	 void MeshDataThread(MapData mapData, Action<MeshData> callback)
+	 void MeshDataThread(MapData mapData, Vector2 position, Action<MeshData> callback)
 	 {
 		 MeshData meshData = MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-			 levelOfDetail);
+			 levelOfDetail, position, roadPath, pathWidth, roadSlopeCurve);
 		 lock (meshDataThreadInfoQueue)
 		 {
 			 meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
@@ -120,6 +122,16 @@ using System.Collections.Generic;
 			 lacunarity, offset + centre, Noise.NormalizeMode.Global);
 
 		 return new MapData(noiseMap);
+	 }
+	 
+	 private void SetRoadPath()
+	 {
+		 roadPath = new List<Vector3>();
+		 for (int i = 0; i < 100; i += 2)
+		 {
+			 var percent = i / 100f;
+			 roadPath.Add(spline.EvaluatePosition(percent));
+		 }
 	 }
 
 	 void OnValidate()
