@@ -102,18 +102,22 @@ public struct ExplosionJob : IJob
 {
     [ReadOnly] public float3 explosionPosition;
     [ReadOnly] public float explosionRadius;
-    [ReadOnly] public NativeArray<float3> TargetPositions;
-    public NativeArray<int> targetIndex;
+    [ReadOnly] public NativeArray<float3> enemyPositions;
+    
+    public NativeArray<int> enemyIndexes;
 
     public void Execute()
     {
-        for (int i = 0; i < TargetPositions.Length; i++)
+        for (int i = 0; i < enemyPositions.Length; i++)
         {
-            float3 enemyPos = TargetPositions[i];
-            float distSq = math.distancesq(explosionPosition, enemyPos);
-            if (distSq < explosionRadius * explosionRadius)
+            float3 enemyPos = enemyPositions[i];
+            var dist = math.distance(explosionPosition, enemyPos);
+            if (dist < explosionRadius)
             {
-                targetIndex[i] = i;
+                enemyIndexes[i] = i;
+            } else
+            {
+                enemyIndexes[i] = -1;
             }
         }
     }

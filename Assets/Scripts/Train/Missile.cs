@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -41,23 +42,35 @@ namespace Train
 
         private void ProcessExplosion()
         {
-            NativeArray<float3> enemyPositions = new NativeArray<float3>(CrowdController.Instance.GetEnemyCount(), Allocator.Persistent);
-            enemyPositions.CopyFrom(CrowdController.Instance.GetEnemyPositions());
-
-            List<Enemy> enemyIndexesAffected = new();
+            int enemyCount = CrowdController.Instance.GetEnemyCount();
             
-            for (int i = 0; i < enemyPositions.Length; i++)
-            {
-                if (Vector3.Distance(enemyPositions[i], Target.transform.position) <= explosionRadius)
-                    enemyIndexesAffected.Add(CrowdController.Instance.GetEnemyList()[i]);
-            }
+            List<Enemy> enemyList = CrowdController.Instance.GetEnemyList().ToList();
 
+            NativeArray<float3> enemyPositions = new NativeArray<float3>(CrowdController.Instance.GetEnemyPositions(), Allocator.Persistent);
+            
+            NativeArray<int> enemyIndexesAffected = new NativeArray<int>(enemyCount, Allocator.Persistent);
+            
+            ExplosionJob explosionJob = new ExplosionJob
+            {
+                explosionPosition = Target.transform.position,
+                explosionRadius = explosionRadius,
+                enemyPositions = enemyPositions,
+                enemyIndexes = enemyIndexesAffected
+            };
+            
+            JobHandle explosionJobHandle = explosionJob.Schedule();
+            explosionJobHandle.Complete();
+            
             enemyPositions.Dispose();
 
-            foreach (var enemy in enemyIndexesAffected)
+            for (int i = 0; i < enemyIndexesAffected.Length; i++)
             {
-                enemy.TakeHit(ActualDamage);
+                if (enemyIndexesAffected[i] == -1)
+                    continue;
+                enemyList[i].TakeHit(ActualDamage);
             }
+            
+            enemyIndexesAffected.Dispose();
         }
         
         private void OnDestroy()
