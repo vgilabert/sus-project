@@ -67,6 +67,8 @@ namespace Train
             {
                 if (enemyIndexesAffected[i] == -1)
                     continue;
+                if (enemyList[i] == null)
+                    continue;
                 enemyList[i].TakeHit(ActualDamage);
             }
             
