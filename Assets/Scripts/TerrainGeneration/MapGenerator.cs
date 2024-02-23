@@ -40,6 +40,7 @@ using System.Collections.Generic;
 
 	 Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new ();
 	 Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new ();
+	 Queue<MapThreadInfo<PropsData>> propsDataThreadInfoQueue = new ();
 
 	 private void Start()
 	 {
@@ -91,6 +92,24 @@ using System.Collections.Generic;
 			 meshDataThreadInfoQueue.Enqueue(new MapThreadInfo<MeshData>(callback, meshData));
 		 }
 	 }
+	 
+	 public void RequestPropsData(MeshData meshData, Vector2 position, Action<PropsData> callback)
+	 {
+		 Debug.Log("RequestPropsData");
+		 Task.Run(() =>
+		 {
+			 PropsDataThread(meshData, position, callback);
+		 });
+	 }
+	 
+	 void PropsDataThread(MeshData meshData, Vector2 position, Action<PropsData> callback)
+	 {
+		 PropsData propsData = PropsGenerator.GeneratePropsData(meshData, position);
+		 lock (propsDataThreadInfoQueue)
+		 {
+			 propsDataThreadInfoQueue.Enqueue(new MapThreadInfo<PropsData>(callback, propsData));
+		 }
+	 }
 
 	 void Update()
 	 {
@@ -108,6 +127,15 @@ using System.Collections.Generic;
 			 for (int i = 0; i < meshDataThreadInfoQueue.Count; i++)
 			 {
 				 MapThreadInfo<MeshData> threadInfo = meshDataThreadInfoQueue.Dequeue();
+				 threadInfo.callback(threadInfo.parameter);
+			 }
+		 }
+		 
+		 if (propsDataThreadInfoQueue.Count > 0)
+		 {
+			 for (int i = 0; i < propsDataThreadInfoQueue.Count; i++)
+			 {
+				 MapThreadInfo<PropsData> threadInfo = propsDataThreadInfoQueue.Dequeue();
 				 threadInfo.callback(threadInfo.parameter);
 			 }
 		 }

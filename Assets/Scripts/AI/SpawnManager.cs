@@ -11,9 +11,8 @@ namespace AI
     {
         public GameObject spawnerPrefab;
         public GameObject dronePrefab;
-        [Range(0, 10)]
         public int baseSpawnCount;
-        public float spawnCountIncrease = 1;
+        public int spawnCountIncrease = 1;
         
         private List<Spawner> _spawners = new();
         private SplineComputer _spline;
@@ -70,7 +69,7 @@ namespace AI
             {
                 return;
             }
-            _spawners[spawnerIndex].TriggerSpawnDelayed(0.01f);
+            _spawners[spawnerIndex].TriggerSpawnDelayed(0.001f);
         }
     }
 }

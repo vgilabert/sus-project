@@ -107,13 +107,28 @@ public class EndlessTerrain : MonoBehaviour
 				mapGenerator.RequestMeshData(mapData, position, OnMeshDataReceived);
 			});
 		}
+		
 		void OnMeshDataReceived(MeshData meshData)
 		{
+			Task.Run(() =>
+			{
+				mapGenerator.RequestPropsData(meshData, position, OnPropsDataReceived);
+			});
 			meshFilter.mesh = meshData.CreateMesh();
 			meshCollider.sharedMesh = meshFilter.mesh;
 			meshRenderer.material = mapGenerator.terrainMaterial;
 			meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
 			navMeshSurface.BuildNavMesh();
+		}
+		
+		void OnPropsDataReceived(PropsData propsData)
+		{
+			foreach (var buildingPosition in propsData.BuildingsPosition)
+			{
+				int buildingsCount = mapGenerator.buildings.Length;
+				int random = Random.Range(0, buildingsCount-1);
+				Instantiate(mapGenerator.buildings[random], buildingPosition, Quaternion.identity, meshObject.transform);
+			}
 		}
 
 		public void UpdateTerrainChunk() {
