@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Dreamteck.Splines;
 using PimDeWitte.UnityMainThreadDispatcher;
 using TerrainGeneration;
+using Train;
 using Unity.AI.Navigation;
 
 
@@ -23,19 +24,20 @@ public class EndlessTerrain : MonoBehaviour
 	List<TerrainChunk> terrainChunksVisibleLastUpdate = new ();
 	
 	static NavMeshSurface navMeshSurface;
-	
-	
 
 	void Start() {
 		mapGenerator = FindFirstObjectByType<MapGenerator> ();
 		chunkSize = MapGenerator.mapChunkSize - 1;
 		chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
 		navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
+		viewer = FindFirstObjectByType<Engine>().transform;
 	}
 
 	void Update() {
 		if (viewer)
+		{
 			viewerPosition = new Vector2 (viewer.position.x, viewer.position.z);
+		}
 		UpdateVisibleChunks();
 	}
 	void UpdateVisibleChunks() {
@@ -60,7 +62,6 @@ public class EndlessTerrain : MonoBehaviour
 				} 
 				else
 				{
-					
 					terrainChunkDictionary.Add(viewedChunkCoord,new TerrainChunk(viewedChunkCoord,chunkSize, transform, mapMaterial));
 
 				}
@@ -127,11 +128,10 @@ public class EndlessTerrain : MonoBehaviour
 				 meshRenderer.material = mapGenerator.terrainMaterial;
 				 meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
 				 navMeshSurface.BuildNavMesh();
+				 
 			 });
 		 }
-
 		 
-
 		 public void GenerateRoad(MeshData meshData, Vector2 centre, Action<MeshData> onRoadGenerated)
 		{
 			List<Vector3> points = SplineToWorldPoints(mapGenerator.spline);
@@ -151,8 +151,8 @@ public class EndlessTerrain : MonoBehaviour
 			}
 			onRoadGenerated?.Invoke(meshData);
 		}
-    
-		private List<Vector3> SplineToWorldPoints(SplineComputer spline)
+
+		 private List<Vector3> SplineToWorldPoints(SplineComputer spline)
 		{
 			List<Vector3> points = new List<Vector3>();
 			for (int i = 0; i < 100; i += 2)

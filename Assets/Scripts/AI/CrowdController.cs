@@ -103,6 +103,8 @@ public  class CrowdController :MonoBehaviour
     public List<Enemy> GetEnemyList() => enemyList;
     
     public IDamageable GetTarget(int index) => targetList[index]; 
+    
+    public int GetEnemyCount() => enemyList.Count;
 
     public void AddAgent(Enemy agent)
     {

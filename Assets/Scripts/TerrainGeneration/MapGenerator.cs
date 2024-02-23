@@ -28,8 +28,11 @@ using System.Collections.Generic;
 	 
 	 public Material terrainMaterial;
 	 public Vector2 textureScale;
-
+	 
 	 public bool autoUpdate;
+	 
+	[Header("Props Settings")]
+	 public GameObject[] buildings;
 	 
 	 [Header("Path Settings")]
 	 public SplineComputer spline;

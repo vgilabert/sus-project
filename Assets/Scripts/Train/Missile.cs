@@ -41,18 +41,22 @@ namespace Train
 
         private void ProcessExplosion()
         {
-            List<Enemy> enemyList = CrowdController.Instance.GetEnemyList();
+            NativeArray<float3> enemyPositions = new NativeArray<float3>(CrowdController.Instance.GetEnemyCount(), Allocator.Persistent);
+            enemyPositions.CopyFrom(CrowdController.Instance.GetEnemyPositions());
 
-            List<Enemy> enemiesCopy = new List<Enemy>(enemyList);
-
-            foreach (Enemy enemy in enemiesCopy)
+            List<Enemy> enemyIndexesAffected = new();
+            
+            for (int i = 0; i < enemyPositions.Length; i++)
             {
-                float distanceToEnemy = Vector3.Distance(Target.transform.position, enemy.transform.position);
+                if (Vector3.Distance(enemyPositions[i], Target.transform.position) <= explosionRadius)
+                    enemyIndexesAffected.Add(CrowdController.Instance.GetEnemyList()[i]);
+            }
 
-                if (distanceToEnemy <= explosionRadius)
-                {
-                    enemy.TakeHit(ActualDamage);
-                }
+            enemyPositions.Dispose();
+
+            foreach (var enemy in enemyIndexesAffected)
+            {
+                enemy.TakeHit(ActualDamage);
             }
         }
         
