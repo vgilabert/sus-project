@@ -196,8 +196,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4133070966157413170, guid: a366d4e752a8bb64fa82966a181c0aa9,
         type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4133070966157413170, guid: a366d4e752a8bb64fa82966a181c0aa9,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5832266031626607318, guid: a366d4e752a8bb64fa82966a181c0aa9,
+        type: 3}
+      propertyPath: damage
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5832266031626607318, guid: a366d4e752a8bb64fa82966a181c0aa9,
         type: 3}
@@ -209,6 +219,12 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5832266031626607318, guid: a366d4e752a8bb64fa82966a181c0aa9,
+        type: 3}
+      propertyPath: damagetext
+      value: 
+      objectReference: {fileID: 7052420436008356655, guid: d1001a5cf02460147a19b4a59ce7745c,
+        type: 3}
     - target: {fileID: 5832266031626607318, guid: a366d4e752a8bb64fa82966a181c0aa9,
         type: 3}
       propertyPath: deathEffect

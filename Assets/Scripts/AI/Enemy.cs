@@ -15,9 +15,12 @@ public class Enemy : IDamageable
     Vector3 target;
     int targetIndex;
     Material skinMaterial;
-    
+
+    [SerializeField]
+    float damage = 1;
 
     public GameObject damageEffect;
+    public GameObject damagetext;
     public GameObject deathEffect; 
 
     Color originalColour;
@@ -83,7 +86,7 @@ public class Enemy : IDamageable
             yield return null;
         }
         
-        CrowdController.Instance.GetTarget(targetIndex).TakeHit(1);
+        CrowdController.Instance.GetTarget(targetIndex).TakeHit(damage);
         
         skinMaterial.color = originalColour;
         currentState = State.Chasing;
@@ -120,6 +123,12 @@ public class Enemy : IDamageable
         if (damageEffect)
         {
             Destroy(Instantiate(damageEffect.gameObject, transform.position, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 10f);
+           
+        }
+        if(damagetext)
+        {
+            Instantiate(damagetext.gameObject, transform.position + Vector3.up*2, Quaternion.identity);
+            damagetext.GetComponent<DamageInfos>().SetDamage(damage);
         }
         base.TakeHit(damage, hitDirection);
     }
