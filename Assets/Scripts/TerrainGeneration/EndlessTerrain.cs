@@ -83,6 +83,7 @@ public class EndlessTerrain : MonoBehaviour
 			Vector3 positionV3 = new Vector3(position.x,0,position.y);
 
 			meshObject = new GameObject("Terrain Chunk");
+			meshObject.layer = LayerMask.NameToLayer("Terrain");
 			meshRenderer = meshObject.AddComponent<MeshRenderer>();
 			meshRenderer.material = material;
 			meshFilter = meshObject.AddComponent<MeshFilter>();
@@ -118,6 +119,8 @@ public class EndlessTerrain : MonoBehaviour
 			meshCollider.sharedMesh = meshFilter.mesh;
 			meshRenderer.material = mapGenerator.terrainMaterial;
 			meshRenderer.material.mainTextureScale = mapGenerator.textureScale;
+			LayerMask mask = LayerMask.GetMask("Terrain");
+			navMeshSurface.layerMask = mask;
 			navMeshSurface.BuildNavMesh();
 		}
 		
