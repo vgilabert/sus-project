@@ -1,13 +1,10 @@
 ﻿﻿using UnityEngine;
-using System.Collections;
 using System;
-using System.Threading;
 using System.Collections.Generic;
  using System.Threading.Tasks;
  using AI;
  using Dreamteck.Splines;
  using TerrainGeneration;
- using UnityEditor.AssetImporters;
  using MeshGenerator = TerrainGeneration.MeshGenerator;
 
  public class MapGenerator : MonoBehaviour
