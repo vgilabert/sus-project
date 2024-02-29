@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e547a566d2cf14088ea1977e11ad04, type: 3}
   m_Name: Missile_1
   m_EditorClassIdentifier: 
-  cost: 0
+  cost: 100
   damage: 3
   timeBetweenShots: 0.8
-  explosionRadius: 3
   piercingAmmo: 0
   maxDistance: 40
   minDistance: 10
+  explosionRadius: 4
+  flightDuration: 0.8

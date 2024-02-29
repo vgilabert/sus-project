@@ -115,7 +115,8 @@ public struct ExplosionJob : IJob
             if (dist < explosionRadius)
             {
                 enemyIndexes[i] = i;
-            } else
+            } 
+            else 
             {
                 enemyIndexes[i] = -1;
             }

@@ -10,62 +10,66 @@ namespace Train
     [RequireComponent(typeof(SplinePositioner))]
     public abstract class Wagon : TrainPart
     {
-        protected GameObject _turretObject;
-
-        protected int TurretLevel { get; set; } = 1;
-        protected float ActualDamage { get; set; }
-        protected float TimeBetweenShots { get; set; }
-        protected Enemy Target { get; set; }
-        protected bool IsFacingTarget { get; set; }
-        protected bool CanShoot { get; set; } = true;
-
         [Header("Wagon Stats"), Space(5)]
 
         [SerializeField] protected float rotationSpeed;
         
-        [SerializeField] protected TurretStat[] turretStats;
+        protected TurretStat[] Stats { get; set; }
+        protected bool CanShoot { get; set; } = true;
+        protected int TurretLevel { get; private set; } = 1;
+        protected Enemy Target { get; private set; }
+        protected float ActualDamage { get; private set; }
+        protected float TimeBetweenShots { get; private set; }
+        protected float RangeMax { get; private set; }
+        protected float RangeMin { get; private set; }
 
-        NativeArray<int> TargetIndex { get; set; }
+        private NativeArray<int> TargetIndex { get; set; }
+        private bool IsFacingTarget { get; set; }
+        private GameObject _turretObject;
 
         protected override void Start()
         {
             base.Start();
             _turretObject = transform.GetChild(0).gameObject;
             TargetIndex = new NativeArray<int>(1, Allocator.Persistent);
-            InitializeTurretStats();
         }
 
-        void OnDestroy()
-        {
-            TargetIndex.Dispose();
-        }
-        
         protected virtual void Update()
         {
-            if (!Target && CrowdController.Instance.GetEnemyList().Count >0)
+            
+            if (!Target && CrowdController.Instance.GetEnemyList().Count > 0)
+            {
                 FindTarget();
+            }
             UpdateTurretRotation();
             if (CanShoot && Target && IsFacingTarget)
                 StartCoroutine(Shoot());
         }
-
-        protected virtual void InitializeTurretStats()
+        
+        void OnDestroy()
         {
-            ActualDamage = turretStats[TurretLevel - 1].damage;
-            TimeBetweenShots = turretStats[TurretLevel - 1].timeBetweenShots;
+            TargetIndex.Dispose();
+        }
+
+        protected virtual void ApplyStats(TurretStat turretStat)
+        {
+            ActualDamage = turretStat.damage;
+            TimeBetweenShots = turretStat.timeBetweenShots;
+            RangeMin = turretStat.minDistance;
+            RangeMax = turretStat.maxDistance;
         }
 
         protected abstract IEnumerator Shoot();
 
-        protected virtual void FindTarget()
+        protected void FindTarget()
         {
             FindClosestTarget findClosestJob = new FindClosestTarget
             {
                 TargetPositions = CrowdController.Instance.GetEnemyPositions(),
                 SeekerPosition = transform.position,
                 NearestTargetIndex = TargetIndex,
-                maxDistance = turretStats[TurretLevel - 1].maxDistance,
-                minDistance = turretStats[TurretLevel - 1].minDistance
+                maxDistance = RangeMax,
+                minDistance = RangeMin
 
             };
             JobHandle jobHandle = findClosestJob.Schedule();
@@ -79,9 +83,9 @@ namespace Train
             }
         }
 
-        protected virtual void UpdateTurretRotation()
+        private void UpdateTurretRotation()
         {
-            if (Target == null) return;
+            if (!Target) return;
             var targetDirection = Target.transform.position - transform.position;
             var newRotation = Quaternion.LookRotation(targetDirection);
             _turretObject.transform.rotation = Quaternion.Lerp(_turretObject.transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
@@ -91,16 +95,17 @@ namespace Train
         
         protected void UpgradeTurret()
         {
-            if (TurretLevel < turretStats.Length)
+            if (TurretLevel < Stats.Length)
             {
                 TurretLevel++;
+                ApplyStats(Stats[TurretLevel - 1]);
             }
         }
         
         public void ApplyBoost(float damageBoost, float fireRateBoost)
         {
-            var dmg = turretStats[TurretLevel - 1].damage;
-            var timeBetweenShots = turretStats[TurretLevel - 1].timeBetweenShots;
+            var dmg = Stats[TurretLevel - 1].damage;
+            var timeBetweenShots = Stats[TurretLevel - 1].timeBetweenShots;
             
             ActualDamage = dmg + dmg * (damageBoost / 100);
             TimeBetweenShots -= timeBetweenShots - timeBetweenShots * (fireRateBoost / 100);
@@ -108,8 +113,8 @@ namespace Train
 
         public void RemoveBoost()
         {
-            ActualDamage = turretStats[TurretLevel - 1].damage;
-            TimeBetweenShots = turretStats[TurretLevel - 1].timeBetweenShots;
+            ActualDamage = Stats[TurretLevel - 1].damage;
+            TimeBetweenShots = Stats[TurretLevel - 1].timeBetweenShots;
         }
     }
 }

@@ -9,9 +9,9 @@ namespace VFX_Controllers
         private Vector3 _startPosition;
         private Vector3 _targetPosition;
         private float _progress;
+        private float _flightDuration;
         
         public float height = 3f;
-        public float FlightDuration;
 
         private void Start()
         {
@@ -27,12 +27,17 @@ namespace VFX_Controllers
         {
             _targetPosition = position;
         }
+        
+        public void SetFlightDuration(float duration)
+        {
+            _flightDuration = duration;
+        }
     
         private void UpdateRocketPosition()
         {
-            _progress += Time.deltaTime / FlightDuration;
-            transform.position = Parabola(_startPosition, _targetPosition, height, _progress / FlightDuration);
-            if (_progress >= FlightDuration)
+            _progress += Time.deltaTime / _flightDuration;
+            transform.position = Parabola(_startPosition, _targetPosition, height, _progress / _flightDuration);
+            if (_progress >= _flightDuration)
             {
                 Explode();
             }

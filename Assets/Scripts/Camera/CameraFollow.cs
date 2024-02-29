@@ -4,13 +4,13 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     private Engine _engine;
-    private PlayerStats _player;
+    private Player _player;
     public Vector3 offset;
     
     void Start()
     {
         _engine = FindFirstObjectByType<Engine>();
-        _player = FindFirstObjectByType<PlayerStats>();
+        _player = FindFirstObjectByType<Player>();
     }
     
     void Update()

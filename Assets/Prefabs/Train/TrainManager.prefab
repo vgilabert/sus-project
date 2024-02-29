@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1987299415828655176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 111.437256, y: -514.22217, z: 522.11584}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,14 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554cf029bfbfc954fb57250e242616cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  locomotivePrefab: {fileID: 2775865428634822071, guid: 2e1e61624593caa4192e59ec44e02096,
+  maxHealth: 100
+  gatlingStats:
+  - {fileID: 11400000, guid: 40f7887559150c248a6a1bfda6207f44, type: 2}
+  - {fileID: 11400000, guid: e4f7aa430b91b8b4f9edced79d5031fc, type: 2}
+  - {fileID: 11400000, guid: 63daf5b9bd3a81341bf514c0c958ad7f, type: 2}
+  missileStats:
+  - {fileID: 11400000, guid: 652dd0b4c98a9ce48805c9ecd66ba43b, type: 2}
+  - {fileID: 11400000, guid: b1bd8c46f6141374fadaf83d6549a772, type: 2}
+  - {fileID: 11400000, guid: 1f23276e5a7203e499f1aee78f8b4414, type: 2}
+  enginePrefab: {fileID: 2775865428634822071, guid: 2e1e61624593caa4192e59ec44e02096,
     type: 3}
-  cartPrefab: {fileID: 5812104687809487121, guid: 79c7c18dc56c55447afbd1ffdfde0773,
+  missilePrefab: {fileID: 4864147977493643692, guid: 0f07eb6fda6a7c84789c980b4e9efd7b,
     type: 3}
-  missileTurretPrefab: {fileID: 1570224055074126584, guid: b32f29a1ec64d1d48b37f01e4bb68335,
-    type: 3}
-  gatlingTurretPrefab: {fileID: 7217965136810489527, guid: 316dd67db45550e4694348156ea71a56,
+  gatlingPrefab: {fileID: 4864147977493643692, guid: 6cd49db97153952479d6dad461c42f28,
     type: 3}
   spline: {fileID: 0}
   speed: 3

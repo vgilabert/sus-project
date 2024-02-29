@@ -8,12 +8,28 @@ namespace Train
 {
     public class Gatling : Wagon
     {
-        [SerializeField] private GameObject BulletTrailEffect;
-        
+        [SerializeField] private GameObject bulletTrailEffect;
+
+        protected bool PiercingAmmo { get; private set; }
+
+        protected override void Start()
+        {
+            base.Start();
+            Stats = trainManager.gatlingStats;
+            ApplyStats(Stats[TurretLevel - 1]);
+            Debug.Log(TimeBetweenShots);
+        }
+
+        protected override void ApplyStats(TurretStat turretStat)
+        {
+            base.ApplyStats(turretStat);
+            PiercingAmmo = turretStat.piercingAmmo;
+        }
+
         protected override IEnumerator Shoot()
         {
             CanShoot = false;
-            var trail = Instantiate(BulletTrailEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
+            var trail = Instantiate(bulletTrailEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             Destroy(trail, 0.5f);
             var trailScript = trail.GetComponent<BulletEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
@@ -31,7 +47,7 @@ namespace Train
         {
             if (!showRangeGizmos) return;
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].maxDistance);
+            Gizmos.DrawWireSphere(transform.position, RangeMax);
         }
         
         #endregion

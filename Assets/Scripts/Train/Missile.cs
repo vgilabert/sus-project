@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Train.UpgradesStats;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -13,15 +14,25 @@ namespace Train
     public class Missile : Wagon
     {
         private float explosionRadius;
+        private float flightDuration;
 
         [SerializeField] private GameObject RocketEffect;
 
         NativeArray<int> targetIndex; 
         
-        protected override void InitializeTurretStats()
+        protected override void Start()
         {
-            base.InitializeTurretStats();
-            explosionRadius = turretStats[TurretLevel - 1].explosionRadius;
+            base.Start();
+            Stats = trainManager.missileStats;
+            ApplyStats(Stats[TurretLevel - 1]);
+            
+        }
+        
+        protected override void ApplyStats(TurretStat turretStat)
+        {
+            base.ApplyStats(turretStat);
+            explosionRadius = turretStat.explosionRadius;
+            flightDuration = turretStat.flightDuration;
         }
 
         protected override IEnumerator Shoot()
@@ -30,8 +41,9 @@ namespace Train
             var trail = Instantiate(RocketEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             var trailScript = trail.GetComponent<RocketEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
+            trailScript.SetFlightDuration(flightDuration);
             
-            var timeToWait = trailScript.FlightDuration;
+            var timeToWait = flightDuration;
             yield return new WaitForSeconds(timeToWait);
             
             ProcessExplosion();
@@ -67,9 +79,7 @@ namespace Train
             {
                 if (enemyIndexesAffected[i] == -1)
                     continue;
-                if (enemyList[i] == null)
-                    continue;
-                enemyList[i].TakeHit(ActualDamage);
+                enemyList[i]?.TakeHit(ActualDamage);
             }
             
             enemyIndexesAffected.Dispose();
@@ -85,28 +95,28 @@ namespace Train
         [Header("Debug"), Space(5)]
         [SerializeField] protected bool showRangeGizmos;
         
-        private bool showExplosion;
-        private Vector3 explosionPosition;
+        private bool _showExplosion;
+        private Vector3 _explosionPosition;
         
         IEnumerator ShowExplosion(Vector3 position)
         {
-            showExplosion = true;
-            explosionPosition = position;
+            _showExplosion = true;
+            _explosionPosition = position;
             yield return new WaitForSeconds(TimeBetweenShots);
-            showExplosion = false;
+            _showExplosion = false;
         }
         
         private void OnDrawGizmos()
         {
             if (!showRangeGizmos) return;
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].maxDistance);
-            Gizmos.DrawWireSphere(transform.position, turretStats[TurretLevel - 1].minDistance);
+            Gizmos.DrawWireSphere(transform.position, RangeMin);
+            Gizmos.DrawWireSphere(transform.position, RangeMax);
             
-            if (showExplosion)
+            if (_showExplosion)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(explosionPosition, explosionRadius);
+                Gizmos.DrawWireSphere(_explosionPosition, explosionRadius);
             }
         }
             

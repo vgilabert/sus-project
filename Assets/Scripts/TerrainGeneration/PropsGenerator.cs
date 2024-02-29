@@ -14,7 +14,6 @@ namespace TerrainGeneration
             Random Random = new Random();
             for (int i = 0; i < vertices.Length; i += Random.Next(10, 50))
             {
-                Debug.Log(i);
                 if (vertices[i].y > 1)
                 {
                     propsData.AddBuilding(vertices[i] + new Vector3(position.x, 0, position.y));

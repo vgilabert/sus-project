@@ -95,7 +95,6 @@ using System.Collections.Generic;
 	 
 	 public void RequestPropsData(MeshData meshData, Vector2 position, Action<PropsData> callback)
 	 {
-		 Debug.Log("RequestPropsData");
 		 Task.Run(() =>
 		 {
 			 PropsDataThread(meshData, position, callback);

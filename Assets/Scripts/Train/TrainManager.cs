@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using Items;
+using Character;
 using Train;
+using Train.UpgradesStats;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public enum WagonType
@@ -16,7 +19,11 @@ public class TrainManager : IDamageable
     private GameObject engine;
     private List<Wagon> wagons;
     private SplineFollower engineFollower;
-
+    private Inventory _playerInventory;
+    
+    [Header("Turrets Stats"), Space(5)]
+    [SerializeField] public TurretStat[] gatlingStats;
+    [SerializeField] public TurretStat[] missileStats;
     
     [Header("Prefabs"), Space(5)]
     [SerializeField] GameObject enginePrefab;
@@ -39,6 +46,7 @@ public class TrainManager : IDamageable
     {
         base.Start();
         wagons = new List<Wagon>();
+        _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         InitializeEngine();
     }
 
@@ -51,21 +59,36 @@ public class TrainManager : IDamageable
         engineFollower.followSpeed = speed;
     }
 
-    void AddCart(WagonType type)
+    private void BuyWagon(WagonType type)
     {
-        Wagon wagon;
-        
+        int cost = int.MaxValue;
+        GameObject prefab = null;
         switch (type)
         {
-            case WagonType.Missile:
-                wagon = Instantiate(missilePrefab, transform).GetComponent<Wagon>();
-                break;
             case WagonType.Gatling:
-                wagon = Instantiate(gatlingPrefab, transform).GetComponent<Wagon>();
+                prefab = gatlingPrefab;
+                cost = gatlingStats[0].cost;
+                break;
+            case WagonType.Missile:
+                prefab = missilePrefab;
+                cost = missileStats[0].cost;
                 break;
             default:
                 return;
         }
+        if (_playerInventory.TrySpendScarp(cost))
+        {
+            BuildWagon(prefab);
+        }
+        else
+        {
+            Debug.Log("Not enough scrap (" + _playerInventory.Scarp + " < 100)"); 
+        }
+    }
+    
+    private void BuildWagon(GameObject prefab)
+    {
+        Wagon wagon = Instantiate(prefab, transform).GetComponent<Wagon>();
         SetPositionOnSpline(wagon);
         wagons.Add(wagon);
     }
@@ -91,11 +114,11 @@ public class TrainManager : IDamageable
         ProgressManager.Instance.UpdateProgress(enginePos);
         if (Input.GetKeyDown(KeyCode.E))
         {
-            AddCart(WagonType.Gatling);
+            BuyWagon(WagonType.Gatling);
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            AddCart(WagonType.Missile);
+            BuyWagon(WagonType.Missile);
         }
     }
     

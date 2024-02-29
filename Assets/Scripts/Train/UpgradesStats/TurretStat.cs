@@ -7,9 +7,11 @@ namespace Train.UpgradesStats
         public int cost;
         public int damage;
         public float timeBetweenShots;
-        public float explosionRadius;
         public bool piercingAmmo;
         public float maxDistance;
         public float minDistance;
+        
+        public float explosionRadius;
+        public float flightDuration;
     }
 }
