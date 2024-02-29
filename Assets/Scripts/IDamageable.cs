@@ -6,9 +6,11 @@ public abstract class IDamageable : MonoBehaviour
     private StatusIndicator statusIndicator;
     
     [SerializeField] private float maxHealth;
-    protected float MaxHealth => maxHealth;
+    public float MaxHealth => maxHealth;
     protected float health;
+    public float Health => health;
     protected bool dead;
+    public bool Dead => dead;
 
     public static event System.Action OnDeath;
 

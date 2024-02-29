@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VFX_Controllers;
@@ -39,52 +42,63 @@ namespace Character
             {
                 shootTimer = Time.time + msBetweenShots / 1000;
                 Vector3 shootingDirection = transform.forward;
-                IDamageable[] entities = FindObjectsByType<IDamageable>(FindObjectsSortMode.None);
+                var target = FindTarget(shootingDirection);
 
-                List<IDamageable> entitiesInSight = new();
-                foreach (IDamageable entity in entities)
-                {
-                    Transform enemyTransform = entity.transform;
-
-                    Vector3 enemyDirection = (enemyTransform.position - transform.position).normalized;
-
-                    if (Vector3.Dot(shootingDirection, enemyDirection) > 0.995f) // ajustez ce seuil selon vos besoins
-                    {
-                        entitiesInSight.Add(entity);
-                    }
-                }
-
-                var trail = Instantiate(bulletEffect, transform.position, transform.rotation);
+                var trail = Instantiate(bulletEffect, transform.position, Quaternion.identity);
                 var trailScript = trail.GetComponent<BulletEffect>();
                 
-                if (entitiesInSight.Count == 0)
+                if (target)
                 {
-                    trailScript.SetTargetPosition(transform.position + shootingDirection * 50);
-                    return;
+                    trailScript.SetTargetPosition(target.transform.position);
+                    target.TakeHit(Damage);
                 }
-
-
-                IDamageable closestEnemy = null;
-                float closestDistance = float.MaxValue;
-                foreach (IDamageable enemy in entitiesInSight)
+                else
                 {
-                    if (enemy == null) continue;
-                    float distance = Vector3.Distance(enemy.transform.position, transform.position);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestEnemy = enemy;
-                    }
+                    trailScript.SetTargetPosition(target.transform.position);
                 }
+            }
+        }
+
+        private Enemy FindTarget(Vector3 shootingDirection)
+        {
+            NativeArray<float3> enemies = CrowdController.Instance.GetEnemyPositions();
+            var enemyCount = CrowdController.Instance.GetEnemyCount();
+            if (enemyCount == 0)
+                return null;
+            NativeArray<float3> entitiesInSight = new NativeArray<float3>(enemyCount, Allocator.Persistent);
+            
+            for(int i = 0; i < enemyCount-1; i++)
+            {
+                float3 position = new float3(transform.position.x, transform.position.y, transform.position.z);
+                float3 enemyDirection = math.abs(enemies[i] - position);
+                Debug.Log(Vector3.Dot(shootingDirection, enemyDirection));
                 
-                if (!closestEnemy)
-                    return;
-                
-                trailScript.SetTargetPosition(closestEnemy.transform.position);
-                closestEnemy.TakeHit(Damage);
-                
+                if (Vector3.Dot(shootingDirection, enemyDirection) > 0.995f)
+                {
+                    entitiesInSight[i] = enemies[i];
+                }
+            }
+            if (entitiesInSight.Length == 0)
+            {
+                return null;
             }
 
+            NativeArray<int> nearestTargetIndex = new NativeArray<int>(1, Allocator.Persistent);
+            FindClosestTarget findClosestJob = new FindClosestTarget
+            {
+                TargetPositions = entitiesInSight,
+                SeekerPosition = transform.position,
+                NearestTargetIndex = nearestTargetIndex,
+                maxDistance = 50,
+                minDistance = 0
+            };
+            JobHandle jobHandle = findClosestJob.Schedule();
+            jobHandle.Complete();
+            
+            var enemy = CrowdController.Instance.GetEnemyList()[nearestTargetIndex[0]];
+            nearestTargetIndex.Dispose();
+            entitiesInSight.Dispose();
+            return enemy;
         }
 
         public void Shoot(InputAction.CallbackContext context)

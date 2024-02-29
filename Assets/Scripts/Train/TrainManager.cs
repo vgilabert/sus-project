@@ -82,7 +82,7 @@ public class TrainManager : IDamageable
         }
         else
         {
-            Debug.Log("Not enough scrap (" + _playerInventory.Scarp + " < 100)"); 
+            Debug.Log("Not enough scrap (" + _playerInventory.Scarp + " < )" + cost); 
         }
     }
     

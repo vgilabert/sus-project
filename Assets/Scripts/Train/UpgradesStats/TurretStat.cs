@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Train.UpgradesStats
 {
+    [CreateAssetMenu(fileName = "TurretStat", menuName = "Train/Upgrades/TurretStat")]
     public class TurretStat : ScriptableObject
     {
         public int cost;
