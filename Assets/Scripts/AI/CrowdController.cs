@@ -1,9 +1,10 @@
-using System.Collections.Generic;
+ using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Jobs;
 
 public  class CrowdController :MonoBehaviour
 {
@@ -17,7 +18,7 @@ public  class CrowdController :MonoBehaviour
             return instance;
         }
     }
-
+    TransformAccessArray enemyTransforms;
     List<Enemy> enemyList = new List<Enemy>();
     List<IDamageable> targetList = new List<IDamageable>();
     List<LootBox> lootBoxList = new List<LootBox>();

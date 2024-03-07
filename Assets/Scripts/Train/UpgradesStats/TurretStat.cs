@@ -6,6 +6,8 @@ namespace Train.UpgradesStats
     public class TurretStat : ScriptableObject
     {
         public int cost;
+        public int powerCost;
+
         public int damage;
         public float timeBetweenShots;
         public bool piercingAmmo;

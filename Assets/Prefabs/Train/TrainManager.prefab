@@ -54,6 +54,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 652dd0b4c98a9ce48805c9ecd66ba43b, type: 2}
   - {fileID: 11400000, guid: b1bd8c46f6141374fadaf83d6549a772, type: 2}
   - {fileID: 11400000, guid: 1f23276e5a7203e499f1aee78f8b4414, type: 2}
+  engineStats:
+  - {fileID: 11400000, guid: aa4c0be34144df444a6e41246fb0c7ac, type: 2}
+  - {fileID: 11400000, guid: c45589e37bfad1749b7ef281dda3130a, type: 2}
+  - {fileID: 11400000, guid: 9c319e7fbeb9884439d7c0e66c964d1a, type: 2}
   enginePrefab: {fileID: 2775865428634822071, guid: 2e1e61624593caa4192e59ec44e02096,
     type: 3}
   missilePrefab: {fileID: 4864147977493643692, guid: 0f07eb6fda6a7c84789c980b4e9efd7b,

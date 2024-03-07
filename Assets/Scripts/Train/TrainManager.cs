@@ -12,6 +12,7 @@ public enum WagonType
 {
     Missile,
     Gatling,
+    Engine
 }
 
 public class TrainManager : IDamageable
@@ -21,9 +22,10 @@ public class TrainManager : IDamageable
     private SplineFollower engineFollower;
     private Inventory _playerInventory;
     
-    [Header("Turrets Stats"), Space(5)]
+    [Header("Cart Stats"), Space(5)]
     [SerializeField] public TurretStat[] gatlingStats;
     [SerializeField] public TurretStat[] missileStats;
+    [SerializeField] public EngineStat[] engineStats;
     
     [Header("Prefabs"), Space(5)]
     [SerializeField] GameObject enginePrefab;
@@ -56,7 +58,8 @@ public class TrainManager : IDamageable
         engine.transform.position = spline.EvaluatePosition(0);
         engineFollower = engine.GetComponent<SplineFollower>();
         engineFollower.spline = spline;
-        engineFollower.followSpeed = speed;
+        engineFollower.followSpeed = engineStats[0].speed;
+        MaxHealth = engineStats[0].maxHealth;
     }
 
     private void BuyWagon(WagonType type)
