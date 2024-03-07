@@ -131,13 +131,12 @@ public class EndlessTerrain : MonoBehaviour
             {
                 int buildingsCount = mapGenerator.buildingPrefabs.Length;
                 int random = Random.Range(0, buildingsCount - 1);
-                Instantiate(mapGenerator.buildingPrefabs[random], buildingPosition, Quaternion.identity,
-                    meshObject.transform);
+                Instantiate(mapGenerator.buildingPrefabs[random], buildingPosition, Quaternion.identity);
             }
 
             foreach (var lootBoxPosition in propsData.lootBoxPosition)
             {
-                Instantiate(mapGenerator.lootBoxPrefab, lootBoxPosition, Quaternion.identity, meshObject.transform);
+                Instantiate(mapGenerator.lootBoxPrefab, lootBoxPosition, Quaternion.identity);
             }
         }
 
