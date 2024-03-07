@@ -1,5 +1,6 @@
 using System;
 using Items;
+using UnityEngine;
 
 public class LootBox : IDamageable
 {
@@ -26,5 +27,13 @@ public class LootBox : IDamageable
     private void GenerateLoot()
     {
         itemToLoot = new IConsumable[] {new AirStrike(), new RepairKit(), new TrainBoost()}[UnityEngine.Random.Range(0, 3)];
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Die();
+        }
     }
 }

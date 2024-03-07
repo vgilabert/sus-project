@@ -20,18 +20,25 @@ public  class CrowdController :MonoBehaviour
 
     List<Enemy> enemyList = new List<Enemy>();
     List<IDamageable> targetList = new List<IDamageable>();
-    
+    List<LootBox> lootBoxList = new List<LootBox>();
+
     NativeArray<float3> enemyPositions;
     NativeArray<float3> targetPositions;
+    NativeArray<float3> lootBoxPositions;
+
     NativeArray<float3> NearestTargetPositions;
     NativeArray<int> NearestTargetIndex;
+    NativeArray<float3> NearestLootBoxPositions;
 
     void OnDestroy()
     {
         enemyPositions.Dispose();
         targetPositions.Dispose();
+        lootBoxPositions.Dispose();
+
         NearestTargetPositions.Dispose();
         NearestTargetIndex.Dispose(); 
+        NearestLootBoxPositions.Dispose();
     }
     private void Awake()
     {
@@ -43,8 +50,11 @@ public  class CrowdController :MonoBehaviour
     {
         enemyPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
         targetPositions = new NativeArray<float3>(targetList.Count, Allocator.Persistent);
+        lootBoxPositions = new NativeArray<float3>(lootBoxList.Count, Allocator.Persistent);
+        
         NearestTargetPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
         NearestTargetIndex = new NativeArray<int>(enemyList.Count, Allocator.Persistent);
+        NearestLootBoxPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
     }
 
     // Update is called once per frame
@@ -55,6 +65,7 @@ public  class CrowdController :MonoBehaviour
             enemyPositions.Dispose();
             NearestTargetPositions.Dispose();
             NearestTargetIndex.Dispose();
+            
             enemyPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
             NearestTargetPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
             NearestTargetIndex = new NativeArray<int>(enemyList.Count, Allocator.Persistent);

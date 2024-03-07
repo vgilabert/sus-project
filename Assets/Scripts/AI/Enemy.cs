@@ -127,8 +127,8 @@ public class Enemy : IDamageable
         }
         if(damagetext)
         {
-            Instantiate(damagetext.gameObject, transform.position + Vector3.up*2, Quaternion.identity);
-            damagetext.GetComponent<DamageInfos>().SetDamage(damage);
+            var text =Instantiate(damagetext.gameObject, transform.position + Vector3.up*2, Quaternion.identity);
+            text.GetComponent<DamageInfos>().SetDamage(damage);
         }
         base.TakeHit(damage, hitDirection);
     }

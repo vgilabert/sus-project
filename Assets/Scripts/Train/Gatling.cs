@@ -17,7 +17,6 @@ namespace Train
             base.Start();
             Stats = trainManager.gatlingStats;
             ApplyStats(Stats[TurretLevel - 1]);
-            Debug.Log(TimeBetweenShots);
         }
 
         protected override void ApplyStats(TurretStat turretStat)
