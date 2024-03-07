@@ -45,6 +45,7 @@ namespace Character
             {
                 shootTimer = Time.time + msBetweenShots / 1000;
                 Vector3 shootingDirection = transform.forward;
+
                 var target = FindTarget(shootingDirection);
 
                 var trail = Instantiate(bulletEffect, transform.position, Quaternion.identity);
@@ -69,14 +70,37 @@ namespace Character
             var enemyCount = CrowdController.Instance.GetEnemyCount();
             if (enemyCount == 0)
                 return null; 
-            NativeArray<float3> enemyPositions = CrowdController.Instance.GetEnemyPositions();
+
             List<Enemy> enemies = CrowdController.Instance.GetEnemyList();
 
             NativeArray<int> nearestTargetIndex = new NativeArray<int>(1, Allocator.Persistent);
+            
+            NativeArray<float3> enemyPositionsInSight = new NativeArray<float3>(enemyCount, Allocator.Persistent);
+            bool found = false;
+
+            for (int i = 0; i < enemyCount; i++)
+            {
+                var e = enemies[i];
+                if (e)
+                {
+                    var direction = e.transform.position - transform.position;
+                    if (Vector3.Dot(Vector3.Normalize(direction), Vector3.Normalize(shootingDirection)) > 0.99f)
+                    {
+                        enemyPositionsInSight[i] = e.transform.position;
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                nearestTargetIndex.Dispose();
+                return null;
+            }
 
             FindClosestTarget findClosestJob = new FindClosestTarget
             {
-                TargetPositions = enemyPositions,
+                TargetPositions = enemyPositionsInSight,
                 SeekerPosition = transform.position,
                 NearestTargetIndex = nearestTargetIndex,
                 maxDistance = Range,

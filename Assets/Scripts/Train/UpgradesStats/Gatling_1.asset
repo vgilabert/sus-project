@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Gatling_1
   m_EditorClassIdentifier: 
   cost: 50
-  damage: 3
-  timeBetweenShots: 0.1
+  damage: 2
+  timeBetweenShots: 0.12
   piercingAmmo: 0
   maxDistance: 20
   minDistance: 0
