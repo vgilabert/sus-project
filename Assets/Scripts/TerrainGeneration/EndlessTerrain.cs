@@ -28,7 +28,7 @@ public class EndlessTerrain : MonoBehaviour
         chunkSize = MapGenerator.mapChunkSize - 1;
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
         navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
-        viewer = FindFirstObjectByType<Engine>().transform;
+        viewer = mapGenerator.viewer;
     }
 
     void Update()

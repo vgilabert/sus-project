@@ -18,29 +18,26 @@ public  class CrowdController :MonoBehaviour
             return instance;
         }
     }
+    
     TransformAccessArray enemyTransforms;
     List<Enemy> enemyList = new List<Enemy>();
     List<IDamageable> targetList = new List<IDamageable>();
-    List<LootBox> lootBoxList = new List<LootBox>();
 
     NativeArray<float3> enemyPositions;
     NativeArray<float3> targetPositions;
-    NativeArray<float3> lootBoxPositions;
 
     NativeArray<float3> NearestTargetPositions;
     NativeArray<int> NearestTargetIndex;
-    NativeArray<float3> NearestLootBoxPositions;
 
     void OnDestroy()
     {
         enemyPositions.Dispose();
         targetPositions.Dispose();
-        lootBoxPositions.Dispose();
 
         NearestTargetPositions.Dispose();
         NearestTargetIndex.Dispose(); 
-        NearestLootBoxPositions.Dispose();
     }
+    
     private void Awake()
     {
         instance = this;
@@ -51,11 +48,9 @@ public  class CrowdController :MonoBehaviour
     {
         enemyPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
         targetPositions = new NativeArray<float3>(targetList.Count, Allocator.Persistent);
-        lootBoxPositions = new NativeArray<float3>(lootBoxList.Count, Allocator.Persistent);
         
         NearestTargetPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
         NearestTargetIndex = new NativeArray<int>(enemyList.Count, Allocator.Persistent);
-        NearestLootBoxPositions = new NativeArray<float3>(enemyList.Count, Allocator.Persistent);
     }
 
     // Update is called once per frame
@@ -81,15 +76,10 @@ public  class CrowdController :MonoBehaviour
         for (int i = 0; i < enemyList.Count; i++)
         {
             enemyPositions[i] = enemyList[i].transform.position;
-            enemyList[i].SetNearestTargetPositionAndIndex(NearestTargetPositions[i], NearestTargetIndex[i]);
         }
         
         for (int i = 0; i < targetList.Count; i++)
         {
-            if (targetList[i] == null)
-            {
-                continue;
-            }
             targetPositions[i] = targetList[i].transform.position;
         }
         
@@ -109,6 +99,11 @@ public  class CrowdController :MonoBehaviour
         // here until the job is done.
 
         findHandle.Complete();
+        
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            enemyList[i].SetNearestTargetPositionAndIndex(NearestTargetPositions[i], NearestTargetIndex[i]);
+        }
     }
 
     public NativeArray<float3> GetEnemyPositions() => enemyPositions;
@@ -126,7 +121,6 @@ public  class CrowdController :MonoBehaviour
     public void RemoveAgent(Enemy agent)
     {
         int index = enemyList.IndexOf(agent);
-
         enemyList.RemoveAt(index);
     } 
     

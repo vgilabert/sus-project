@@ -38,6 +38,7 @@ namespace Train
         protected override IEnumerator Shoot()
         {
             CanShoot = false;
+            var target = Target.transform.position;
             var trail = Instantiate(RocketEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             var trailScript = trail.GetComponent<RocketEffect>();
             trailScript.SetTargetPosition(Target.transform.position);
@@ -46,13 +47,13 @@ namespace Train
             var timeToWait = flightDuration;
             yield return new WaitForSeconds(timeToWait);
             
-            ProcessExplosion();
+            ProcessExplosion(target);
 
             yield return new WaitForSeconds(TimeBetweenShots - timeToWait);
             CanShoot = true;
         }
 
-        private void ProcessExplosion()
+        private void ProcessExplosion(Vector3 target)
         {
             int enemyCount = CrowdController.Instance.GetEnemyCount();
             
@@ -64,7 +65,7 @@ namespace Train
             
             ExplosionJob explosionJob = new ExplosionJob
             {
-                explosionPosition = Target.transform.position,
+                explosionPosition = target,
                 explosionRadius = explosionRadius,
                 enemyPositions = enemyPositions,
                 enemyIndexes = enemyIndexesAffected

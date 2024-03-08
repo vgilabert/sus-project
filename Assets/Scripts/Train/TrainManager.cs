@@ -17,7 +17,6 @@ public enum WagonType
 
 public class TrainManager : IDamageable
 {
-    private GameObject engine;
     private List<Wagon> wagons;
     public List<Wagon> Wagons => wagons;
     private SplineFollower engineFollower;
@@ -29,12 +28,12 @@ public class TrainManager : IDamageable
     [SerializeField] public EngineStat[] engineStats;
     
     [Header("Prefabs"), Space(5)]
-    [SerializeField] GameObject enginePrefab;
     [SerializeField] GameObject missilePrefab;
     [SerializeField] GameObject gatlingPrefab;
     
     [Space(15)]
     
+    [SerializeField] private GameObject engine;
     [SerializeField] SplineComputer spline;
 
     private int power;
@@ -58,7 +57,6 @@ public class TrainManager : IDamageable
 
     void InitializeEngine()
     {
-        engine = Instantiate(enginePrefab, transform);
         engine.transform.position = spline.EvaluatePosition(0);
         engineFollower = engine.GetComponent<SplineFollower>();
         engineFollower.spline = spline;

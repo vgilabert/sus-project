@@ -41,6 +41,8 @@ public class MapGenerator : MonoBehaviour
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new();
 	Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new();
 	Queue<MapThreadInfo<PropsData>> propsDataThreadInfoQueue = new();
+	
+	public Transform viewer;
 
 	private void Start()
 	{
