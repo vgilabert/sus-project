@@ -85,11 +85,11 @@ public class TrainManager : IDamageable
         {
             case WagonType.Gatling:
                 prefab = gatlingPrefab;
-                cost = gatlingStats[0].cost;
+                cost = gatlingStats[0].scrapCost;
                 break;
             case WagonType.Rocket:
                 prefab = missilePrefab;
-                cost = missileStats[0].cost;
+                cost = missileStats[0].scrapCost;
                 break;
             default:
                 return;

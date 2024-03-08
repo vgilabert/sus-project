@@ -5,7 +5,7 @@ namespace Train.UpgradesStats
     [CreateAssetMenu(fileName = "TurretStat", menuName = "Train/Upgrades/TurretStat")]
     public class TurretStat : ScriptableObject
     {
-        public int cost;
+        public int scrapCost;
         public int powerCost;
 
         public int damage;

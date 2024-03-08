@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Character;
 using Train;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UITrainController : MonoBehaviour
@@ -14,6 +15,11 @@ public class UITrainController : MonoBehaviour
     [SerializeField] private GameObject gatlingUIPrefab;
     [SerializeField] private GameObject rocketUIPrefab;
 
+    [SerializeField] private Color availaibleScrapTextColor;
+    [SerializeField] private Color unavailaibleScrapTextColor;
+    [SerializeField] private Color availaiblePowerTextColor;
+    [SerializeField] private Color unavailaiblePowerTextColor;
+
     private GameObject trainPartsLayout;
     private List<UIAddWagonButton> buttons;
     
@@ -21,26 +27,30 @@ public class UITrainController : MonoBehaviour
     {
         buttons = new List<UIAddWagonButton>(transform.GetComponentsInChildren<UIAddWagonButton>());
         trainPartsLayout = transform.Find("Train Parts").gameObject;
+        foreach (var button in buttons)
+        {
+            button.SetScrapCostText();
+            button.SetPowerCostText();
+        }
     }
 
     private void FixedUpdate()
     {
         UpdateTrainParts();
         UpdateButtons();
+
     }
     
     private void UpdateButtons()
     {
         foreach (var button in buttons)
         {
-            if (button.turretStat.cost <= inventory.Scrap)
-            {
-                button.EnableButton();
-            }
-            else
-            {
-                button.DisableButton();
-            }
+            button.hasEnoughScrap = button.turretStat.scrapCost <= inventory.Scrap;
+            button.hasEnoughPower = button.turretStat.powerCost <= trainManager.GetAvailablePower();
+            button.EnableButton();
+
+            button.SetScrapCostTextColor(button.hasEnoughScrap ? availaibleScrapTextColor : unavailaibleScrapTextColor);
+            button.SetPowerCostTextColor(button.hasEnoughPower ? availaiblePowerTextColor : unavailaiblePowerTextColor);
         }
     }
     

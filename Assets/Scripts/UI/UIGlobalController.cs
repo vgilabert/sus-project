@@ -13,6 +13,7 @@ public class UIGlobalController : MonoBehaviour
     public static Action<bool> setGamePause = delegate {  };
     
     public TextMeshProUGUI scrapText;
+    public TextMeshProUGUI powerAmountText;
 
     private void OnEnable()
     {
@@ -23,6 +24,11 @@ public class UIGlobalController : MonoBehaviour
     {
         if (scrapText == null) return;
         scrapText.text = scrap.ToString();
+    }
+
+    public void SetPowerAmount(int power)
+    {
+        powerAmountText.text = power.ToString();
     }
 
     public void OnTrainMenuOpen(InputAction.CallbackContext context)
