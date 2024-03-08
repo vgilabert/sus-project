@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 
 public enum WagonType
 {
-    Missile,
+    Rocket,
     Gatling,
     Engine
 }
@@ -19,6 +19,7 @@ public class TrainManager : IDamageable
 {
     private GameObject engine;
     private List<Wagon> wagons;
+    public List<Wagon> Wagons => wagons;
     private SplineFollower engineFollower;
     private Inventory _playerInventory;
     
@@ -36,9 +37,12 @@ public class TrainManager : IDamageable
     
     [SerializeField] SplineComputer spline;
     [SerializeField] float speed;
-    
+
+    [SerializeField] private int power;
+
     protected void OnEnable()
     {
+        //TODO: A mettre autre part?
         TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
@@ -49,6 +53,7 @@ public class TrainManager : IDamageable
         base.Start();
         wagons = new List<Wagon>();
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
+        power = engineStats[0].power;
         InitializeEngine();
     }
 
@@ -62,6 +67,16 @@ public class TrainManager : IDamageable
         MaxHealth = engineStats[0].maxHealth;
     }
 
+    public void BuyGatling()
+    {
+        BuyWagon(WagonType.Gatling);
+    }
+    
+    public void BuyRocket()
+    {
+        BuyWagon(WagonType.Rocket);
+    }
+    
     private void BuyWagon(WagonType type)
     {
         int cost = int.MaxValue;
@@ -72,7 +87,7 @@ public class TrainManager : IDamageable
                 prefab = gatlingPrefab;
                 cost = gatlingStats[0].cost;
                 break;
-            case WagonType.Missile:
+            case WagonType.Rocket:
                 prefab = missilePrefab;
                 cost = missileStats[0].cost;
                 break;
@@ -85,7 +100,7 @@ public class TrainManager : IDamageable
         }
         else
         {
-            Debug.Log("Not enough scrap (" + _playerInventory.Scarp + " < )" + cost); 
+            Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + cost); 
         }
     }
     
@@ -121,7 +136,7 @@ public class TrainManager : IDamageable
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            BuyWagon(WagonType.Missile);
+            BuyWagon(WagonType.Rocket);
         }
     }
     
@@ -147,6 +162,19 @@ public class TrainManager : IDamageable
         {
             health += repairAmount;
         }
-        
+    }
+
+    public int GetAvailablePower()
+    {
+        int availablePower = power;
+        foreach (var wagon in wagons)
+        {
+            availablePower -= wagon.GetPowerCost();
+        }
+        return availablePower;
+    }
+    public void UpgradeWagon(Wagon wagon)
+    {
+        wagon.UpgradeTurret();
     }
 }

@@ -9,6 +9,8 @@ namespace Train.UpgradesStats
         public int powerCost;
 
         public int damage;
+        public int magazineSize;
+
         public float timeBetweenShots;
         public bool piercingAmmo;
         public float maxDistance;

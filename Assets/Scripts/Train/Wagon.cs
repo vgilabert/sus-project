@@ -93,7 +93,7 @@ namespace Train
             IsFacingTarget = Vector3.Angle(_turretObject.transform.forward, targetDirection) < 5;
         }
         
-        protected void UpgradeTurret()
+        public void UpgradeTurret()
         {
             if (TurretLevel < Stats.Length)
             {
@@ -115,6 +115,11 @@ namespace Train
         {
             ActualDamage = Stats[TurretLevel - 1].damage;
             TimeBetweenShots = Stats[TurretLevel - 1].timeBetweenShots;
+        }
+
+        public int GetPowerCost()
+        {
+            return Stats[TurretLevel - 1].powerCost;
         }
     }
 }

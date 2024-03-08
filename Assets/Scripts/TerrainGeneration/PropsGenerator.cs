@@ -21,7 +21,7 @@ namespace TerrainGeneration
                 }
                 else if (vertices[i].y == 0)
                 {
-                    if (Random.Next(0, 100) < 2)
+                    if (Random.Next(0, 100) < 1)
                         propsData.AddLootBox(vertices[i] + new Vector3(position.x, 0, position.y));
                 }
             }

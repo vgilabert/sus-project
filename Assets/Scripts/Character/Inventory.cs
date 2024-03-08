@@ -11,14 +11,16 @@ namespace Character
     public class Inventory : MonoBehaviour
     {
         [SerializeField]
-        private int _scarp;
+        private int _scrap;
 
-        public int Scarp {
-            get => _scarp;
-            private set => _scarp = value;
+        public int Scrap {
+            get => _scrap;
+            private set => _scrap = value;
         }
         
         public List<IConsumable> consumables;
+        
+        public static Action<int> OnScrapChange = delegate {  };
         
         private void OnEnable()
         {
@@ -72,14 +74,15 @@ namespace Character
         
         private void AddScrap(int amount)
         {
-            Scarp += amount;
+            Scrap += amount;
+            OnScrapChange?.Invoke(Scrap);
         }
         
         public bool TrySpendScarp(int amount)
         {
-            if (Scarp >= amount)
+            if (Scrap >= amount)
             {
-                Scarp -= amount;
+                AddScrap(-amount);
                 return true;
             }
             return false;
