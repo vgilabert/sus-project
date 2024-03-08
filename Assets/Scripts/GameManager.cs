@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Utils;
 
 public class GameManager : MonoSingleton<GameManager>
@@ -11,6 +11,11 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     bool showIndicators = true;
     
+    private void OnEnable()
+    {
+        UIGlobalController.setGamePause += SetGamePauseHandler;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -25,8 +30,13 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
    
+    public void SetGamePauseHandler(bool pause)
+    {
+        SetGamePause(pause);
+    }
+    
     public void SetGamePause(bool pause)
     {
-        Time.timeScale = pause ? 0 : 1; 
+        Time.timeScale = pause ? 0.1f : 1; 
     }
 }
