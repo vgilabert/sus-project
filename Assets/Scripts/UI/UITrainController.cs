@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Character;
+using TMPro;
 using Train;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -51,6 +52,9 @@ public class UITrainController : MonoBehaviour
 
             button.SetScrapCostTextColor(button.hasEnoughScrap ? availaibleScrapTextColor : unavailaibleScrapTextColor);
             button.SetPowerCostTextColor(button.hasEnoughPower ? availaiblePowerTextColor : unavailaiblePowerTextColor);
+            
+            button.SetScrapCostText();
+            button.SetPowerCostText();
         }
     }
     

@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 4957548511459566554, guid: d4f75bcb987f3e140bee720994bfe358,
         type: 3}
       propertyPath: m_Name
-      value: Add Turret Button
+      value: Add Rocket Button
       objectReference: {fileID: 0}
     - target: {fileID: 5117136791897295548, guid: d4f75bcb987f3e140bee720994bfe358,
         type: 3}
@@ -113,6 +113,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5261341256300849946, guid: d4f75bcb987f3e140bee720994bfe358,
+        type: 3}
+      propertyPath: turretStat
+      value: 
+      objectReference: {fileID: 11400000, guid: 652dd0b4c98a9ce48805c9ecd66ba43b,
+        type: 2}
+    - target: {fileID: 6177136473786287034, guid: d4f75bcb987f3e140bee720994bfe358,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f0075900501d1d4498fdd37773e776c5,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

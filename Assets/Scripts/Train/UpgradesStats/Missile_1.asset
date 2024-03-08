@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e547a566d2cf14088ea1977e11ad04, type: 3}
   m_Name: Missile_1
   m_EditorClassIdentifier: 
-  cost: 100
+  scrapCost: 100
+  powerCost: 0
   damage: 3
+  magazineSize: 0
   timeBetweenShots: 0.8
   piercingAmmo: 0
   maxDistance: 40

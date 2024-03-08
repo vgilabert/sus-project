@@ -36,13 +36,12 @@ public class TrainManager : IDamageable
     [Space(15)]
     
     [SerializeField] SplineComputer spline;
-    [SerializeField] float speed;
 
-    [SerializeField] private int power;
+    private int power;
+    private float speed;
 
     protected void OnEnable()
     {
-        //TODO: A mettre autre part?
         TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;

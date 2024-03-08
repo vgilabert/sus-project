@@ -16,6 +16,7 @@ public class UIAddWagonButton : MonoBehaviour
     public void SetScrapCostText()
     {
         ScrapCostText.text = turretStat.scrapCost.ToString();
+        Debug.Log("ScrapCostText: " + turretStat.scrapCost);
     }
 
     public void SetPowerCostText()

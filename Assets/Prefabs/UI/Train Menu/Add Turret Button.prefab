@@ -284,7 +284,6 @@ GameObject:
   - component: {fileID: 2110508861111266292}
   - component: {fileID: 4579231274154904247}
   - component: {fileID: 5261341256300849946}
-  - component: {fileID: -3232340926915910612}
   m_Layer: 5
   m_Name: Add Turret Button
   m_TagString: Untagged
@@ -395,19 +394,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5331383355930675267}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &4579231274154904247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,38 +427,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1121996dd0c444298a9970c03c1515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretStat: {fileID: 11400000, guid: 652dd0b4c98a9ce48805c9ecd66ba43b, type: 2}
+  turretStat: {fileID: 0}
   ScrapCostText: {fileID: 8502384817649781761}
   PowerCostText: {fileID: 8481642214960010748}
---- !u!114 &-3232340926915910612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4957548511459566554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: TrainManager, Assembly-CSharp
-          m_MethodName: BuyRocket
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  hasEnoughScrap: 0
+  hasEnoughPower: 0
 --- !u!1 &5951299783182458115
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0075900501d1d4498fdd37773e776c5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
