@@ -102,12 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   rotationSpeed: 5
-  turretStats:
-  - {fileID: 11400000, guid: 652dd0b4c98a9ce48805c9ecd66ba43b, type: 2}
-  - {fileID: 11400000, guid: b1bd8c46f6141374fadaf83d6549a772, type: 2}
-  - {fileID: 11400000, guid: 1f23276e5a7203e499f1aee78f8b4414, type: 2}
-  rangeMin: 8
-  rangeMax: 20
   RocketEffect: {fileID: 6564854149081687911, guid: 691cb33fb9ced0c448808e803ee2dd35,
+    type: 3}
+  ExplosionEffect: {fileID: 3891965361428926206, guid: a0f26140a4519e042aab1325dadca79d,
     type: 3}
   showRangeGizmos: 1

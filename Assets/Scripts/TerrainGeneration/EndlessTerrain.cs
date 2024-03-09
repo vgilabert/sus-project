@@ -22,6 +22,8 @@ public class EndlessTerrain : MonoBehaviour
 
     static NavMeshSurface navMeshSurface;
 
+    static Transform propsParent;
+
     void Start()
     {
         mapGenerator = FindFirstObjectByType<MapGenerator>();
@@ -29,6 +31,8 @@ public class EndlessTerrain : MonoBehaviour
         chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
         navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
         viewer = mapGenerator.viewer;
+        propsParent = new GameObject("Props").transform;
+        propsParent.parent = transform;
     }
 
     void Update()
@@ -131,12 +135,12 @@ public class EndlessTerrain : MonoBehaviour
             {
                 int buildingsCount = mapGenerator.buildingPrefabs.Length;
                 int random = Random.Range(0, buildingsCount - 1);
-                Instantiate(mapGenerator.buildingPrefabs[random], buildingPosition, Quaternion.identity);
+                Instantiate(mapGenerator.buildingPrefabs[random], buildingPosition, Quaternion.identity, propsParent);
             }
 
             foreach (var lootBoxPosition in propsData.lootBoxPosition)
             {
-                Instantiate(mapGenerator.lootBoxPrefab, lootBoxPosition, Quaternion.identity);
+                Instantiate(mapGenerator.lootBoxPrefab, lootBoxPosition, Quaternion.identity, propsParent);
             }
         }
 

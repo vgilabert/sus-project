@@ -229,7 +229,7 @@ PrefabInstance:
         type: 3}
       propertyPath: deathEffect
       value: 
-      objectReference: {fileID: 6308025042270707187, guid: 222eb8c85794598459ea59070d53823f,
+      objectReference: {fileID: 5713202476810042757, guid: 30d62bb66b99e7446bca6fbace307894,
         type: 3}
     m_RemovedComponents:
     - {fileID: 2511529110778524772, guid: a366d4e752a8bb64fa82966a181c0aa9, type: 3}

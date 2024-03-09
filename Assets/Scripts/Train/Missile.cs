@@ -17,6 +17,7 @@ namespace Train
         private float flightDuration;
 
         [SerializeField] private GameObject RocketEffect;
+        [SerializeField] private GameObject ExplosionEffect;
 
         NativeArray<int> targetIndex; 
         
@@ -48,6 +49,7 @@ namespace Train
             yield return new WaitForSeconds(timeToWait);
             
             ProcessExplosion(target);
+            DisplayExplosion(target);
 
             yield return new WaitForSeconds(TimeBetweenShots - timeToWait);
             CanShoot = true;
@@ -89,6 +91,15 @@ namespace Train
             enemyIndexesAffected.Dispose();
         }
         
+        private void DisplayExplosion(Vector3 target)
+        {
+            if (!ExplosionEffect) return;
+            var explosion = Instantiate(ExplosionEffect, target, Quaternion.identity);
+            explosion.transform.rotation = Quaternion.Euler(90, 0, 0);
+            explosion.transform.localScale = new Vector3(explosionRadius, explosionRadius, explosionRadius);
+            Destroy(explosion, 0.5f);
+        }
+        
         private void OnDestroy()
         {
             targetIndex.Dispose();
@@ -125,6 +136,5 @@ namespace Train
         }
             
         #endregion
-        
     }
 }

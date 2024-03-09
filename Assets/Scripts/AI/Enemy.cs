@@ -137,7 +137,7 @@ public class Enemy : IDamageable
     {
         if (deathEffect)
         {
-            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity), 1.5f);
+            Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity), 0.5f);
         }
         CrowdController.Instance.RemoveAgent(this);
         base.Die();
