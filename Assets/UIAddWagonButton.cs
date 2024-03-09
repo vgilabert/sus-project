@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using Train.UpgradesStats;
 using UnityEngine;
@@ -13,16 +11,22 @@ public class UIAddWagonButton : MonoBehaviour
 
     public bool hasEnoughScrap;
     public bool hasEnoughPower;
+
+    Button _buttonScript;
+    
+    private void Start()
+    {
+        _buttonScript = gameObject.GetComponent<Button>();
+    }
+
     public void SetScrapCostText()
     {
         ScrapCostText.text = turretStat.scrapCost.ToString();
-        Debug.Log("ScrapCostText: " + turretStat.scrapCost);
     }
 
     public void SetPowerCostText()
     {
         PowerCostText.text = turretStat.powerCost.ToString();
-        Debug.Log("PowerCostText: " + turretStat.powerCost);
     }
 
     public void SetPowerCostTextColor(Color c)
@@ -37,7 +41,7 @@ public class UIAddWagonButton : MonoBehaviour
 
     public void EnableButton()
     {
-        gameObject.GetComponent<Button>().interactable = hasEnoughScrap && hasEnoughPower;
+        _buttonScript.interactable = hasEnoughScrap && hasEnoughPower;
     }
     
 }

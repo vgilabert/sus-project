@@ -12,22 +12,23 @@ public class UITrainController : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private TrainManager trainManager;
     
-    [SerializeField] private GameObject engineUIPrefab;
-    [SerializeField] private GameObject gatlingUIPrefab;
-    [SerializeField] private GameObject rocketUIPrefab;
+    [SerializeField] private GameObject gatlingPreviewPrefab;
+    [SerializeField] private GameObject rocketPreviewPrefab;
 
     [SerializeField] private Color availaibleScrapTextColor;
     [SerializeField] private Color unavailaibleScrapTextColor;
     [SerializeField] private Color availaiblePowerTextColor;
     [SerializeField] private Color unavailaiblePowerTextColor;
 
-    private GameObject trainPartsLayout;
+    private Transform trainPartsLayout;
+    private Transform wagonsLayout;
     private List<UIAddWagonButton> buttons;
     
     private void Awake()
     {
         buttons = new List<UIAddWagonButton>(transform.GetComponentsInChildren<UIAddWagonButton>());
-        trainPartsLayout = transform.Find("Train Parts").gameObject;
+        trainPartsLayout = transform.Find("Train Parts");
+        wagonsLayout = trainPartsLayout.Find("Wagons");
         foreach (var button in buttons)
         {
             button.SetScrapCostText();
@@ -37,9 +38,8 @@ public class UITrainController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateTrainParts();
+        UpdateWagons();
         UpdateButtons();
-
     }
     
     private void UpdateButtons()
@@ -58,23 +58,21 @@ public class UITrainController : MonoBehaviour
         }
     }
     
-    private void UpdateTrainParts()
+    private void UpdateWagons()
     {
-        foreach (Transform child in trainPartsLayout.transform)
+        foreach (Transform child in wagonsLayout)
         {
             Destroy(child.gameObject);
         }
-        Instantiate(engineUIPrefab, trainPartsLayout.transform);
-        trainPartsLayout.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (trainManager.Wagons.Count + 1) * 200 + 100);
-        foreach (var trainPart in trainManager.Wagons)
+        foreach (var wagon in trainManager.Wagons)
         {
-            if (trainPart is Missile)
+            if (wagon is Missile)
             {
-                Instantiate(rocketUIPrefab, trainPartsLayout.transform);
+                Instantiate(rocketPreviewPrefab, wagonsLayout);
             }
-            else if (trainPart is Gatling)
+            else if (wagon is Gatling)
             {
-                Instantiate(gatlingUIPrefab, trainPartsLayout.transform);
+                Instantiate(gatlingPreviewPrefab, wagonsLayout);
             }
         }
     }
