@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  engineSpacing: 5
+  wagonSpacing: 1.5
   gatlingStats:
   - {fileID: 11400000, guid: 40f7887559150c248a6a1bfda6207f44, type: 2}
   - {fileID: 11400000, guid: e4f7aa430b91b8b4f9edced79d5031fc, type: 2}
@@ -58,14 +60,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aa4c0be34144df444a6e41246fb0c7ac, type: 2}
   - {fileID: 11400000, guid: c45589e37bfad1749b7ef281dda3130a, type: 2}
   - {fileID: 11400000, guid: 9c319e7fbeb9884439d7c0e66c964d1a, type: 2}
-  enginePrefab: {fileID: 2775865428634822071, guid: 2e1e61624593caa4192e59ec44e02096,
-    type: 3}
   missilePrefab: {fileID: 4864147977493643692, guid: 0f07eb6fda6a7c84789c980b4e9efd7b,
     type: 3}
   gatlingPrefab: {fileID: 4864147977493643692, guid: 6cd49db97153952479d6dad461c42f28,
     type: 3}
+  engine: {fileID: 0}
   spline: {fileID: 0}
-  speed: 3
 --- !u!1001 &94008006402518790
 PrefabInstance:
   m_ObjectHideFlags: 0

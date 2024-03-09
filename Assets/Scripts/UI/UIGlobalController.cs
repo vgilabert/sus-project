@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Character;
 using TMPro;
 using UnityEngine;
@@ -20,7 +19,7 @@ public class UIGlobalController : MonoBehaviour
         Inventory.OnScrapChange += OnScrapChange;
     }
 
-    public void OnScrapChange(int scrap)
+    private void OnScrapChange(int scrap)
     {
         if (scrapText == null) return;
         scrapText.text = scrap.ToString();

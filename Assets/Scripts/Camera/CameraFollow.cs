@@ -1,3 +1,4 @@
+using Character;
 using Train;
 using UnityEngine;
 

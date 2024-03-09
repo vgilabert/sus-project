@@ -21,6 +21,12 @@ public class TrainManager : IDamageable
     public List<Wagon> Wagons => wagons;
     private SplineFollower engineFollower;
     private Inventory _playerInventory;
+
+    [Header("Train settings"), Space(5)] 
+    [SerializeField]
+    private float engineSpacing = 5.0f;
+    [SerializeField] 
+    private float wagonSpacing = 1.5f;
     
     [Header("Cart Stats"), Space(5)]
     [SerializeField] public TurretStat[] gatlingStats;
@@ -120,7 +126,7 @@ public class TrainManager : IDamageable
         {
             splinePositioner.followTarget = wagons[^1].GetComponent<SplineTracer>();
         }
-        splinePositioner.followTargetDistance = wagons.Count == 0 ? 2 : 1.5f;
+        splinePositioner.followTargetDistance = wagons.Count == 0 ? engineSpacing : wagonSpacing;
     }
 
     void Update()

@@ -86,7 +86,7 @@ public class Enemy : IDamageable
             yield return null;
         }
         
-        CrowdController.Instance.GetTarget(targetIndex).TakeHit(damage);
+        CrowdController.Instance.GetTarget(targetIndex)?.TakeHit(damage);
         
         skinMaterial.color = originalColour;
         currentState = State.Chasing;
