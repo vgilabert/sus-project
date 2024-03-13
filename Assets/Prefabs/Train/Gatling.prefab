@@ -92,6 +92,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   rotationSpeed: 50
-  bulletTrailEffect: {fileID: 6564854149081687911, guid: 1bee4d825208afc4581ef51a64cbb4e7,
+  projectileEffect: {fileID: 6564854149081687911, guid: 1bee4d825208afc4581ef51a64cbb4e7,
+    type: 3}
+  projectileEffectBoosted: {fileID: 6564854149081687911, guid: 96e8241220b01134b94a597bb167b817,
     type: 3}
   showRangeGizmos: 1

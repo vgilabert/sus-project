@@ -4,6 +4,7 @@ using Train.UpgradesStats;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Train
 {
@@ -11,9 +12,14 @@ namespace Train
     public abstract class Wagon : TrainPart
     {
         [Header("Wagon Stats"), Space(5)]
-
         [SerializeField] protected float rotationSpeed;
         
+        [Header("Prefabs"), Space(5)]
+        [SerializeField] private GameObject projectileEffect;
+        [SerializeField] private GameObject projectileEffectBoosted;
+        
+        protected GameObject CurrentProjectileEffect;
+
         protected TurretStat[] Stats { get; set; }
         protected bool CanShoot { get; set; } = true;
         protected int TurretLevel { get; private set; } = 1;
@@ -30,6 +36,7 @@ namespace Train
         protected override void Start()
         {
             base.Start();
+            CurrentProjectileEffect = projectileEffect;
             _turretObject = transform.GetChild(0).gameObject;
             TargetIndex = new NativeArray<int>(1, Allocator.Persistent);
         }
@@ -104,6 +111,7 @@ namespace Train
         
         public void ApplyBoost(float damageBoost, float fireRateBoost)
         {
+            CurrentProjectileEffect = projectileEffectBoosted;
             var dmg = Stats[TurretLevel - 1].damage;
             var timeBetweenShots = Stats[TurretLevel - 1].timeBetweenShots;
             
@@ -113,6 +121,7 @@ namespace Train
 
         public void RemoveBoost()
         {
+            CurrentProjectileEffect = projectileEffect;
             ActualDamage = Stats[TurretLevel - 1].damage;
             TimeBetweenShots = Stats[TurretLevel - 1].timeBetweenShots;
         }

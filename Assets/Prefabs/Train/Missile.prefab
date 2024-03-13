@@ -102,6 +102,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 0
   rotationSpeed: 5
+  projectileEffect: {fileID: 6564854149081687911, guid: 691cb33fb9ced0c448808e803ee2dd35,
+    type: 3}
+  projectileEffectBoosted: {fileID: 6564854149081687911, guid: 7491b64c4ce9ebb4dad8f2d3cac87b91,
+    type: 3}
   RocketEffect: {fileID: 6564854149081687911, guid: 691cb33fb9ced0c448808e803ee2dd35,
     type: 3}
   ExplosionEffect: {fileID: 3891965361428926206, guid: a0f26140a4519e042aab1325dadca79d,

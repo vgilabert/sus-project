@@ -15,8 +15,7 @@ namespace Train
     {
         private float explosionRadius;
         private float flightDuration;
-
-        [SerializeField] private GameObject RocketEffect;
+        
         [SerializeField] private GameObject ExplosionEffect;
 
         NativeArray<int> targetIndex; 
@@ -40,11 +39,14 @@ namespace Train
         {
             CanShoot = false;
             var target = Target.transform.position;
-            var trail = Instantiate(RocketEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
+            var trail = Instantiate(CurrentProjectileEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             var trailScript = trail.GetComponent<RocketEffect>();
-            trailScript.SetTargetPosition(Target.transform.position);
-            trailScript.SetFlightDuration(flightDuration);
-            
+            if (trailScript)
+            {
+                trailScript.SetTargetPosition(Target.transform.position);
+                trailScript.SetFlightDuration(flightDuration);
+            }
+
             var timeToWait = flightDuration;
             yield return new WaitForSeconds(timeToWait);
             

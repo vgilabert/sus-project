@@ -148,6 +148,7 @@ public class TrainManager : IDamageable
         foreach (var wagon in wagons)
         {
             wagon.ApplyBoost(damageBoost, fireRateBoost);
+            
         }
     }
 

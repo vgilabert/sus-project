@@ -8,8 +8,6 @@ namespace Train
 {
     public class Gatling : Wagon
     {
-        [SerializeField] private GameObject bulletTrailEffect;
-
         protected bool PiercingAmmo { get; private set; }
 
         protected override void Start()
@@ -28,10 +26,11 @@ namespace Train
         protected override IEnumerator Shoot()
         {
             CanShoot = false;
-            var trail = Instantiate(bulletTrailEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
+            var trail = Instantiate(CurrentProjectileEffect, transform.GetChild(0).position, transform.GetChild(0).rotation);
             Destroy(trail, 0.5f);
             var trailScript = trail.GetComponent<BulletEffect>();
-            trailScript.SetTargetPosition(Target.transform.position);
+            if (trailScript)
+                trailScript.SetTargetPosition(Target.transform.position);
             Target.TakeHit(ActualDamage);
             
             yield return new WaitForSeconds(TimeBetweenShots);
