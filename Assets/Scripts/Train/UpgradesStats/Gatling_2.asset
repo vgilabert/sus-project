@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e547a566d2cf14088ea1977e11ad04, type: 3}
   m_Name: Gatling_2
   m_EditorClassIdentifier: 
-  scrapCost: 200
+  scrapCost: 150
   powerCost: 0
-  damage: 8
+  damage: 3
   magazineSize: 0
-  timeBetweenShots: 0.13
+  timeBetweenShots: 0.5
   piercingAmmo: 0
-  maxDistance: 20
+  maxDistance: 40
   minDistance: 0
   explosionRadius: 0
   flightDuration: 0

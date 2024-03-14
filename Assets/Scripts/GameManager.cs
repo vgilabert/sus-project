@@ -34,6 +34,6 @@ public class GameManager : MonoSingleton<GameManager>
     
     public void SetGamePause(bool pause)
     {
-        Time.timeScale = pause ? 0.1f : 1; 
+        Time.timeScale = pause ? 0 : 1; 
     }
 }

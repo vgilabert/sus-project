@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using Items;
@@ -51,7 +52,7 @@ public class TrainManager : IDamageable
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
     }
-    
+
     protected override void Start()
     {
         base.Start();
@@ -177,8 +178,16 @@ public class TrainManager : IDamageable
         }
         return availablePower;
     }
-    public void UpgradeWagon(Wagon wagon)
+    
+    public void UpgradeWagon(int index)
     {
-        wagon.UpgradeTurret();
+        Debug.Log(index);
+        if (index > wagons.Count)
+            return;
+        var cost = wagons[index].GetNextUpgradeStats()?.scrapCost;
+        if (cost == null)
+            return;
+        if (_playerInventory.TrySpendScarp(cost.Value))
+            wagons[index].UpgradeTurret();
     }
 }

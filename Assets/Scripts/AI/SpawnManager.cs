@@ -15,6 +15,8 @@ namespace AI
         public int spawnCountIncrease = 1;
         public float spawnDelay = 0.0001f;
         
+        public bool useLinear = false;
+        
         private List<Spawner> _spawners = new();
         private SplineComputer _spline;
         
@@ -39,7 +41,15 @@ namespace AI
             {
                 var pos = spline.EvaluatePosition(i);
                 Spawner sp = Instantiate(spawnerPrefab, pos , Quaternion.identity, spawnManager.transform).GetComponent<Spawner>();
-                sp.count = (int) (baseSpawnCount + (i * spawnCountIncrease));
+                if (useLinear)
+                {
+                    // increase the spawn count using fibonacci sequence
+                    sp.count = (int)(i + 0.1f * i);
+                }
+                else
+                {
+                    sp.count = (int) (baseSpawnCount + (i * spawnCountIncrease));
+                }
                 sp.agentPrefab = spawnManager.dronePrefab;
                 sp.spawnOnAwake = false;
                 _spawners.Add(sp);

@@ -17,8 +17,8 @@ MonoBehaviour:
   damage: 15
   magazineSize: 0
   timeBetweenShots: 0.1
-  piercingAmmo: 1
-  maxDistance: 20
+  piercingAmmo: 0
+  maxDistance: 60
   minDistance: 0
   explosionRadius: 0
   flightDuration: 0
