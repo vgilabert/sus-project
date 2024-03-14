@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrapCost: 50
   powerCost: 0
-  damage: 2
+  damage: 3
   magazineSize: 0
-  timeBetweenShots: 0.12
+  timeBetweenShots: 0.5
   piercingAmmo: 0
-  maxDistance: 20
+  maxDistance: 60
   minDistance: 0
   explosionRadius: 0
   flightDuration: 0

@@ -1,8 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Character;
 using TMPro;
 using Train;
+using Train.UpgradesStats;
+using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,29 +27,118 @@ public class UITrainController : MonoBehaviour
 
     private Transform trainPartsLayout;
     private Transform wagonsLayout;
-    private List<UIAddWagonButton> buttons;
+    private List<UIWagonButton> AddButtons;
+    private List<UIWagonButton> UpgradeButtons;
     
     private void Awake()
     {
-        buttons = new List<UIAddWagonButton>(transform.GetComponentsInChildren<UIAddWagonButton>());
+        AddButtons = new List<UIWagonButton>(transform.GetComponentsInChildren<UIWagonButton>());
+        UpgradeButtons = new List<UIWagonButton>();
         trainPartsLayout = transform.Find("Train Parts");
         wagonsLayout = trainPartsLayout.Find("Wagons");
-        foreach (var button in buttons)
+        foreach (var button in AddButtons)
         {
             button.SetScrapCostText();
             button.SetPowerCostText();
         }
+
+        trainManager.OnWagonBuilded += OnWagonBuilded;
+        trainManager.OnWagonUpgraded += OnWagonUpgraded;
+        
     }
 
-    private void FixedUpdate()
+    private void OnWagonUpgraded(Wagon wagon, TurretStat stat, TurretStat nextStat)
     {
-        UpdateWagons();
-        UpdateButtons();
+        WagonUILink[wagon].turretStat = nextStat;
+    }
+
+    private void OnWagonBuilded(Wagon wagon, TurretStat stat, TurretStat nextStat)
+    {
+        UIWagonButton upgradeButton = null;
+        if (wagon.WagonType == WagonType.Rocket)
+        {
+            upgradeButton = Instantiate(rocketPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
+        }
+        else if (wagon.WagonType == WagonType.Gatling)
+        {
+            upgradeButton = Instantiate(gatlingPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
+        }
+
+        if (upgradeButton)
+        {
+            WagonUILink[wagon] = upgradeButton;
+            upgradeButton.ButtonScript.onClick.AddListener(() => UpgradeWagon(wagon));
+            UpgradeButtons.Add(upgradeButton);
+        }
+
+        upgradeButton.turretStat = nextStat;
+    }
+
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(CustomUpdate());
     }
     
-    private void UpdateButtons()
+    private void OnDisable()
     {
-        foreach (var button in buttons)
+        StopAllCoroutines();
+    }
+    
+    private IEnumerator CustomUpdate()
+    {
+        float time = 0;
+        while (true)
+        {
+            time += Time.unscaledDeltaTime;
+            if (time > 0.5f)
+            {
+                UpdateAddButtons();
+                UpdateUpgradeButtons();
+                time = 0;
+            }
+            yield return null;
+        }
+    }
+    
+    public void AddGatling()
+    {
+        var button = AddButtons[0];
+        if (button.hasEnoughScrap && button.hasEnoughPower)
+        {
+            trainManager.BuyGatling();
+        }
+    }
+    
+    public void AddRocket()
+    {
+        var button = AddButtons[1];
+        if (button.hasEnoughScrap && button.hasEnoughPower)
+        {
+            trainManager.BuyRocket();
+        }
+    }
+    
+    private void UpgradeWagon(Wagon wagon)
+    {
+        var button = WagonUILink[wagon];
+        if (button.hasEnoughScrap && button.hasEnoughPower)
+        {
+            trainManager.UpgradeWagon(wagon);
+            if (trainManager.IsMaxLevel(wagon))
+            {
+                button.SetMaxLevel();
+            }
+        }
+    }
+    
+    private void UpdateAddButtons()
+    {
+        foreach (var button in AddButtons)
         {
             button.hasEnoughScrap = button.turretStat.scrapCost <= inventory.Scrap;
             button.hasEnoughPower = button.turretStat.powerCost <= trainManager.GetAvailablePower();
@@ -57,23 +151,23 @@ public class UITrainController : MonoBehaviour
             button.SetPowerCostText();
         }
     }
-    
-    private void UpdateWagons()
+
+    private Dictionary<Wagon, UIWagonButton> WagonUILink = new();
+
+    private void UpdateUpgradeButtons()
     {
-        foreach (Transform child in wagonsLayout)
+        foreach (var button in UpgradeButtons)
         {
-            Destroy(child.gameObject);
-        }
-        foreach (var wagon in trainManager.Wagons)
-        {
-            if (wagon is Missile)
-            {
-                Instantiate(rocketPreviewPrefab, wagonsLayout);
-            }
-            else if (wagon is Gatling)
-            {
-                Instantiate(gatlingPreviewPrefab, wagonsLayout);
-            }
+            if (button == null) continue;
+            if (button.turretStat == null) continue;
+            button.hasEnoughScrap = button.turretStat.scrapCost <= inventory.Scrap;
+            button.hasEnoughPower = button.turretStat.powerCost <= trainManager.GetAvailablePower();
+            button.EnableButton();
+            button.SetScrapCostTextColor(button.hasEnoughScrap ? availaibleScrapTextColor : unavailaibleScrapTextColor);
+            button.SetPowerCostTextColor(button.hasEnoughPower ? availaiblePowerTextColor : unavailaiblePowerTextColor);
+            
+            button.SetScrapCostText();
+            button.SetPowerCostText();
         }
     }
 }

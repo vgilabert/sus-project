@@ -16,9 +16,9 @@ MonoBehaviour:
   powerCost: 0
   damage: 3
   magazineSize: 0
-  timeBetweenShots: 0.8
+  timeBetweenShots: 1.4
   piercingAmmo: 0
-  maxDistance: 40
-  minDistance: 10
-  explosionRadius: 4
+  maxDistance: 30
+  minDistance: 5
+  explosionRadius: 2
   flightDuration: 0.8

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dreamteck.Splines;
 using Items;
@@ -44,6 +45,10 @@ public class TrainManager : IDamageable
 
     private int power;
     private float speed;
+    
+    //Return current wagon stat and next wagon stats
+    public Action<Wagon,TurretStat,TurretStat> OnWagonBuilded;
+    public Action<Wagon,TurretStat,TurretStat> OnWagonUpgraded;
 
     protected void OnEnable()
     {
@@ -51,7 +56,7 @@ public class TrainManager : IDamageable
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
     }
-    
+
     protected override void Start()
     {
         base.Start();
@@ -79,37 +84,53 @@ public class TrainManager : IDamageable
     {
         BuyWagon(WagonType.Rocket);
     }
-    
-    private void BuyWagon(WagonType type)
+
+    public TurretStat[] GetStatsFromType(WagonType type)
     {
-        int cost = int.MaxValue;
-        GameObject prefab = null;
         switch (type)
         {
             case WagonType.Gatling:
-                prefab = gatlingPrefab;
-                cost = gatlingStats[0].scrapCost;
-                break;
+                return gatlingStats;
             case WagonType.Rocket:
-                prefab = missilePrefab;
-                cost = missileStats[0].scrapCost;
-                break;
+                return missileStats;
             default:
-                return;
+                return null;
         }
-        if (_playerInventory.TrySpendScarp(cost))
+            
+    }
+
+    public GameObject GetPrefabFromType(WagonType type)
+    {
+        switch (type)
         {
-            BuildWagon(prefab);
+            case WagonType.Rocket:
+                return missilePrefab;
+            case WagonType.Gatling:
+                return gatlingPrefab;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
+    private void BuyWagon(WagonType type)
+    {
+        TurretStat[] turretState = GetStatsFromType(type);
+        if (_playerInventory.TrySpendScarp(turretState[0].scrapCost))
+        {
+            BuildWagon(GetPrefabFromType(type),type);
+            OnWagonBuilded?.Invoke(wagons[^1],turretState[0],turretState[1]);
         }
         else
         {
-            Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + cost); 
+            Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + turretState[0].scrapCost); 
         }
     }
+
     
-    private void BuildWagon(GameObject prefab)
+    private void BuildWagon(GameObject prefab, WagonType wagonType)
     {
+        
         Wagon wagon = Instantiate(prefab, transform).GetComponent<Wagon>();
+        wagon.WagonType = wagonType;
         SetPositionOnSpline(wagon);
         wagons.Add(wagon);
     }
@@ -177,8 +198,30 @@ public class TrainManager : IDamageable
         }
         return availablePower;
     }
+
+    public bool IsMaxLevel(Wagon wagon) => wagon.GetNextUpgradeStats()?.scrapCost == null;
     public void UpgradeWagon(Wagon wagon)
     {
-        wagon.UpgradeTurret();
+        if (IsMaxLevel(wagon))
+        {
+            Debug.LogWarning("max level");
+            return;
+        }
+        
+        var cost = wagon.GetNextUpgradeStats()?.scrapCost;
+
+        if (_playerInventory.TrySpendScarp(cost.Value))
+        {
+            wagon.UpgradeTurret();
+            TurretStat[] turretState = GetStatsFromType(wagon.WagonType);
+            int turretIndex = wagon.TurretLevel;
+            TurretStat nextState = IsMaxLevel(wagon) ? null : turretState[turretIndex];
+            OnWagonUpgraded?.Invoke(wagon, turretState[turretIndex-1],nextState);
+        }
+        
+        else
+        {
+            Debug.Log("not enough scrap");
+        }
     }
 }

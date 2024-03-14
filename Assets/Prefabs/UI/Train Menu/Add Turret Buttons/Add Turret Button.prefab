@@ -281,9 +281,9 @@ GameObject:
   - component: {fileID: 5117136791897295548}
   - component: {fileID: 5652029854936465298}
   - component: {fileID: 5331383355930675267}
-  - component: {fileID: 2110508861111266292}
   - component: {fileID: 4579231274154904247}
   - component: {fileID: 5261341256300849946}
+  - component: {fileID: -4307840962228456128}
   m_Layer: 5
   m_Name: Add Turret Button
   m_TagString: Untagged
@@ -351,7 +351,44 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2110508861111266292
+--- !u!114 &4579231274154904247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4957548511459566554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &5261341256300849946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4957548511459566554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1121996dd0c444298a9970c03c1515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretStat: {fileID: 0}
+  ScrapCostText: {fileID: 8502384817649781761}
+  PowerCostText: {fileID: 8481642214960010748}
+  hasEnoughScrap: 0
+  hasEnoughPower: 0
+--- !u!114 &-4307840962228456128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -395,43 +432,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4579231274154904247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4957548511459566554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &5261341256300849946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4957548511459566554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b1121996dd0c444298a9970c03c1515, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turretStat: {fileID: 0}
-  ScrapCostText: {fileID: 8502384817649781761}
-  PowerCostText: {fileID: 8481642214960010748}
-  hasEnoughScrap: 0
-  hasEnoughPower: 0
 --- !u!1 &5951299783182458115
 GameObject:
   m_ObjectHideFlags: 0
