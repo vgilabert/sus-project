@@ -24,7 +24,7 @@ namespace Character
         
         private void OnEnable()
         {
-            _scrap = 120000000;
+            _scrap = 50;
             LootBox.OnLootBoxDestroyed += OnLoot;
             IConsumable.OnConsumed += RemoveItem;
             Enemy.OnDeath += OnEnemyDeath;

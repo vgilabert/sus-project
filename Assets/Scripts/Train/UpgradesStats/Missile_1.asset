@@ -18,7 +18,7 @@ MonoBehaviour:
   magazineSize: 0
   timeBetweenShots: 1.4
   piercingAmmo: 0
-  maxDistance: 60
+  maxDistance: 30
   minDistance: 5
   explosionRadius: 2
   flightDuration: 0.8
