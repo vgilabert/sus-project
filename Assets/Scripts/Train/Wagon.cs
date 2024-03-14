@@ -18,11 +18,12 @@ namespace Train
         [SerializeField] private GameObject projectileEffect;
         [SerializeField] private GameObject projectileEffectBoosted;
         
+        public WagonType WagonType { get;  set; }
         protected GameObject CurrentProjectileEffect;
-
+        
         public TurretStat[] Stats { get; set; }
         protected bool CanShoot { get; set; } = true;
-        protected int TurretLevel { get; private set; } = 1;
+        public int TurretLevel { get; private set; } = 1;
         protected Enemy Target { get; private set; }
         protected float ActualDamage { get; private set; }
         protected float TimeBetweenShots { get; private set; }

@@ -5,7 +5,9 @@ using System.Linq;
 using Character;
 using TMPro;
 using Train;
+using Train.UpgradesStats;
 using UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -39,8 +41,39 @@ public class UITrainController : MonoBehaviour
             button.SetScrapCostText();
             button.SetPowerCostText();
         }
+
+        trainManager.OnWagonBuilded += OnWagonBuilded;
+        trainManager.OnWagonUpgraded += OnWagonUpgraded;
+        
     }
-    
+
+    private void OnWagonUpgraded(Wagon wagon, TurretStat stat, TurretStat nextStat)
+    {
+        WagonUILink[wagon].turretStat = nextStat;
+    }
+
+    private void OnWagonBuilded(Wagon wagon, TurretStat stat, TurretStat nextStat)
+    {
+        UIWagonButton upgradeButton = null;
+        if (wagon.WagonType == WagonType.Rocket)
+        {
+            upgradeButton = Instantiate(rocketPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
+        }
+        else if (wagon.WagonType == WagonType.Gatling)
+        {
+            upgradeButton = Instantiate(gatlingPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
+        }
+
+        if (upgradeButton)
+        {
+            WagonUILink[wagon] = upgradeButton;
+            upgradeButton.ButtonScript.onClick.AddListener(() => UpgradeWagon(wagon));
+            UpgradeButtons.Add(upgradeButton);
+        }
+
+        upgradeButton.turretStat = nextStat;
+    }
+
     private void Start()
     {
         gameObject.SetActive(false);
@@ -49,6 +82,11 @@ public class UITrainController : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(CustomUpdate());
+    }
+    
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
     
     private IEnumerator CustomUpdate()
@@ -67,13 +105,34 @@ public class UITrainController : MonoBehaviour
         }
     }
     
-
-    private void UpgradeWagon(int index)
+    public void AddGatling()
     {
-        var button = AddButtons[index];
+        var button = AddButtons[0];
         if (button.hasEnoughScrap && button.hasEnoughPower)
         {
-            trainManager.UpgradeWagon(index);
+            trainManager.BuyGatling();
+        }
+    }
+    
+    public void AddRocket()
+    {
+        var button = AddButtons[1];
+        if (button.hasEnoughScrap && button.hasEnoughPower)
+        {
+            trainManager.BuyRocket();
+        }
+    }
+    
+    private void UpgradeWagon(Wagon wagon)
+    {
+        var button = WagonUILink[wagon];
+        if (button.hasEnoughScrap && button.hasEnoughPower)
+        {
+            trainManager.UpgradeWagon(wagon);
+            if (trainManager.IsMaxLevel(wagon))
+            {
+                button.SetMaxLevel();
+            }
         }
     }
     
@@ -92,33 +151,11 @@ public class UITrainController : MonoBehaviour
             button.SetPowerCostText();
         }
     }
-    
+
+    private Dictionary<Wagon, UIWagonButton> WagonUILink = new();
+
     private void UpdateUpgradeButtons()
     {
-        foreach (Transform child in wagonsLayout)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (var wagon in trainManager.Wagons)
-        {
-            UIWagonButton upgradeButton = null;
-            if (wagon is Missile)
-            {
-                upgradeButton = Instantiate(rocketPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
-            }
-            else if (wagon is Gatling)
-            {
-                upgradeButton = Instantiate(gatlingPreviewPrefab, wagonsLayout).GetComponentInChildren<UIWagonButton>();
-            }
-
-            if (upgradeButton)
-            {
-                upgradeButton.ButtonScript.onClick.AddListener(() => UpgradeWagon(trainManager.Wagons.IndexOf(wagon)));
-                upgradeButton.turretStat = wagon.GetNextUpgradeStats();
-                UpgradeButtons.Add(upgradeButton);
-            }
-        }
-        
         foreach (var button in UpgradeButtons)
         {
             if (button == null) continue;

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using Train.UpgradesStats;
 using UnityEngine;
@@ -21,6 +22,12 @@ namespace UI
             ButtonScript = gameObject.GetComponent<Button>();
         }
 
+        public void SetMaxLevel()
+        {
+            ScrapCostText.gameObject.SetActive(false);
+            PowerCostText.gameObject.SetActive(false);
+            ButtonScript.interactable = false;
+        }
         public void SetScrapCostText()
         {
             ScrapCostText.text = turretStat.scrapCost.ToString();
