@@ -215,7 +215,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7562921198419169401}
         m_TargetAssemblyTypeName: Character.Inventory, Assembly-CSharp
-        m_MethodName: OnUseItem
+        m_MethodName: OnUseConsumable
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

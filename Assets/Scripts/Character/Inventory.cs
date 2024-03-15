@@ -1,14 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
+using Utils;
 
 namespace Character
 {
-    public class Inventory : MonoBehaviour
+    public class Inventory : MonoSingleton<Inventory>
     {
         [SerializeField]
         private int _scrap;
@@ -17,63 +17,67 @@ namespace Character
             get => _scrap;
             private set => _scrap = value;
         }
-        
-        public List<IConsumable> consumables;
+
+        public Dictionary<ConsumableType, List<Consumable>> consumables = new()
+        {
+            {
+                ConsumableType.AirStrike, new()
+            },
+            {
+                ConsumableType.RepairKit, new()
+            },
+            {
+                ConsumableType.TrainBoost, new()
+            }
+        };
         
         public static Action<int> OnScrapChange = delegate {  };
+        public static Action<ConsumableType, int> OnConsumableChanged = delegate {  };
         
         private void OnEnable()
         {
-            _scrap = 50;
-            LootBox.OnLootBoxDestroyed += OnLoot;
-            IConsumable.OnConsumed += RemoveItem;
-            Enemy.OnDeath += OnEnemyDeath;
+            LootBox.OnLoot += OnLoot;
+            Consumable.OnConsumed += OnConsumeHandler;
+        }
+        
+        private void OnDisable()
+        {
+            LootBox.OnLoot -= OnLoot;
+            Consumable.OnConsumed -= OnConsumeHandler;
         }
 
         private void Start()
-        {
-            consumables = new List<IConsumable>
-            {
-                new AirStrike(1),
-                new RepairKit(1),
-                new TrainBoost(1)
-            };
-            StartCoroutine(nameof(GenerateScrap));
-        }
-        
-        private IEnumerator GenerateScrap()
-        {
-            while (gameObject.activeInHierarchy)
-            {
-                yield return new WaitForSeconds(1);
-                AddScrap(10);
-            }
+        {   
+            OnScrapChange?.Invoke(Scrap);
         }
 
-        private void OnLoot(IConsumable item)
+        private void OnLoot(IItem item, int amount)
         {
-            AddItem(item);
+            if (item is Scrap scrap)
+            {
+                AddScrap(amount);
+            }
+            else if (item is Consumable consumable)
+            {
+                AddConsumable(consumable);
+            }
         }
         
-        public void OnUseItem(InputAction.CallbackContext context)
+        public void OnUseConsumable(InputAction.CallbackContext context)
         {
             if (context.performed)
             {
                 int index = (int)context.ReadValue<float>() - 1;
                 
-                if (consumables[index].amount > 0)
+                var type = (ConsumableType)index;
+                if (consumables[type].Count > 0)
                 {
-                    consumables[index].Activate();
+                    consumables[type][^1].Activate();
                 }
             }
         }
         
-        private void OnEnemyDeath()
-        {
-            AddScrap(1);
-        }
-        
-        private void AddScrap(int amount)
+        public void AddScrap(int amount)
         {
             Scrap += amount;
             OnScrapChange?.Invoke(Scrap);
@@ -89,30 +93,25 @@ namespace Character
             return false;
         }
         
-        private void AddItem(IConsumable item)
+        private void OnConsumeHandler(Consumable consumable)
         {
-            IConsumable existingItem = consumables.Find(i => i.GetType() == item.GetType());
-            if (existingItem != null)
-            {
-                existingItem.amount += item.amount;
-            }
-            else
-            {
-                consumables.Add(item);
-            }
+            RemoveConsumable(consumable);
         }
 
-        private void RemoveItem(IConsumable item)
+        private void AddConsumable(Consumable consumable)
         {
-            IConsumable existingItem = consumables.Find(i => i.GetType() == item.GetType());
-            if (existingItem == null)
-            {
-                return;
-            }
-            if (existingItem.amount >= 1)
-            {
-                existingItem.amount--;
-            }
+            if (!consumables.ContainsKey(consumable.Type)) return;
+            
+            consumables[consumable.Type].Add(consumable);
+            OnConsumableChanged?.Invoke(consumable.Type, consumables[consumable.Type].Count);
+        }
+        
+        private void RemoveConsumable(Consumable consumable)
+        {
+            if (!consumables.ContainsKey(consumable.Type)) return;
+            
+            consumables[consumable.Type].Remove(consumable);
+            OnConsumableChanged?.Invoke(consumable.Type, consumables[consumable.Type].Count);
         }
     }
 }

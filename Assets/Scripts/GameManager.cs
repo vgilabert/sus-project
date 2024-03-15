@@ -1,37 +1,43 @@
+using System.Collections;
+using Character;
 using UnityEngine;
 using Utils;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    public bool isGamePaused = false;
+    private bool _isGamePaused = false;
 
     [SerializeField]
     bool showIndicators = true;
-    
-    private void OnEnable()
+    [SerializeField]
+    bool GenerateScrap = true;
+
+    void Start()
     {
-        UIGlobalController.setGamePause += SetGamePauseHandler;
+        if (GenerateScrap)
+        {
+            StartCoroutine(GenerateScrapOverTime());
+        }
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            isGamePaused = !isGamePaused;
-            SetGamePause(isGamePaused);
+            _isGamePaused = !_isGamePaused;
+            SetGamePause(_isGamePaused);
         }
-
-        if(isGamePaused)
-        {
-
-        }
-    }
-   
-    public void SetGamePauseHandler(bool pause)
-    {
-        SetGamePause(pause);
     }
     
+    private IEnumerator GenerateScrapOverTime()
+    {
+        while (gameObject.activeInHierarchy)
+        {
+            yield return new WaitForSeconds(1);
+            Inventory.Instance.AddScrap(10);
+        }
+    }
+
     public void SetGamePause(bool pause)
     {
         Time.timeScale = pause ? 0 : 1; 

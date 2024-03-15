@@ -4,36 +4,54 @@ using UnityEngine;
 namespace Items
 {
     
-    public abstract class IConsumable
+    public class Consumable : IItem
     {
-        public string name;
-        public  int amount;
-
-        protected ItemFlow itemFlow;
+        private ItemFlow _itemFlow;
         
-        public static Action<IConsumable> OnConsumed;
-
-        public IConsumable(int amount = 1)
+        private ConsumableType _type;
+        public ConsumableType Type => _type;
+        
+        public static Action<Consumable> OnConsumed;
+        
+        public Consumable(ConsumableType type)
         {
-            this.amount = amount;
+            _type = type;
         }
-        
+
         public void Activate()
         {
-            Init();
-            if (itemFlow != null)
+            InitItemFlow();
+            if (_itemFlow != null)
             {
-                Debug.Log("Starting flow for " + name);
-                itemFlow.StartFlow(_success => OnConsumed?.Invoke(this));
+                _itemFlow.StartFlow(_success => OnConsumed?.Invoke(this));
             }
             else
             {
-                Debug.Log("Consuming " + name);
-                OnConsumed?.Invoke(this);
+                Debug.LogWarning("ItemFlow not found");
             }
-            
         }
 
-        protected virtual void Init(){}
+        private void InitItemFlow()
+        {
+            switch (_type)
+            {
+                case ConsumableType.AirStrike:
+                    _itemFlow = GameObject.FindFirstObjectByType<AirStrikeFlow>();
+                    break;
+                case ConsumableType.RepairKit:
+                    _itemFlow = GameObject.FindFirstObjectByType<RepairKitFlow>();
+                    break;
+                case ConsumableType.TrainBoost:
+                    _itemFlow = GameObject.FindFirstObjectByType<TrainBoostFlow>();
+                    break;
+            }
+        }
+    }
+    
+    public enum ConsumableType
+    {
+        AirStrike,
+        RepairKit,
+        TrainBoost
     }
 }

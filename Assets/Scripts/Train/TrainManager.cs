@@ -154,6 +154,7 @@ public class TrainManager : IDamageable
     {
         var enginePos = engineFollower.result.percent;
         ProgressManager.Instance.UpdateProgress(enginePos);
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
             BuyWagon(WagonType.Gatling);
@@ -218,10 +219,9 @@ public class TrainManager : IDamageable
             TurretStat nextState = IsMaxLevel(wagon) ? null : turretState[turretIndex];
             OnWagonUpgraded?.Invoke(wagon, turretState[turretIndex-1],nextState);
         }
-        
         else
         {
-            Debug.Log("not enough scrap");
+            Debug.LogWarning("not enough scrap");
         }
     }
 }

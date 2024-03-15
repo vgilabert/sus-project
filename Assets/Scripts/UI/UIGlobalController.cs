@@ -1,6 +1,3 @@
-using System;
-using Character;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,39 +5,21 @@ public class UIGlobalController : MonoBehaviour
 {
     [SerializeField]
     private GameObject uiTrain;
+    [SerializeField]
+    private GameObject uiOverlay;
 
-    public static Action<bool> setGamePause = delegate {  };
     
-    public TextMeshProUGUI scrapText;
-    public TextMeshProUGUI powerAmountText;
-
-    private void OnEnable()
-    {
-        Inventory.OnScrapChange += OnScrapChange;
-    }
-
-    private void OnScrapChange(int scrap)
-    {
-        if (scrapText == null) return;
-        scrapText.text = scrap.ToString();
-    }
-
-    public void SetPowerAmount(int power)
-    {
-        powerAmountText.text = power.ToString();
-    }
-
     public void OnTrainMenuOpen(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
             if (!uiTrain.activeSelf) {
-                setGamePause?.Invoke(true);
+                GameManager.Instance.SetGamePause(true);
                 uiTrain.SetActive(true);
             }
             else
             {
-                setGamePause?.Invoke(false);
+                GameManager.Instance.SetGamePause(false);
                 uiTrain.SetActive(false);
             }
             
