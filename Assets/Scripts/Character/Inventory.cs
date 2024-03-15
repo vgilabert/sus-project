@@ -49,6 +49,7 @@ namespace Character
         private void Start()
         {   
             OnScrapChange?.Invoke(Scrap);
+            AddConsumable(new Consumable(ConsumableType.RepairKit), 10);
         }
 
         private void OnLoot(IItem item, int amount)
@@ -59,7 +60,7 @@ namespace Character
             }
             else if (item is Consumable consumable)
             {
-                AddConsumable(consumable);
+                AddConsumable(consumable, amount);
             }
         }
         
@@ -95,14 +96,18 @@ namespace Character
         
         private void OnConsumeHandler(Consumable consumable)
         {
+            Debug.Log("consumed handler");
             RemoveConsumable(consumable);
         }
 
-        private void AddConsumable(Consumable consumable)
+        private void AddConsumable(Consumable consumable, int amount)
         {
             if (!consumables.ContainsKey(consumable.Type)) return;
             
-            consumables[consumable.Type].Add(consumable);
+            for (int i = 0; i < amount; i++)
+            {
+                consumables[consumable.Type].Add(consumable);
+            }
             OnConsumableChanged?.Invoke(consumable.Type, consumables[consumable.Type].Count);
         }
         

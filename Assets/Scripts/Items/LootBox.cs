@@ -1,7 +1,6 @@
 using System;
 using Items;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class LootBox : IDamageable
 {
@@ -16,14 +15,14 @@ public class LootBox : IDamageable
         GenerateLoot();
     }
 
-    public override void TakeDamage(float damage)
+    protected override void UpdateHealth(float damage)
     {
-        base.TakeDamage(1);
+        base.UpdateHealth(-1);
     }
 
     private void GenerateLoot()
     {
-        if (Random.Range(0, 2) == 0)
+        if (UnityEngine.Random.Range(0, 2) == 0)
         {
             OnLoot?.Invoke(GetRandomConsumable(), 1);
         }
@@ -35,12 +34,12 @@ public class LootBox : IDamageable
 
     private int GetRandomNumber()
     {
-        return Random.Range(minScrap, maxScrap);
+        return UnityEngine.Random.Range(minScrap, maxScrap);
     }
 
     private Consumable GetRandomConsumable()
     {
-        ConsumableType type = (ConsumableType)Random.Range(0, 3);
+        ConsumableType type = (ConsumableType)UnityEngine.Random.Range(0, 3);
         return new Consumable(type);
     }
 

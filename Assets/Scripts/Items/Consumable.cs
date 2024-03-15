@@ -6,24 +6,24 @@ namespace Items
     
     public class Consumable : IItem
     {
-        private ItemFlow _itemFlow;
-        
-        private ConsumableType _type;
-        public ConsumableType Type => _type;
+        private ConsumableFlow _consumableFlow;
+
+        public ConsumableType Type { get; }
         
         public static Action<Consumable> OnConsumed;
         
         public Consumable(ConsumableType type)
         {
-            _type = type;
+            Type = type;
         }
 
         public void Activate()
         {
             InitItemFlow();
-            if (_itemFlow != null)
+            if (_consumableFlow != null)
             {
-                _itemFlow.StartFlow(_success => OnConsumed?.Invoke(this));
+                Debug.Log("flow start");
+                _consumableFlow.StartFlow(_success => OnConsumed?.Invoke(this));
             }
             else
             {
@@ -33,16 +33,16 @@ namespace Items
 
         private void InitItemFlow()
         {
-            switch (_type)
+            switch (Type)
             {
                 case ConsumableType.AirStrike:
-                    _itemFlow = GameObject.FindFirstObjectByType<AirStrikeFlow>();
+                    _consumableFlow = GameObject.FindFirstObjectByType<AirStrikeFlow>();
                     break;
                 case ConsumableType.RepairKit:
-                    _itemFlow = GameObject.FindFirstObjectByType<RepairKitFlow>();
+                    _consumableFlow = GameObject.FindFirstObjectByType<RepairKitFlow>();
                     break;
                 case ConsumableType.TrainBoost:
-                    _itemFlow = GameObject.FindFirstObjectByType<TrainBoostFlow>();
+                    _consumableFlow = GameObject.FindFirstObjectByType<TrainBoostFlow>();
                     break;
             }
         }

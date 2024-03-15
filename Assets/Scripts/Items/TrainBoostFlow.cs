@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Items
 {
-    public class TrainBoostFlow : ItemFlow
+    public class TrainBoostFlow : ConsumableFlow
     {
         public static Action<float, float> OnTrainBoostStart;
         public static Action OnTrainBoostEnd;
@@ -21,10 +21,8 @@ namespace Items
         IEnumerator Flow(Action<bool> callback)
         {
             OnTrainBoostStart?.Invoke(_damageBoost, _fireRateBoost);
-            Debug.Log("Train boost started !");
             yield return new WaitForSeconds(_boostDuration);
             OnTrainBoostEnd?.Invoke();
-            Debug.Log("Train boost ended !");
             callback?.Invoke(true);
         }
     }

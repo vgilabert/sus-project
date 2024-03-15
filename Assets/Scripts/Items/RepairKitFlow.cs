@@ -1,14 +1,13 @@
 using System;
 using System.Collections;
-using UnityEngine;
 
 namespace Items
 {
-    public class RepairKitFlow : ItemFlow
+    public class RepairKitFlow : ConsumableFlow
     {
-        public static Action<float> OnRepairKitUsed;
+        public static Action<float, Action<bool>> OnRepairKitUsed;
         
-        private float _repairAmount = 50f;
+        private const float RepairPercentage = 0.1f;
         
         public override void StartFlow(Action<bool> callback)
         {
@@ -17,10 +16,8 @@ namespace Items
 
         IEnumerator Flow(Action<bool> callback)
         {
-            OnRepairKitUsed?.Invoke(_repairAmount);
-            Debug.Log("Repair kit used !");
-            callback?.Invoke(true);
-            yield break;
+            OnRepairKitUsed?.Invoke(RepairPercentage, callback);
+            yield return null;
         }
     }
 }

@@ -6,7 +6,6 @@ using Character;
 using Train;
 using Train.UpgradesStats;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public enum WagonType
@@ -63,6 +62,8 @@ public class TrainManager : IDamageable
         wagons = new List<Wagon>();
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         power = engineStats[0].power;
+        MaxHealth = engineStats[0].maxHealth;
+        Health = MaxHealth;
         InitializeEngine();
     }
 
@@ -72,7 +73,6 @@ public class TrainManager : IDamageable
         engineFollower = engine.GetComponent<SplineFollower>();
         engineFollower.spline = spline;
         engineFollower.followSpeed = engineStats[0].speed;
-        MaxHealth = engineStats[0].maxHealth;
     }
 
     public void BuyGatling()
@@ -182,12 +182,13 @@ public class TrainManager : IDamageable
         }
     }
     
-    protected void RepairKitUsedHandler(float repairAmount)
+    private void RepairKitUsedHandler(float repairPercentage, Action<bool> callback)
     {
-        if (health < MaxHealth)
-        {
-            health += repairAmount;
-        }
+        if (Health >= MaxHealth) return;
+        
+        UpdateHealth(MaxHealth * repairPercentage);
+        callback?.Invoke(true);
+        
     }
 
     public int GetAvailablePower()
