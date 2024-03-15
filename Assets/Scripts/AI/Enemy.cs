@@ -109,7 +109,7 @@ public class Enemy : IDamageable
             {
                 Vector3 dirToTarget = (target - transform.position).normalized;
                 Vector3 targetPosition = target - dirToTarget * (myCollisionRadius + attackDistanceThreshold / 2);
-                if (!dead)
+                if (!dead && pathfinder.isOnNavMesh)
                 {
                     pathfinder.SetDestination(targetPosition);
                 }

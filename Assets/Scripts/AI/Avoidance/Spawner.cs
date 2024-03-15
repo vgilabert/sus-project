@@ -71,8 +71,7 @@ public sealed class Spawner : MonoBehaviour
             }
             else
             {
-                Debug.LogError("No navmesh found");
-                //Destroy(spawned);
+                Debug.LogWarning("Enemy not on navmesh");
                 return null;
             }
         }

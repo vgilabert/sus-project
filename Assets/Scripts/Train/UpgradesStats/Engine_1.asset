@@ -15,4 +15,4 @@ MonoBehaviour:
   cost: 0
   power: 0
   speed: 3
-  maxHealth: 10
+  maxHealth: 100
