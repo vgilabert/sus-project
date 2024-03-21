@@ -53,7 +53,7 @@ public class MapGenerator : MonoBehaviour
 	public void DrawMapInEditor()
 	{
 		MapData mapData = GenerateMapData(Vector2.zero);
-
+		SetRoadPath();
 		MapDisplay display = FindFirstObjectByType<MapDisplay>();
 		display.DrawMesh(
 			MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
