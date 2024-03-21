@@ -383,9 +383,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b1121996dd0c444298a9970c03c1515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turretStat: {fileID: 0}
-  ScrapCostText: {fileID: 8502384817649781761}
-  PowerCostText: {fileID: 8481642214960010748}
+  scrapCostText: {fileID: 8502384817649781761}
+  powerCostText: {fileID: 8481642214960010748}
+  upgrade:
+    ScrapCost: 0
+    PowerCost: 0
   hasEnoughScrap: 0
   hasEnoughPower: 0
 --- !u!114 &-4307840962228456128

@@ -1,27 +1,13 @@
 using System.Collections;
-using Train.UpgradesStats;
+using Train.Upgrades;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VFX_Controllers;
 
 namespace Train
 {
-    public class Gatling : Wagon
+    public class Gatling : Turret
     {
-        protected bool PiercingAmmo { get; private set; }
-
-        protected override void Start()
-        {
-            base.Start();
-            Stats = trainManager.gatlingStats;
-            ApplyStats(Stats[TurretLevel - 1]);
-        }
-
-        protected override void ApplyStats(TurretStat turretStat)
-        {
-            base.ApplyStats(turretStat);
-            PiercingAmmo = turretStat.piercingAmmo;
-        }
+        private GatlingUpgrade GatlingUpgrade => (GatlingUpgrade) Upgrades[Level];
 
         protected override IEnumerator Shoot()
         {
@@ -45,7 +31,7 @@ namespace Train
         {
             if (!showRangeGizmos) return;
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, RangeMax);
+            Gizmos.DrawWireSphere(transform.position, GatlingUpgrade.MaxDistance);
         }
         
         #endregion

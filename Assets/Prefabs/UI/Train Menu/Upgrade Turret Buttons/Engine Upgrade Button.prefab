@@ -8,6 +8,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1376614876067012756, guid: f5265b36b83dee5489a59558bae5e31f,
+        type: 3}
+      propertyPath: Upgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: bc139ab6b8ae0be48900493fa6145a12,
+        type: 2}
     - target: {fileID: 4911233055423154951, guid: f5265b36b83dee5489a59558bae5e31f,
         type: 3}
       propertyPath: m_Pivot.x
@@ -111,7 +117,7 @@ PrefabInstance:
     - target: {fileID: 8763344387932694882, guid: f5265b36b83dee5489a59558bae5e31f,
         type: 3}
       propertyPath: m_Name
-      value: Engine Preview
+      value: Engine Upgrade Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -49,7 +49,7 @@ namespace Character
         private void Start()
         {   
             OnScrapChange?.Invoke(Scrap);
-            AddConsumable(new Consumable(ConsumableType.RepairKit), 10);
+            AddScrap(10000);
         }
 
         private void OnLoot(IItem item, int amount)
