@@ -6,12 +6,22 @@ namespace Train
     public class Engine : TrainPart
     {
         private SplineFollower _follower;
-        public void Initialize(SplineComputer spline, EngineUpgrade upgrade)
+        
+        private EngineUpgrade[] EngineUpgrades => (EngineUpgrade[]) Upgrades;
+        
+        public void Initialize(SplineComputer spline, EngineUpgrade[] upgrades)
         {
+            Upgrades = upgrades;
             transform.position = spline.EvaluatePosition(0);
             _follower = GetComponent<SplineFollower>();
             _follower.spline = spline;
-            _follower.followSpeed = upgrade.speed;
+            ApplyUpgrade();
+        }
+        
+        protected override void ApplyUpgrade()
+        {
+            base.ApplyUpgrade();
+            _follower.followSpeed = EngineUpgrades[Level].speed;
         }
     }
 }

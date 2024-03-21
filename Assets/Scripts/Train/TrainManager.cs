@@ -38,7 +38,7 @@ public class TrainManager : IDamageable
     
     [Space(15)]
     
-    [SerializeField] private Engine engine;
+    [SerializeField] public Engine engine;
     [SerializeField] SplineComputer spline;
 
     private List<Turret> _turretList;
@@ -63,7 +63,8 @@ public class TrainManager : IDamageable
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
-        engine.Initialize(spline, engineUpgrades.upgrades[0]);
+        engine.Initialize(spline, engineUpgrades.upgrades);
+        engine.TrainType = TrainType.Engine;
         engineFollower = engine.GetComponent<SplineFollower>();
     }
 
@@ -196,7 +197,7 @@ public class TrainManager : IDamageable
     {
         UpgradeTrainPart(engine);
         EngineUpgrade[] upgrade = GetUpgradesFromType(engine.TrainType) as EngineUpgrade[];
-        OnEngineUpgraded?.Invoke(upgrade[engine.Level], upgrade[engine.Level + 1]);
+        OnEngineUpgraded?.Invoke(upgrade[engine.Level], engine.Level+1<upgrade.Length?upgrade[engine.Level + 1]:null);
     }
     
     public void UpgradeTurret(Turret turret)

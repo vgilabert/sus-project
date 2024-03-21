@@ -34,6 +34,7 @@ public class GameManager : MonoSingleton<GameManager>
         while (gameObject.activeInHierarchy)
         {
             yield return new WaitForSeconds(1);
+            if (!Inventory.Instance) continue;
             Inventory.Instance.AddScrap(10);
         }
     }

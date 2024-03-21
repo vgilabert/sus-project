@@ -33,6 +33,8 @@ public class UITrainController : MonoBehaviour
     private List<UITrainPartButton> addButtons = new();
     private List<UITrainPartButton> UpgradeButtons;
     
+    private Dictionary<Turret, UITrainPartButton> TurretUILink = new();
+    
     private void Awake()
     {
         UpgradeButtons = new List<UITrainPartButton>();
@@ -64,6 +66,7 @@ public class UITrainController : MonoBehaviour
         engineUpgradeButton = Instantiate(engineUpgradeButtonPrefab, trainPartsLayout);
         engineUpgradeButton.transform.SetSiblingIndex(0);
         engineUpgradeButton.upgrade = trainManager.engineUpgrades.upgrades[1];
+        engineUpgradeButton.ButtonScript.onClick.AddListener(UpgradeEngine);
         UpgradeButtons.Add(engineUpgradeButton);
         
         var addGatlingButton = Instantiate(addGatlingButtonPrefab, addTurretsLayout);
@@ -114,9 +117,17 @@ public class UITrainController : MonoBehaviour
     public void UpgradeEngine()
     {
         var button = engineUpgradeButton;
+        if (trainManager.IsMaxLevel(trainManager.engine))
+        {
+            return;
+        }
         if (button.hasEnoughScrap && button.hasEnoughPower)
         {
             trainManager.UpgradeEngine();
+            if (trainManager.IsMaxLevel(trainManager.engine))
+            {
+                button.SetMaxLevel();
+            }
         }
     }
     
@@ -154,9 +165,7 @@ public class UITrainController : MonoBehaviour
             button.SetPowerCostText();
         }
     }
-
-    private Dictionary<Turret, UITrainPartButton> TurretUILink = new();
-
+    
     private void UpdateUpgradeButtons()
     {
         foreach (var button in UpgradeButtons)

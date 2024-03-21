@@ -36,4 +36,4 @@ MonoBehaviour:
     maxHealth: 0
     maxPower: 36
     maxWagonNumber: 0
-    speed: 0
+    speed: 6
