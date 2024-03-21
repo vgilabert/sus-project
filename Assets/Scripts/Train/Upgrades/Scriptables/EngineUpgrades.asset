@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: EngineUpgrades
+  m_EditorClassIdentifier: Assembly-CSharp:Train.Upgrades:EngineUpgrades
+  upgrades:
+  - ScrapCost: 0
+    PowerCost: 0
+    maxHealth: 100
+    maxPower: 8
+    maxWagonNumber: 0
+    speed: 3
+  - ScrapCost: 500
+    PowerCost: 0
+    maxHealth: 200
+    maxPower: 16
+    maxWagonNumber: 0
+    speed: 4
+  - ScrapCost: 1000
+    PowerCost: 0
+    maxHealth: 300
+    maxPower: 24
+    maxWagonNumber: 0
+    speed: 5
+  - ScrapCost: 1500
+    PowerCost: 0
+    maxHealth: 0
+    maxPower: 36
+    maxWagonNumber: 0
+    speed: 0

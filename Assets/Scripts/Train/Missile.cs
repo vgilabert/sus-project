@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
-using Train.UpgradesStats;
+using Train.Upgrades;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -11,29 +10,13 @@ using VFX_Controllers;
 
 namespace Train
 {
-    public class Missile : Wagon
+    public class Missile : Turret
     {
-        private float explosionRadius;
-        private float flightDuration;
-        
         [SerializeField] private GameObject ExplosionEffect;
 
-        NativeArray<int> targetIndex; 
+        private NativeArray<int> _targetIndex;
         
-        protected override void Start()
-        {
-            base.Start();
-            Stats = trainManager.missileStats;
-            ApplyStats(Stats[TurretLevel - 1]);
-            
-        }
-        
-        protected override void ApplyStats(TurretStat turretStat)
-        {
-            base.ApplyStats(turretStat);
-            explosionRadius = turretStat.explosionRadius;
-            flightDuration = turretStat.flightDuration;
-        }
+        private RocketUpgrade RocketUpgrade => Upgrades[Level] as RocketUpgrade;
 
         protected override IEnumerator Shoot()
         {
@@ -44,10 +27,10 @@ namespace Train
             if (trailScript)
             {
                 trailScript.SetTargetPosition(Target.transform.position);
-                trailScript.SetFlightDuration(flightDuration);
+                trailScript.SetFlightDuration(RocketUpgrade.flightDuration);
             }
 
-            var timeToWait = flightDuration;
+            var timeToWait = RocketUpgrade.flightDuration;
             yield return new WaitForSeconds(timeToWait);
             
             ProcessExplosion(target);
@@ -70,7 +53,7 @@ namespace Train
             ExplosionJob explosionJob = new ExplosionJob
             {
                 explosionPosition = target,
-                explosionRadius = explosionRadius,
+                explosionRadius = RocketUpgrade.explosionRadius,
                 enemyPositions = enemyPositions,
                 enemyIndexes = enemyIndexesAffected
             };
@@ -98,13 +81,13 @@ namespace Train
             if (!ExplosionEffect) return;
             var explosion = Instantiate(ExplosionEffect, target, Quaternion.identity);
             explosion.transform.rotation = Quaternion.Euler(90, 0, 0);
-            explosion.transform.localScale = new Vector3(explosionRadius, explosionRadius, explosionRadius);
+            explosion.transform.localScale = new Vector3(RocketUpgrade.explosionRadius, RocketUpgrade.explosionRadius, RocketUpgrade.explosionRadius);
             Destroy(explosion, 0.5f);
         }
         
         private void OnDestroy()
         {
-            targetIndex.Dispose();
+            _targetIndex.Dispose();
         }
         
         #region Debug
@@ -127,13 +110,13 @@ namespace Train
         {
             if (!showRangeGizmos) return;
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, RangeMin);
-            Gizmos.DrawWireSphere(transform.position, RangeMax);
+            Gizmos.DrawWireSphere(transform.position, RocketUpgrade.MinDistance);
+            Gizmos.DrawWireSphere(transform.position, RocketUpgrade.MaxDistance);
             
             if (_showExplosion)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(_explosionPosition, explosionRadius);
+                Gizmos.DrawWireSphere(_explosionPosition, RocketUpgrade.explosionRadius);
             }
         }
             

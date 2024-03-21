@@ -4,11 +4,12 @@ using Dreamteck.Splines;
 using Items;
 using Character;
 using Train;
-using Train.UpgradesStats;
+using Train.Upgrades;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
-public enum WagonType
+public enum TrainType
 {
     Rocket,
     Gatling,
@@ -17,21 +18,19 @@ public enum WagonType
 
 public class TrainManager : IDamageable
 {
-    private List<Wagon> wagons;
-    public List<Wagon> Wagons => wagons;
     private SplineFollower engineFollower;
     private Inventory _playerInventory;
 
     [Header("Train settings"), Space(5)] 
     [SerializeField]
     private float engineSpacing = 5.0f;
-    [SerializeField] 
-    private float wagonSpacing = 1.5f;
+    [FormerlySerializedAs("wagonSpacing")] [SerializeField] 
+    private float turretSpacing = 1.5f;
     
-    [Header("Cart Stats"), Space(5)]
-    [SerializeField] public TurretStat[] gatlingStats;
-    [SerializeField] public TurretStat[] missileStats;
-    [SerializeField] public EngineStat[] engineStats;
+    [Header("Upgrades"), Space(5)]
+    [SerializeField] public EngineUpgrades engineUpgrades;
+    [SerializeField] public GatlingUpgrades gatlingUpgrades;
+    [SerializeField] public RocketUpgrades rocketUpgrades;
     
     [Header("Prefabs"), Space(5)]
     [SerializeField] GameObject missilePrefab;
@@ -39,15 +38,16 @@ public class TrainManager : IDamageable
     
     [Space(15)]
     
-    [SerializeField] private GameObject engine;
+    [SerializeField] private Engine engine;
     [SerializeField] SplineComputer spline;
 
-    private int power;
-    private float speed;
+    private List<Turret> _turretList;
     
-    //Return current wagon stat and next wagon stats
-    public Action<Wagon,TurretStat,TurretStat> OnWagonBuilded;
-    public Action<Wagon,TurretStat,TurretStat> OnWagonUpgraded;
+    private int Power => engineUpgrades.upgrades[engine.Level].maxPower;
+    
+    public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretBuilt;
+    public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretUpgraded;
+    public Action<EngineUpgrade, EngineUpgrade> OnEngineUpgraded;
 
     protected void OnEnable()
     {
@@ -59,126 +59,115 @@ public class TrainManager : IDamageable
     protected override void Start()
     {
         base.Start();
-        wagons = new List<Wagon>();
+        _turretList = new List<Turret>();
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
-        power = engineStats[0].power;
-        MaxHealth = engineStats[0].maxHealth;
+        MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
-        InitializeEngine();
-    }
-
-    void InitializeEngine()
-    {
-        engine.transform.position = spline.EvaluatePosition(0);
+        engine.Initialize(spline, engineUpgrades.upgrades[0]);
         engineFollower = engine.GetComponent<SplineFollower>();
-        engineFollower.spline = spline;
-        engineFollower.followSpeed = engineStats[0].speed;
     }
 
     public void BuyGatling()
     {
-        BuyWagon(WagonType.Gatling);
+        BuyTurret(TrainType.Gatling);
     }
     
     public void BuyRocket()
     {
-        BuyWagon(WagonType.Rocket);
+        BuyTurret(TrainType.Rocket);
     }
 
-    public TurretStat[] GetStatsFromType(WagonType type)
+    private Upgrade[] GetUpgradesFromType(TrainType type)
     {
         switch (type)
         {
-            case WagonType.Gatling:
-                return gatlingStats;
-            case WagonType.Rocket:
-                return missileStats;
+            case TrainType.Gatling:
+                return gatlingUpgrades.upgrades as GatlingUpgrade[];
+            case TrainType.Rocket:
+                return rocketUpgrades.upgrades as RocketUpgrade[];
+            case TrainType.Engine:
+                return engineUpgrades.upgrades as EngineUpgrade[];
             default:
                 return null;
         }
-            
     }
 
-    public GameObject GetPrefabFromType(WagonType type)
+    public GameObject GetPrefabFromType(TrainType type)
     {
         switch (type)
         {
-            case WagonType.Rocket:
+            case TrainType.Rocket:
                 return missilePrefab;
-            case WagonType.Gatling:
+            case TrainType.Gatling:
                 return gatlingPrefab;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
     }
-    private void BuyWagon(WagonType type)
+    private void BuyTurret(TrainType type)
     {
-        TurretStat[] turretState = GetStatsFromType(type);
-        if (_playerInventory.TrySpendScarp(turretState[0].scrapCost))
+        TurretUpgrade[] turretUpgrade = GetUpgradesFromType(type) as TurretUpgrade[];
+        if (turretUpgrade == null)
         {
-            BuildWagon(GetPrefabFromType(type),type);
-            OnWagonBuilded?.Invoke(wagons[^1],turretState[0],turretState[1]);
+            Debug.LogWarning("No turret upgrade found");
+            return;
+        }
+        if (_playerInventory.TrySpendScarp(turretUpgrade[0].ScrapCost))
+        {
+            BuildTurret(GetPrefabFromType(type),type);
+            OnTurretBuilt?.Invoke(_turretList[^1],turretUpgrade[0],turretUpgrade[1]);
         }
         else
         {
-            Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + turretState[0].scrapCost); 
+            Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + turretUpgrade[0].ScrapCost); 
         }
     }
 
     
-    private void BuildWagon(GameObject prefab, WagonType wagonType)
+    private void BuildTurret(GameObject prefab, TrainType trainType)
     {
         
-        Wagon wagon = Instantiate(prefab, transform).GetComponent<Wagon>();
-        wagon.WagonType = wagonType;
-        SetPositionOnSpline(wagon);
-        wagons.Add(wagon);
+        Turret turret = Instantiate(prefab, transform).GetComponent<Turret>();
+        turret.TrainType = trainType;
+        SetPositionOnSpline(turret);
+        _turretList.Add(turret);
+        turret.Initialize(GetUpgradesFromType(trainType) as TurretUpgrade[]);
     }
 
-    void SetPositionOnSpline(Wagon wagon)
+    void SetPositionOnSpline(Turret turret)
     {
-        SplinePositioner splinePositioner = wagon.GetComponent<SplinePositioner>();
+        SplinePositioner splinePositioner = turret.GetComponent<SplinePositioner>();
         splinePositioner.spline = spline;
-        if (wagons.Count == 0)
+        if (_turretList.Count == 0)
         {
             splinePositioner.followTarget = engine.GetComponent<SplineTracer>();
         }
         else
         {
-            splinePositioner.followTarget = wagons[^1].GetComponent<SplineTracer>();
+            splinePositioner.followTarget = _turretList[^1].GetComponent<SplineTracer>();
         }
-        splinePositioner.followTargetDistance = wagons.Count == 0 ? engineSpacing : wagonSpacing;
+        splinePositioner.followTargetDistance = _turretList.Count == 0 ? engineSpacing : turretSpacing;
     }
 
     void Update()
     {
         var enginePos = engineFollower.result.percent;
         ProgressManager.Instance.UpdateProgress(enginePos);
-        
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            BuyWagon(WagonType.Gatling);
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            BuyWagon(WagonType.Rocket);
-        }
     }
     
-    protected void BoostStartedHandler(float damageBoost, float fireRateBoost)
+    private void BoostStartedHandler(float damageBoost, float fireRateBoost)
     {
-        foreach (var wagon in wagons)
+        foreach (var turret in _turretList)
         {
-            wagon.ApplyBoost(damageBoost, fireRateBoost);
-            
+            turret.ApplyBoost(damageBoost, fireRateBoost);
         }
     }
 
-    protected void BoostEndedHandler()
+    private void BoostEndedHandler()
     {
-        foreach (var wagon in wagons)
+        foreach (var turret in _turretList)
         {
-            wagon.RemoveBoost();
+            turret.RemoveBoost();
         }
     }
     
@@ -193,32 +182,45 @@ public class TrainManager : IDamageable
 
     public int GetAvailablePower()
     {
-        int availablePower = power;
-        foreach (var wagon in wagons)
+        int availablePower = Power;
+        foreach (var turret in _turretList)
         {
-            availablePower -= wagon.GetPowerCost();
+            availablePower -= turret.GetPowerCost();
         }
         return availablePower;
     }
 
-    public bool IsMaxLevel(Wagon wagon) => wagon.GetNextUpgradeStats()?.scrapCost == null;
-    public void UpgradeWagon(Wagon wagon)
+    public bool IsMaxLevel(TrainPart part) => part.Level >= GetUpgradesFromType(part.TrainType).Length-1;
+
+    public void UpgradeEngine()
     {
-        if (IsMaxLevel(wagon))
+        UpgradeTrainPart(engine);
+        EngineUpgrade[] upgrade = GetUpgradesFromType(engine.TrainType) as EngineUpgrade[];
+        OnEngineUpgraded?.Invoke(upgrade[engine.Level], upgrade[engine.Level + 1]);
+    }
+    
+    public void UpgradeTurret(Turret turret)
+    {
+        UpgradeTrainPart(turret);
+        TurretUpgrade[] upgrade = GetUpgradesFromType(turret.TrainType) as TurretUpgrade[];
+        OnTurretUpgraded?.Invoke(turret, upgrade[turret.Level], turret.Level+1<upgrade.Length?upgrade[turret.Level + 1]:null);
+
+    }
+    
+    public void UpgradeTrainPart(TrainPart part)
+    {
+        if (IsMaxLevel(part))
         {
             Debug.LogWarning("max level");
             return;
         }
         
-        var cost = wagon.GetNextUpgradeStats()?.scrapCost;
+        Upgrade nextUpgrade = GetUpgradesFromType(part.TrainType)[part.Level + 1];
+        int cost = nextUpgrade.ScrapCost;
 
-        if (_playerInventory.TrySpendScarp(cost.Value))
+        if (_playerInventory.TrySpendScarp(cost))
         {
-            wagon.UpgradeTurret();
-            TurretStat[] turretState = GetStatsFromType(wagon.WagonType);
-            int turretIndex = wagon.TurretLevel;
-            TurretStat nextState = IsMaxLevel(wagon) ? null : turretState[turretIndex];
-            OnWagonUpgraded?.Invoke(wagon, turretState[turretIndex-1],nextState);
+            part.Upgrade();
         }
         else
         {
