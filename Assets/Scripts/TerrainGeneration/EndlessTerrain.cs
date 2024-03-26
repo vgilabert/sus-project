@@ -1,101 +1,167 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Dreamteck.Splines;
+using NUnit.Framework;
+using Spline;
 using TerrainGeneration;
 using Train;
+using TreeEditor;
 using Unity.AI.Navigation;
+using Random = UnityEngine.Random;
 
 
 public class EndlessTerrain : MonoBehaviour
 {
-    public const float maxViewDst = 150;
-    public Transform viewer;
     public Material mapMaterial;
 
-    public static Vector2 viewerPosition;
     static MapGenerator mapGenerator;
     int chunkSize;
-    int chunksVisibleInViewDst;
 
     Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new();
-    List<TerrainChunk> terrainChunksVisibleLastUpdate = new();
 
     static NavMeshSurface navMeshSurface;
 
     static Transform propsParent;
+    
+    private Vector2 currentChunkCoord;
 
+    private SplineComputer splineA;
+    private SplineComputer splineB;
+
+    public static Action<SplineComputer> OnRailsCreated = delegate { };
+    
+    enum Direction
+    {
+        North,
+        East,
+        South
+    }
+    
     void Start()
     {
         mapGenerator = FindFirstObjectByType<MapGenerator>();
         chunkSize = MapGenerator.mapChunkSize - 1;
-        chunksVisibleInViewDst = Mathf.RoundToInt(maxViewDst / chunkSize);
         navMeshSurface = gameObject.AddComponent<NavMeshSurface>();
-        viewer = mapGenerator.viewer;
         propsParent = new GameObject("Props").transform;
         propsParent.parent = transform;
+        var nextCoord = GetNextCoord(Vector3.zero);
+        splineB = GenerateSpline(Vector3.zero, ChunkCoordToPosition(nextCoord));
+        
+        Node node = CreateNode(splineB, splineB.GetPoints().Length - 1);
+        node.AddConnection(splineB, splineB.GetPoints().Length - 1);
+        
+        List<SplineComputer> splines = new()
+        {
+            splineB
+        };
+        OnRailsCreated(splineB);
+        GenerateChunk(currentChunkCoord, splines);
+        currentChunkCoord = nextCoord;
     }
-
+    
     void Update()
     {
-        if (viewer)
-        {
-            viewerPosition = new Vector2(viewer.position.x, viewer.position.z);
-        }
-
-        UpdateVisibleChunks();
+        GeneratePath();
     }
-
-    void UpdateVisibleChunks()
+    
+    Vector2 GetNextCoord(Vector2 startPos)
     {
-        for (int i = 0; i < terrainChunksVisibleLastUpdate.Count; i++)
+        Vector2 pos = Vector2.zero;
+        var direction = (Direction) Random.Range(0, 2);
+        switch (direction)
         {
-            terrainChunksVisibleLastUpdate[i].SetVisible(false);
+            case Direction.North:
+                pos = startPos + Vector2.up;
+                break;
+            case Direction.East:
+                pos = startPos + Vector2.right;
+                break;
+            case Direction.South:
+                pos = startPos + Vector2.down;
+                break;
         }
 
-        terrainChunksVisibleLastUpdate.Clear();
-
-        int currentChunkCoordX = Mathf.RoundToInt(viewerPosition.x / chunkSize);
-        int currentChunkCoordY = Mathf.RoundToInt(viewerPosition.y / chunkSize);
-
-        for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
-        {
-            for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
-            {
-                Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
-
-                if (terrainChunkDictionary.ContainsKey(viewedChunkCoord))
-                {
-                    terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
-                    if (terrainChunkDictionary[viewedChunkCoord].IsVisible())
-                    {
-                        terrainChunksVisibleLastUpdate.Add(terrainChunkDictionary[viewedChunkCoord]);
-                    }
-                }
-                else
-                {
-                    terrainChunkDictionary.Add(viewedChunkCoord,
-                        new TerrainChunk(viewedChunkCoord, chunkSize, transform, mapMaterial));
-                }
-            }
-        }
+        return pos;
     }
 
+    void GeneratePath()
+    {
+        /*if (CurrentProgression() > 0.9f)
+        {
+            GenerateNextSpline();
+        }*/
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            var nextCoord = GetNextCoord(currentChunkCoord);
+            splineA = splineB;
+            splineB = GenerateSpline(ChunkCoordToPosition(currentChunkCoord),
+                ChunkCoordToPosition(nextCoord));
+            
+            Node nodeA = splineA.GetComponentInChildren<Node>();
+            nodeA.AddConnection(splineB, 0);
+            
+            Node nodeTest = CreateNode(splineA, 3);
+            
+            Node nodeB = CreateNode(splineB, splineB.GetPoints().Length - 1);
+            nodeB.AddConnection(splineB, splineB.GetPoints().Length - 1);
+            
+            List<SplineComputer> splines = new()
+            {
+                splineA,
+                splineB
+            };
+            GenerateChunk(currentChunkCoord, splines);
+            currentChunkCoord = nextCoord;
+        }
+    }
+    
+    SplineComputer GenerateSpline(Vector3 startPos, Vector3 endPos)
+    {
+        return mapGenerator.splineGenerator.RandomSplineBetweenPoints(startPos, endPos);
+    }
+
+    void GenerateChunk(Vector2 coord, List<SplineComputer> splines)
+    {
+        var chunk = new TerrainChunk(coord, chunkSize, transform, mapMaterial, splines);
+        terrainChunkDictionary.Add(coord, chunk);
+        chunk.SetVisible(true);
+    }
+    
+    Node CreateNode(SplineComputer spline, int index)
+    {
+        Node node = new GameObject("Node").AddComponent<Node>();
+        node.transform.position = spline.GetPointPosition(index);
+        node.transform.parent = spline.transform;
+        return node;
+    }
+
+    Vector3 ChunkCoordToPosition(Vector2 coord)
+    {
+        return new Vector3(coord.x * chunkSize, 0, coord.y * chunkSize);
+    }
+    
+    
+    
     public class TerrainChunk
     {
         GameObject meshObject;
         Vector2 position;
-        Bounds bounds;
 
         MeshRenderer meshRenderer;
         MeshFilter meshFilter;
         MeshCollider meshCollider;
+        List<SplineComputer> splines;
 
-        public TerrainChunk(Vector2 coord, int size, Transform parent, Material material)
+        public TerrainChunk(Vector2 coord, int size, Transform parent, Material material, List<SplineComputer> splines)
         {
             position = coord * size;
-            bounds = new Bounds(position, Vector2.one * size);
             Vector3 positionV3 = new Vector3(position.x, 0, position.y);
 
+            this.splines = splines;
+            
             meshObject = new GameObject("Terrain Chunk");
             meshObject.layer = LayerMask.NameToLayer("Terrain");
             meshRenderer = meshObject.AddComponent<MeshRenderer>();
@@ -105,16 +171,16 @@ public class EndlessTerrain : MonoBehaviour
 
             meshObject.transform.position = positionV3;
             meshObject.transform.parent = parent;
-
-
-            SetVisible(false);
+            
+            SetVisible(true);
 
             Task.Run(() => { mapGenerator.RequestMapData(position, OnMapDataReceived); });
         }
 
         void OnMapDataReceived(MapGenerator.MapData mapData)
         {
-            Task.Run(() => { mapGenerator.RequestMeshData(mapData, position, OnMeshDataReceived); });
+            var roadPath = mapGenerator.splineGenerator.SplinesToPoints(splines);
+            Task.Run(() => { mapGenerator.RequestMeshData(mapData, position, roadPath, OnMeshDataReceived); });
         }
 
         void OnMeshDataReceived(MeshData meshData)
@@ -142,13 +208,6 @@ public class EndlessTerrain : MonoBehaviour
             {
                 Instantiate(mapGenerator.lootBoxPrefab, lootBoxPosition, Quaternion.identity, propsParent);
             }
-        }
-
-        public void UpdateTerrainChunk()
-        {
-            float viewerDstFromNearestEdge = Mathf.Sqrt(bounds.SqrDistance(viewerPosition));
-            bool visible = viewerDstFromNearestEdge <= maxViewDst;
-            SetVisible(visible);
         }
 
         public void SetVisible(bool visible)

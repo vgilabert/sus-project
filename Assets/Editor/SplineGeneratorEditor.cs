@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Editor
 {
-    [CustomEditor(typeof(SplineGenerator))]
+    /*[CustomEditor(typeof(SplineGenerator))]
     public class SplineGeneratorEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -24,5 +24,5 @@ namespace Editor
                 splineGenerator.DrawSplinesInEditor();
             }
         }
-    }
+    }*/
 }

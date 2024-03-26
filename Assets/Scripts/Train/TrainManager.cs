@@ -18,7 +18,6 @@ public enum TrainType
 
 public class TrainManager : IDamageable
 {
-    private SplineFollower engineFollower;
     private Inventory _playerInventory;
 
     [Header("Train settings"), Space(5)] 
@@ -39,7 +38,8 @@ public class TrainManager : IDamageable
     [Space(15)]
     
     [SerializeField] public Engine engine;
-    [SerializeField] SplineComputer spline;
+    
+    private SplineComputer _currentSpline;
 
     private List<Turret> _turretList;
     
@@ -51,6 +51,7 @@ public class TrainManager : IDamageable
 
     protected void OnEnable()
     {
+        EndlessTerrain.OnRailsCreated += OnRailsCreated;
         TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
@@ -63,9 +64,28 @@ public class TrainManager : IDamageable
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
+        engine.Follower.onNode += OnNodePassed;
+    }
+    
+    void Update()
+    {
+        var enginePos = engine.Follower.result.percent;
+        ProgressManager.Instance.UpdateProgress(enginePos);
+        engine.GetComponent<SplineTracer>().onNode += OnNodePassed;
+    }
+    
+    public void OnRailsCreated(SplineComputer spline)
+    {
+        _currentSpline = spline;
         engine.Initialize(spline, engineUpgrades.upgrades);
         engine.TrainType = TrainType.Engine;
-        engineFollower = engine.GetComponent<SplineFollower>();
+    }
+    
+    private void OnNodePassed(List<SplineTracer.NodeConnection> passed)
+    {
+        Debug.Log("on node");
+        SplineTracer.NodeConnection nodeConnection = passed[0];
+        engine.Follower.spline = nodeConnection.node.GetConnections()[^1]?.spline;
     }
 
     public void BuyGatling()
@@ -138,7 +158,7 @@ public class TrainManager : IDamageable
     void SetPositionOnSpline(Turret turret)
     {
         SplinePositioner splinePositioner = turret.GetComponent<SplinePositioner>();
-        splinePositioner.spline = spline;
+        splinePositioner.spline = _currentSpline;
         if (_turretList.Count == 0)
         {
             splinePositioner.followTarget = engine.GetComponent<SplineTracer>();
@@ -150,12 +170,6 @@ public class TrainManager : IDamageable
         splinePositioner.followTargetDistance = _turretList.Count == 0 ? engineSpacing : turretSpacing;
     }
 
-    void Update()
-    {
-        var enginePos = engineFollower.result.percent;
-        ProgressManager.Instance.UpdateProgress(enginePos);
-    }
-    
     private void BoostStartedHandler(float damageBoost, float fireRateBoost)
     {
         foreach (var turret in _turretList)

@@ -1,26 +1,40 @@
+using System;
+using System.Collections.Generic;
 using Dreamteck.Splines;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Spline
 {
     public class SplineGenerator : MonoBehaviour
     {
-        public Vector3 startPosition = Vector3.zero;
+        public Vector3 editorSplineStartPosition = Vector3.zero;
 
-        public Vector3 endPosition = Vector3.right * 120;
+        public Vector3 editorSplineEndPosition = Vector3.right * 120;
         
         public float pointOffsetMax = 1.5f;
         
         public int count = 5;
         
-        public SplineComputer editorPreview;
-
         public bool autoUpdate = true;
 
-
+        public List<Vector3> SplinesToPoints(List<SplineComputer> splines)
+        {
+            var points = new List<Vector3>();
+            foreach (var spline in splines)
+            {
+                for (int i = 0; i < 100; i += 2)
+                {
+                    var percent = i / 100f;
+                    points.Add(spline.EvaluatePosition(percent));
+                }
+            }
+            return points;
+        }
+        
         public SplineComputer RandomSplineBetweenPoints(Vector3 startPos, Vector3 endPos)
         {
-            var generatedSpline = new GameObject("GeneratedSpline").AddComponent<SplineComputer>();
+            var generatedSpline = new GameObject("GeneratedSpline(" + startPos + " to " + endPos + ")").AddComponent<SplineComputer>();
             
             var points = CreateRandomSplinePoints(startPos, endPos);
             
@@ -31,20 +45,7 @@ namespace Spline
             generatedSpline.editorAlwaysDraw = true;
             return generatedSpline;
         }
-        
-        public void EditorRandomSplineBetweenPoints(SplineComputer obj, Vector3 startPos, Vector3 endPos)
-        {
-            var generatedSpline = obj;
-            
-            var points = CreateRandomSplinePoints(startPos, endPos);
-            
-            generatedSpline.SetPoints(points);
-            generatedSpline.type = Dreamteck.Splines.Spline.Type.Bezier;
-            generatedSpline.Rebuild();
-            generatedSpline.isNewlyCreated = false;
-            generatedSpline.editorAlwaysDraw = true;
-        }
-        
+
         private SplinePoint[] CreateRandomSplinePoints(Vector3 startPos, Vector3 endPos)
         {
             var splinePoints = new SplinePoint[count];
@@ -65,7 +66,7 @@ namespace Spline
                 {
                     position = i != count-1 ? 
                         lastPos + direction * distance + right * randomLateralOffset :
-                        endPosition
+                        endPos
                 };
                 var distanceToPrevious = Vector3.Distance(splinePoints[i].position, lastPos);
                 splinePoints[i].normal = Vector3.up;
@@ -75,11 +76,6 @@ namespace Spline
             }
 
             return splinePoints;
-        }
-        
-        public void DrawSplinesInEditor()
-        {
-            EditorRandomSplineBetweenPoints(editorPreview, startPosition, endPosition);
         }
     }
 }
