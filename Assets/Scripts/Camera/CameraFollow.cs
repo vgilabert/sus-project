@@ -27,7 +27,8 @@ public class CameraFollow : MonoBehaviour
                 return;
             }
             // Find the middle between the player and the cart
-            var target = (_engine.transform.position + _player.transform.position) / 2;
+            //var target = (_engine.transform.position + _player.transform.position) / 2;
+            var target = _engine.transform.position;
             transform.position = target + offset;
             transform.LookAt(target);
         }

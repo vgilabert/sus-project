@@ -6660,92 +6660,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1436501634
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2141972207}
-    m_Modifications:
-    - target: {fileID: 2775865428634822071, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_Name
-      value: Engine
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2e1e61624593caa4192e59ec44e02096, type: 3}
---- !u!4 &1436501635 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2897829216978841044, guid: 2e1e61624593caa4192e59ec44e02096,
-    type: 3}
-  m_PrefabInstance: {fileID: 1436501634}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1436501637 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7289797240057584480, guid: 2e1e61624593caa4192e59ec44e02096,
-    type: 3}
-  m_PrefabInstance: {fileID: 1436501634}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 079700b8095d04d4585012d20d5dbcdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1474082273
 GameObject:
   m_ObjectHideFlags: 0
@@ -7160,12 +7074,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554cf029bfbfc954fb57250e242616cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &2141972207 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7182158325823185270, guid: ccd1be476f033b14ba78c03208b7c066,
-    type: 3}
-  m_PrefabInstance: {fileID: 769805709827838267}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &769805709827838267
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7239,56 +7147,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: engine
-      value: 
-      objectReference: {fileID: 1436501637}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: spline
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: upgrades
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: maxHealth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: engineSpacing
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: engineUpgrades
-      value: 
-      objectReference: {fileID: 11400000, guid: 2581d1c98a986dc428577dbeb4898302,
-        type: 2}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: rocketUpgrades
-      value: 
-      objectReference: {fileID: 11400000, guid: a39d6dafa40848946988c63963842560,
-        type: 2}
-    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      propertyPath: gatlingUpgrades
-      value: 
-      objectReference: {fileID: 11400000, guid: 14c8fe817faca12439873005d9eefa5a,
-        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7182158325823185270, guid: ccd1be476f033b14ba78c03208b7c066,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1436501635}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
 --- !u!1001 &5585195508564994046

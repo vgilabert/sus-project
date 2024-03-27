@@ -49,6 +49,8 @@ public class TrainManager : IDamageable
     public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretUpgraded;
     public Action<EngineUpgrade, EngineUpgrade> OnEngineUpgraded;
 
+    public static Action<SplineComputer> OnSplineChanged;
+
     protected void OnEnable()
     {
         EndlessTerrain.OnRailsCreated += OnRailsCreated;
@@ -64,14 +66,13 @@ public class TrainManager : IDamageable
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
-        engine.Follower.onNode += OnNodePassed;
+        engine.Follower.onEndReached += OnEndReached;
     }
     
     void Update()
     {
         var enginePos = engine.Follower.result.percent;
         ProgressManager.Instance.UpdateProgress(enginePos);
-        engine.GetComponent<SplineTracer>().onNode += OnNodePassed;
     }
     
     public void OnRailsCreated(SplineComputer spline)
@@ -81,11 +82,19 @@ public class TrainManager : IDamageable
         engine.TrainType = TrainType.Engine;
     }
     
-    private void OnNodePassed(List<SplineTracer.NodeConnection> passed)
+    public void OnEndReached(double percent)
     {
-        Debug.Log("on node");
-        SplineTracer.NodeConnection nodeConnection = passed[0];
-        engine.Follower.spline = nodeConnection.node.GetConnections()[^1]?.spline;
+        var node =
+            _currentSpline.transform.GetComponentInChildren<Node>();
+        var nextSpline = node.GetConnections()[^1]?.spline;
+        engine.Follower.spline = nextSpline;
+        engine.Follower.SetPercent(0);
+        _currentSpline = nextSpline;
+        OnSplineChanged?.Invoke(nextSpline);
+        foreach (var turret in _turretList)
+        {
+            turret.GetComponent<SplinePositioner>().spline = nextSpline;
+        }
     }
 
     public void BuyGatling()

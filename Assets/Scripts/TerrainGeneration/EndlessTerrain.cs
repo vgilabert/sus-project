@@ -1,14 +1,10 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Dreamteck.Splines;
-using NUnit.Framework;
-using Spline;
 using TerrainGeneration;
 using Train;
-using TreeEditor;
 using Unity.AI.Navigation;
 using Random = UnityEngine.Random;
 
@@ -16,6 +12,8 @@ using Random = UnityEngine.Random;
 public class EndlessTerrain : MonoBehaviour
 {
     public Material mapMaterial;
+    
+    public Engine engine;
 
     static MapGenerator mapGenerator;
     int chunkSize;
@@ -27,17 +25,19 @@ public class EndlessTerrain : MonoBehaviour
     static Transform propsParent;
     
     private Vector2 currentChunkCoord;
+    private Direction lastDirection;
 
     private SplineComputer splineA;
     private SplineComputer splineB;
 
     public static Action<SplineComputer> OnRailsCreated = delegate { };
-    
+
     enum Direction
     {
         North,
         East,
-        South
+        South,
+        Null
     }
     
     void Start()
@@ -70,7 +70,13 @@ public class EndlessTerrain : MonoBehaviour
     Vector2 GetNextCoord(Vector2 startPos)
     {
         Vector2 pos = Vector2.zero;
-        var direction = (Direction) Random.Range(0, 2);
+        Direction direction = Direction.Null;
+        do
+        {
+            direction = (Direction)Random.Range(0, 3);
+        } while (lastDirection == Direction.North && direction == Direction.South ||
+                 lastDirection == Direction.South && direction == Direction.North);
+
         switch (direction)
         {
             case Direction.North:
@@ -83,16 +89,19 @@ public class EndlessTerrain : MonoBehaviour
                 pos = startPos + Vector2.down;
                 break;
         }
+        
+        lastDirection = direction;
+        
 
         return pos;
     }
 
     void GeneratePath()
     {
-        /*if (CurrentProgression() > 0.9f)
-        {
+        /*{
             GenerateNextSpline();
         }*/
+        // if (engine.Follower.result.percent > 0.1)
         if (Input.GetKeyDown(KeyCode.P))
         {
             var nextCoord = GetNextCoord(currentChunkCoord);
@@ -102,8 +111,6 @@ public class EndlessTerrain : MonoBehaviour
             
             Node nodeA = splineA.GetComponentInChildren<Node>();
             nodeA.AddConnection(splineB, 0);
-            
-            Node nodeTest = CreateNode(splineA, 3);
             
             Node nodeB = CreateNode(splineB, splineB.GetPoints().Length - 1);
             nodeB.AddConnection(splineB, splineB.GetPoints().Length - 1);
@@ -142,8 +149,6 @@ public class EndlessTerrain : MonoBehaviour
     {
         return new Vector3(coord.x * chunkSize, 0, coord.y * chunkSize);
     }
-    
-    
     
     public class TerrainChunk
     {

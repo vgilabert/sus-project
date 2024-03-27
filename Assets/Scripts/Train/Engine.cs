@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Dreamteck.Splines;
 using Train.Upgrades;
-using UnityEngine;
 
 namespace Train
 {
@@ -13,21 +10,9 @@ namespace Train
         
         private EngineUpgrade[] EngineUpgrades => (EngineUpgrade[]) Upgrades;
 
-
         protected void Awake()
         {
             _follower = GetComponent<SplineFollower>();
-        }
-
-        protected override void Start()
-        {
-            base.Start();
-            _follower.onNode += OnNode;
-        }
-
-        private void OnNode(List<SplineTracer.NodeConnection> nodeConnection)
-        {
-            Debug.Log("on node");
         }
 
         public void Initialize(SplineComputer spline, EngineUpgrade[] upgrades)
