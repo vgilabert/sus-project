@@ -329,7 +329,6 @@ namespace Dreamteck.Splines
         private bool _trsCached = false;
         private Transform _trs = null;
 
-
         public Transform trs
         {
             get
@@ -1820,7 +1819,7 @@ namespace Dreamteck.Splines
             }
         }
 
-        private void AddNodeLink(Node node, int pointIndex)
+        public void AddNodeLink(Node node, int pointIndex)
         {
             NodeLink newLink = new NodeLink();
             newLink.node = node;

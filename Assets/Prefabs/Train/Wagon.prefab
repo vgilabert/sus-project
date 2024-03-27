@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 2237840461107756845}
   - component: {fileID: 7033598054318077409}
   - component: {fileID: 6675326146322346733}
-  - component: {fileID: 4848407052081905368}
-  - component: {fileID: 3706860722967526838}
+  - component: {fileID: 5069963319804250191}
+  - component: {fileID: 3276510775332441823}
   m_Layer: 7
   m_Name: Wagon
   m_TagString: Train
@@ -170,7 +170,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4848407052081905368
+--- !u!114 &5069963319804250191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812104687809487121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a06c55e36994441a9c0db9c82b45a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEngine: 0
+  back: {fileID: 0}
+  offset: 6
+--- !u!114 &3276510775332441823
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0def5156137c6d14082064fa7b5d5247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateMethod: 1
+  updateMethod: 0
   _spline: {fileID: 0}
   _autoUpdate: 1
   _rotationModifier:
@@ -202,37 +217,37 @@ MonoBehaviour:
     useClippedPercent: 0
     keys: []
   _clipFromSample:
-    position: {x: -4.706612, y: 0, z: -7.17053}
-    up: {x: 0, y: 1, z: 0}
-    forward: {x: 0.9950014, y: 0, z: -0.09986122}
-    color: {r: 1, g: 1, b: 1, a: 1}
-    size: 1
+    position: {x: 0, y: 0, z: 0}
+    up: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    size: 0
     percent: 0
   _clipToSample:
-    position: {x: -4.706612, y: 0, z: -7.17053}
-    up: {x: 0, y: 1, z: 0}
-    forward: {x: 0.9950014, y: 0, z: -0.09986122}
-    color: {r: 1, g: 1, b: 1, a: 1}
-    size: 1
-    percent: 1
+    position: {x: 0, y: 0, z: 0}
+    up: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    size: 0
+    percent: 0
   _loopSamples: 0
   _clipFrom: 0
   _clipTo: 1
   animClipFrom: 0
   animClipTo: 1
   multithreaded: 0
-  buildOnAwake: 1
+  buildOnAwake: 0
   buildOnEnable: 0
   applyDirectionRotation: 1
   useTriggers: 0
   triggerGroup: 0
   _direction: 1
   _dontLerpDirection: 0
-  _physicsMode: 1
+  _physicsMode: 0
   _motion:
-    _hasOffset: 1
+    _hasOffset: 0
     _hasRotationOffset: 0
-    _offset: {x: 0, y: 0.8}
+    _offset: {x: 0, y: 0}
     _rotationOffset: {x: 0, y: 0, z: 0}
     _baseScale: {x: 1, y: 1, z: 1}
     _2dMode: 0
@@ -251,58 +266,31 @@ MonoBehaviour:
     applyScaleX: 0
     applyScaleY: 0
     applyScaleZ: 0
-    targetUser: {fileID: 4848407052081905368}
-  targetRigidbody: {fileID: 3706860722967526838}
+    targetUser: {fileID: 0}
+  targetRigidbody: {fileID: 0}
   targetRigidbody2D: {fileID: 0}
   targetTransform: {fileID: 2237840461107756845}
   _result:
-    position: {x: -6.5111337, y: 0, z: -6.405278}
-    up: {x: 0, y: 1, z: 0}
-    forward: {x: 0.71923727, y: 0, z: -0.69476444}
-    color: {r: 1, g: 1, b: 1, a: 1}
-    size: 1
-    percent: 0.9367680603751036
+    position: {x: 0, y: 0, z: 0}
+    up: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    size: 0
+    percent: 0
   _finalResult:
-    position: {x: -6.5111337, y: 0, z: -6.405278}
-    up: {x: 0, y: 1, z: 0}
-    forward: {x: 0.71923727, y: 0, z: -0.69476444}
-    color: {r: 1, g: 1, b: 1, a: 1}
-    size: 1
-    percent: 0.9367680603751036
+    position: {x: 0, y: 0, z: 0}
+    up: {x: 0, y: 0, z: 0}
+    forward: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    size: 0
+    percent: 0
   _targetObject: {fileID: 0}
   _followTarget: {fileID: 0}
-  _followTargetDistance: 2
-  _followLoop: 1
+  _followTargetDistance: 0
+  _followLoop: 0
   _followTargetDirection: -1
-  _position: 0.93676805
+  _position: 0
   _mode: 0
---- !u!54 &3706860722967526838
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5812104687809487121}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 2
 --- !u!1 &6686263124481045684
 GameObject:
   m_ObjectHideFlags: 0

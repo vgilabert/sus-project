@@ -52,7 +52,8 @@ public class EndlessTerrain : MonoBehaviour
         
         Node node = CreateNode(splineB, splineB.GetPoints().Length - 1);
         node.AddConnection(splineB, splineB.GetPoints().Length - 1);
-        
+        splineB.AddNodeLink(node, splineB.GetPoints().Length - 1);
+
         List<SplineComputer> splines = new()
         {
             splineB

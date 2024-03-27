@@ -39,8 +39,6 @@ public class TrainManager : IDamageable
     
     [SerializeField] public Engine engine;
     
-    private SplineComputer _currentSpline;
-
     private List<Turret> _turretList;
     
     private int Power => engineUpgrades.upgrades[engine.Level].maxPower;
@@ -53,10 +51,10 @@ public class TrainManager : IDamageable
 
     protected void OnEnable()
     {
-        EndlessTerrain.OnRailsCreated += OnRailsCreated;
         TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
+        EndlessTerrain.OnRailsCreated += OnRailsCreatedHandler;
     }
 
     protected override void Start()
@@ -66,35 +64,19 @@ public class TrainManager : IDamageable
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
-        engine.Follower.onEndReached += OnEndReached;
+        engine.TrainType = TrainType.Engine;
+        engine.GetComponent<Wagon>().Init();
     }
     
     void Update()
     {
-        var enginePos = engine.Follower.result.percent;
-        ProgressManager.Instance.UpdateProgress(enginePos);
+        /*var enginePos = engine.Follower.result.percent;
+        ProgressManager.Instance.UpdateProgress(enginePos);*/
     }
     
-    public void OnRailsCreated(SplineComputer spline)
+    private void OnRailsCreatedHandler(SplineComputer spline)
     {
-        _currentSpline = spline;
-        engine.Initialize(spline, engineUpgrades.upgrades);
-        engine.TrainType = TrainType.Engine;
-    }
-    
-    public void OnEndReached(double percent)
-    {
-        var node =
-            _currentSpline.transform.GetComponentInChildren<Node>();
-        var nextSpline = node.GetConnections()[^1]?.spline;
-        engine.Follower.spline = nextSpline;
-        engine.Follower.SetPercent(0);
-        _currentSpline = nextSpline;
-        OnSplineChanged?.Invoke(nextSpline);
-        foreach (var turret in _turretList)
-        {
-            turret.GetComponent<SplinePositioner>().spline = nextSpline;
-        }
+        engine.Follower.spline = spline;
     }
 
     public void BuyGatling()
@@ -152,31 +134,22 @@ public class TrainManager : IDamageable
             Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + turretUpgrade[0].ScrapCost); 
         }
     }
-
     
     private void BuildTurret(GameObject prefab, TrainType trainType)
     {
-        
         Turret turret = Instantiate(prefab, transform).GetComponent<Turret>();
         turret.TrainType = trainType;
-        SetPositionOnSpline(turret);
+        var lastWagon = _turretList.Count == 0 ? engine.GetComponent<Wagon>() : _turretList[^1].GetComponent<Wagon>();
+        var lastWagonSpline = lastWagon.GetComponent<SplineTracer>().spline;
         _turretList.Add(turret);
         turret.Initialize(GetUpgradesFromType(trainType) as TurretUpgrade[]);
-    }
 
-    void SetPositionOnSpline(Turret turret)
-    {
-        SplinePositioner splinePositioner = turret.GetComponent<SplinePositioner>();
-        splinePositioner.spline = _currentSpline;
-        if (_turretList.Count == 0)
-        {
-            splinePositioner.followTarget = engine.GetComponent<SplineTracer>();
-        }
-        else
-        {
-            splinePositioner.followTarget = _turretList[^1].GetComponent<SplineTracer>();
-        }
-        splinePositioner.followTargetDistance = _turretList.Count == 0 ? engineSpacing : turretSpacing;
+        var wagon = turret.GetComponent<Wagon>();
+        lastWagon.back = wagon;
+        wagon.GetComponent<SplinePositioner>().spline = lastWagonSpline;
+        
+        var engineWagon = engine.GetComponent<Wagon>();
+        engineWagon.Init();
     }
 
     private void BoostStartedHandler(float damageBoost, float fireRateBoost)

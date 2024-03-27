@@ -1309,6 +1309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapMaterial: {fileID: 2100000, guid: 888af381b175d31469e35c2145b65f62, type: 3}
+  engine: {fileID: 0}
 --- !u!1 &1251677241
 GameObject:
   m_ObjectHideFlags: 0
@@ -6366,7 +6367,8 @@ MonoBehaviour:
   _optimizeAngleThreshold: 0.5
   _space: 1
   _sampleMode: 0
-  _subscribers: []
+  _subscribers:
+  - {fileID: 1819165219}
   _rawSamples:
   - position: {x: -213.5303, y: 1078.2789, z: -675.37744}
     up: {x: 0, y: 0, z: 0}
@@ -6885,6 +6887,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1819165216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5557270783695254068, guid: ccd1be476f033b14ba78c03208b7c066,
+    type: 3}
+  m_PrefabInstance: {fileID: 769805709827838267}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079700b8095d04d4585012d20d5dbcdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1819165219 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8403772655905256941, guid: ccd1be476f033b14ba78c03208b7c066,
+    type: 3}
+  m_PrefabInstance: {fileID: 769805709827838267}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddc1a2536715a24095c464a2c394d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1827980443 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3835575777808463629, guid: e3993165c21b7e543ba03ef6db004b9e,
@@ -7082,6 +7108,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -213.5303
+      objectReference: {fileID: 0}
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1078.2789
+      objectReference: {fileID: 0}
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -675.37744
+      objectReference: {fileID: 0}
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 778401842136192, guid: ccd1be476f033b14ba78c03208b7c066, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 1987299415828655176, guid: ccd1be476f033b14ba78c03208b7c066,
         type: 3}
       propertyPath: m_Name
@@ -7145,6 +7195,31 @@ PrefabInstance:
     - target: {fileID: 7182158325823185270, guid: ccd1be476f033b14ba78c03208b7c066,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679133568736747261, guid: ccd1be476f033b14ba78c03208b7c066,
+        type: 3}
+      propertyPath: engine
+      value: 
+      objectReference: {fileID: 1819165216}
+    - target: {fileID: 8403772655905256941, guid: ccd1be476f033b14ba78c03208b7c066,
+        type: 3}
+      propertyPath: wrapMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403772655905256941, guid: ccd1be476f033b14ba78c03208b7c066,
+        type: 3}
+      propertyPath: followMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403772655905256941, guid: ccd1be476f033b14ba78c03208b7c066,
+        type: 3}
+      propertyPath: _followSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403772655905256941, guid: ccd1be476f033b14ba78c03208b7c066,
+        type: 3}
+      propertyPath: buildOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
