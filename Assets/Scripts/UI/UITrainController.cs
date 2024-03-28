@@ -155,7 +155,7 @@ public class UITrainController : MonoBehaviour
         foreach (var button in addButtons)
         {
             button.hasEnoughScrap = button.upgrade.ScrapCost <= inventory.Scrap;
-            button.hasEnoughPower = button.upgrade.PowerCost <= trainManager.GetAvailablePower();
+            button.hasEnoughPower = button.upgrade.PowerCost <= trainManager.AvailablePower;
             button.EnableButton();
 
             button.SetScrapCostTextColor(button.hasEnoughScrap ? availaibleScrapTextColor : unavailaibleScrapTextColor);
@@ -173,7 +173,7 @@ public class UITrainController : MonoBehaviour
             if (button == null) continue;
             if (button.upgrade == null) continue;
             button.hasEnoughScrap = button.upgrade.ScrapCost <= inventory.Scrap;
-            button.hasEnoughPower = button.upgrade.PowerCost <= trainManager.GetAvailablePower();
+            button.hasEnoughPower = button.upgrade.PowerCost <= trainManager.AvailablePower;
             button.EnableButton();
             button.SetScrapCostTextColor(button.hasEnoughScrap ? availaibleScrapTextColor : unavailaibleScrapTextColor);
             button.SetPowerCostTextColor(button.hasEnoughPower ? availaiblePowerTextColor : unavailaiblePowerTextColor);

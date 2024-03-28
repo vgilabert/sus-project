@@ -5,27 +5,28 @@ namespace Train
 {
     public class Engine : TrainPart
     {
+        private EngineUpgrade CurrentEngineUpgrade => Upgrades[Level] as EngineUpgrade;
+
         private SplineFollower _follower;
         public SplineFollower Follower => _follower;
-        
-        private EngineUpgrade[] EngineUpgrades => (EngineUpgrade[]) Upgrades;
 
-        protected void Awake()
+        private void Awake()
         {
             _follower = GetComponent<SplineFollower>();
         }
 
-        public void Initialize(SplineComputer spline, EngineUpgrade[] upgrades)
+        public void Initialize(EngineUpgrade[] engineUpgrade)
         {
-            Upgrades = upgrades;
-            _follower.spline = spline;
+            Upgrades = engineUpgrade as EngineUpgrade[];
+            Level = 0;
             ApplyUpgrade();
         }
-        
+
         protected override void ApplyUpgrade()
         {
             base.ApplyUpgrade();
-            _follower.followSpeed = EngineUpgrades[Level].speed;
+            
+            _follower.followSpeed = CurrentEngineUpgrade.speed;
         }
     }
 }

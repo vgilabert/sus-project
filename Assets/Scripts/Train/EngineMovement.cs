@@ -9,10 +9,12 @@ namespace Train
         private SplineTracer _tracer = null;
         private double _lastPercent = 0.0;
         private Wagon _wagon;
+        private Engine _engine;
 
         private void Awake()
         {
             _wagon = GetComponent<Wagon>();
+            _engine = GetComponent<Engine>();
         }
 
         void Start()
@@ -28,10 +30,12 @@ namespace Train
             if (_tracer is SplineFollower)
             {
                 SplineFollower follower = (SplineFollower)_tracer;
-                Debug.Log("Subscribing to follower");
+                // Debug.Log("Subscribing to follower");
                 follower.onBeginningReached += FollowerOnBeginningReached;
                 follower.onEndReached += FollowerOnEndReached;
             }
+            
+            
         }
 
         private void OnMotionApplied()

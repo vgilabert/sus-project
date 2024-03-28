@@ -39,10 +39,11 @@ namespace TerrainGeneration
             var points = CreateRandomSplinePoints(startPos, endPos);
             
             generatedSpline.SetPoints(points);
-            generatedSpline.type = Dreamteck.Splines.Spline.Type.Bezier;
+            generatedSpline.type = Spline.Type.Bezier;
             generatedSpline.Rebuild();
             generatedSpline.isNewlyCreated = false;
             generatedSpline.editorAlwaysDraw = true;
+            generatedSpline.sampleRate = 30;
             return generatedSpline;
         }
 

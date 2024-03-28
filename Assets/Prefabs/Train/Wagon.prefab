@@ -184,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEngine: 0
   back: {fileID: 0}
-  offset: 6
+  offset: 0
 --- !u!114 &3276510775332441823
 MonoBehaviour:
   m_ObjectHideFlags: 0

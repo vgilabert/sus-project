@@ -41,11 +41,28 @@ public class TrainManager : IDamageable
     
     private List<Turret> _turretList;
     
-    private int Power => engineUpgrades.upgrades[engine.Level].maxPower;
+    public int MaxPower => engineUpgrades.upgrades[engine.Level].maxPower;
+
+    public int AvailablePower
+    {
+        get
+        {
+            int power = MaxPower;
+            foreach (var turret in _turretList)
+            {
+                power -= turret.GetPowerCost();
+            }
+
+            OnPowerChange?.Invoke(power, MaxPower);
+            return power;
+        }
+        
+    }
     
     public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretBuilt;
     public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretUpgraded;
     public Action<EngineUpgrade, EngineUpgrade> OnEngineUpgraded;
+    public static Action<int, int> OnPowerChange = delegate {  };
 
     public static Action<SplineComputer> OnSplineChanged;
 
@@ -66,6 +83,8 @@ public class TrainManager : IDamageable
         Health = MaxHealth;
         engine.TrainType = TrainType.Engine;
         engine.GetComponent<Wagon>().Init();
+        engine.GetComponent<Engine>().Initialize(engineUpgrades.upgrades);
+        
     }
     
     void Update()
@@ -139,12 +158,14 @@ public class TrainManager : IDamageable
     {
         Turret turret = Instantiate(prefab, transform).GetComponent<Turret>();
         turret.TrainType = trainType;
+        
+        var wagon = turret.GetComponent<Wagon>();
         var lastWagon = _turretList.Count == 0 ? engine.GetComponent<Wagon>() : _turretList[^1].GetComponent<Wagon>();
         var lastWagonSpline = lastWagon.GetComponent<SplineTracer>().spline;
+        
+        wagon.offset = _turretList.Count == 0 ? engineSpacing : turretSpacing;
         _turretList.Add(turret);
         turret.Initialize(GetUpgradesFromType(trainType) as TurretUpgrade[]);
-
-        var wagon = turret.GetComponent<Wagon>();
         lastWagon.back = wagon;
         wagon.GetComponent<SplinePositioner>().spline = lastWagonSpline;
         
@@ -175,16 +196,6 @@ public class TrainManager : IDamageable
         UpdateHealth(MaxHealth * repairPercentage);
         callback?.Invoke(true);
         
-    }
-
-    public int GetAvailablePower()
-    {
-        int availablePower = Power;
-        foreach (var turret in _turretList)
-        {
-            availablePower -= turret.GetPowerCost();
-        }
-        return availablePower;
     }
 
     public bool IsMaxLevel(TrainPart part) => part.Level >= GetUpgradesFromType(part.TrainType).Length-1;
