@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Train.Upgrades:RocketUpgrades
   upgrades:
   - ScrapCost: 100
-    PowerCost: 0
+    PowerCost: 8
     Damage: 2
     TimeBetweenShots: 0.8
     MaxDistance: 30
@@ -22,7 +22,7 @@ MonoBehaviour:
     explosionRadius: 4
     flightDuration: 0.3
   - ScrapCost: 300
-    PowerCost: 0
+    PowerCost: 10
     Damage: 3
     TimeBetweenShots: 0.7
     MaxDistance: 35
@@ -30,7 +30,7 @@ MonoBehaviour:
     explosionRadius: 4
     flightDuration: 0.3
   - ScrapCost: 900
-    PowerCost: 0
+    PowerCost: 15
     Damage: 3
     TimeBetweenShots: 0.6
     MaxDistance: 40

@@ -18,7 +18,6 @@ public enum TrainType
 
 public class TrainManager : IDamageable
 {
-    private SplineFollower engineFollower;
     private Inventory _playerInventory;
 
     [Header("Train settings"), Space(5)] 
@@ -39,8 +38,7 @@ public class TrainManager : IDamageable
     [Space(15)]
     
     [SerializeField] public Engine engine;
-    [SerializeField] SplineComputer spline;
-
+    
     private List<Turret> _turretList;
     
     private int Power => engineUpgrades.upgrades[engine.Level].maxPower;
@@ -49,11 +47,14 @@ public class TrainManager : IDamageable
     public Action<Turret, TurretUpgrade, TurretUpgrade> OnTurretUpgraded;
     public Action<EngineUpgrade, EngineUpgrade> OnEngineUpgraded;
 
+    public static Action<SplineComputer> OnSplineChanged;
+
     protected void OnEnable()
     {
         TrainBoostFlow.OnTrainBoostStart += BoostStartedHandler;
         TrainBoostFlow.OnTrainBoostEnd += BoostEndedHandler;
         RepairKitFlow.OnRepairKitUsed += RepairKitUsedHandler;
+        EndlessTerrain.OnRailsCreated += OnRailsCreatedHandler;
     }
 
     protected override void Start()
@@ -63,9 +64,19 @@ public class TrainManager : IDamageable
         _playerInventory = FindFirstObjectByType<Player>().GetComponentInChildren<Inventory>();
         MaxHealth = engineUpgrades.upgrades[0].maxHealth;
         Health = MaxHealth;
-        engine.Initialize(spline, engineUpgrades.upgrades);
         engine.TrainType = TrainType.Engine;
-        engineFollower = engine.GetComponent<SplineFollower>();
+        engine.GetComponent<Wagon>().Init();
+    }
+    
+    void Update()
+    {
+        /*var enginePos = engine.Follower.result.percent;
+        ProgressManager.Instance.UpdateProgress(enginePos);*/
+    }
+    
+    private void OnRailsCreatedHandler(SplineComputer spline)
+    {
+        engine.Follower.spline = spline;
     }
 
     public void BuyGatling()
@@ -123,39 +134,24 @@ public class TrainManager : IDamageable
             Debug.Log("Not enough scrap (" + _playerInventory.Scrap + " < )" + turretUpgrade[0].ScrapCost); 
         }
     }
-
     
     private void BuildTurret(GameObject prefab, TrainType trainType)
     {
-        
         Turret turret = Instantiate(prefab, transform).GetComponent<Turret>();
         turret.TrainType = trainType;
-        SetPositionOnSpline(turret);
+        var lastWagon = _turretList.Count == 0 ? engine.GetComponent<Wagon>() : _turretList[^1].GetComponent<Wagon>();
+        var lastWagonSpline = lastWagon.GetComponent<SplineTracer>().spline;
         _turretList.Add(turret);
         turret.Initialize(GetUpgradesFromType(trainType) as TurretUpgrade[]);
+
+        var wagon = turret.GetComponent<Wagon>();
+        lastWagon.back = wagon;
+        wagon.GetComponent<SplinePositioner>().spline = lastWagonSpline;
+        
+        var engineWagon = engine.GetComponent<Wagon>();
+        engineWagon.Init();
     }
 
-    void SetPositionOnSpline(Turret turret)
-    {
-        SplinePositioner splinePositioner = turret.GetComponent<SplinePositioner>();
-        splinePositioner.spline = spline;
-        if (_turretList.Count == 0)
-        {
-            splinePositioner.followTarget = engine.GetComponent<SplineTracer>();
-        }
-        else
-        {
-            splinePositioner.followTarget = _turretList[^1].GetComponent<SplineTracer>();
-        }
-        splinePositioner.followTargetDistance = _turretList.Count == 0 ? engineSpacing : turretSpacing;
-    }
-
-    void Update()
-    {
-        var enginePos = engineFollower.result.percent;
-        ProgressManager.Instance.UpdateProgress(enginePos);
-    }
-    
     private void BoostStartedHandler(float damageBoost, float fireRateBoost)
     {
         foreach (var turret in _turretList)

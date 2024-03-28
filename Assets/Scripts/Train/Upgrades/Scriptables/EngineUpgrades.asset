@@ -16,9 +16,9 @@ MonoBehaviour:
   - ScrapCost: 0
     PowerCost: 0
     maxHealth: 100
-    maxPower: 8
+    maxPower: 25000
     maxWagonNumber: 0
-    speed: 3
+    speed: 4
   - ScrapCost: 500
     PowerCost: 0
     maxHealth: 200

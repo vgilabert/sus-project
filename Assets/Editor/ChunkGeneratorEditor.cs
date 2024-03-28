@@ -1,24 +1,27 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(MapGenerator))]
-public class ChunkGeneratorEditor : Editor
+namespace Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(MapGenerator))]
+    public class ChunkGeneratorEditor : UnityEditor.Editor
     {
-        MapGenerator terrainGenerator = (MapGenerator) target;
-
-        if (DrawDefaultInspector())
+        public override void OnInspectorGUI()
         {
-            if (terrainGenerator.autoUpdate)
+            MapGenerator terrainGenerator = (MapGenerator) target;
+
+            if (DrawDefaultInspector())
+            {
+                if (terrainGenerator.autoUpdate)
+                {
+                    terrainGenerator.DrawMapInEditor ();
+                }
+            }
+
+            if (GUILayout.Button("Generate"))
             {
                 terrainGenerator.DrawMapInEditor ();
             }
-        }
-
-        if (GUILayout.Button("Generate"))
-        {
-            terrainGenerator.DrawMapInEditor ();
         }
     }
 }

@@ -31,8 +31,8 @@ namespace TerrainGeneration
 						foreach (Vector3 roadPoint in roadPath) {
 							float distanceToRoad = Vector3.Distance(new Vector3(worldVertexPosition.x, 0, worldVertexPosition.z), new Vector3(roadPoint.x, 0, roadPoint.z));
 							if (distanceToRoad < pathWidth) {
-								vertexPosition.y = 0f; // Set vertex height to 0 around road path
-								//break; // Exit loop after adjusting height for efficiency
+								float slope = roadSlopeCurve.Evaluate(distanceToRoad / pathWidth) * vertexPosition.y;
+								vertexPosition.y = 0 + slope;
 							}
 						}
 					}

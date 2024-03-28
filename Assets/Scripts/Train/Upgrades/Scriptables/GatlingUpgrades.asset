@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Train.Upgrades:GatlingUpgrades
   upgrades:
   - ScrapCost: 50
-    PowerCost: 0
+    PowerCost: 5
     Damage: 3
     TimeBetweenShots: 0.5
     MaxDistance: 40
     MinDistance: 0
     piercingAmmo: 0
   - ScrapCost: 100
-    PowerCost: 0
+    PowerCost: 7
     Damage: 3
     TimeBetweenShots: 0.3
     MaxDistance: 50
     MinDistance: 0
     piercingAmmo: 0
   - ScrapCost: 150
-    PowerCost: 0
+    PowerCost: 9
     Damage: 3
     TimeBetweenShots: 0.1
     MaxDistance: 60

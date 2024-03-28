@@ -1,9 +1,7 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
  using System.Threading.Tasks;
- using AI;
- using Dreamteck.Splines;
  using TerrainGeneration;
  using UnityEngine.Serialization;
  using MeshGenerator = TerrainGeneration.MeshGenerator;
@@ -11,11 +9,11 @@ using System.Collections.Generic;
 public class MapGenerator : MonoBehaviour
 {
 	public const int mapChunkSize = 241;
-	[Range(0, 6)] public int levelOfDetail;
+	[UnityEngine.Range(0, 6)] public int levelOfDetail;
 	public float noiseScale;
 
 	public int octaves;
-	[Range(0, 1)] public float persistance;
+	[UnityEngine.Range(0, 1)] public float persistance;
 	public float lacunarity;
 
 	public int seed;
@@ -32,32 +30,23 @@ public class MapGenerator : MonoBehaviour
 	[Header("Props Settings")] public GameObject[] buildingPrefabs;
 	public GameObject lootBoxPrefab;
 
-	[Header("Path Settings")] public SplineComputer spline;
+	[FormerlySerializedAs("SplineGenerator")] public SplineGenerator splineGenerator;
 
-	private List<Vector3> roadPath;
 	public int pathWidth;
 	public AnimationCurve roadSlopeCurve;
 
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new();
 	Queue<MapThreadInfo<MeshData>> meshDataThreadInfoQueue = new();
 	Queue<MapThreadInfo<PropsData>> propsDataThreadInfoQueue = new();
-	
-	public Transform viewer;
-
-	private void Start()
-	{
-		SpawnManager.Instance.GenerateSpawners(spline);
-		SetRoadPath();
-	}
 
 	public void DrawMapInEditor()
 	{
 		MapData mapData = GenerateMapData(Vector2.zero);
-
+		
 		MapDisplay display = FindFirstObjectByType<MapDisplay>();
 		display.DrawMesh(
 			MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
-				levelOfDetail, Vector3.zero, roadPath, pathWidth, roadSlopeCurve));
+				levelOfDetail, Vector3.zero, null, pathWidth, roadSlopeCurve));
 	}
 
 	public void RequestMapData(Vector2 centre, Action<MapData> callback)
@@ -74,12 +63,12 @@ public class MapGenerator : MonoBehaviour
 		}
 	}
 
-	public void RequestMeshData(MapData mapData, Vector2 position, Action<MeshData> callback)
+	public void RequestMeshData(MapData mapData, Vector2 position, List<Vector3> roadPath, Action<MeshData> callback)
 	{
-		Task.Run(() => { MeshDataThread(mapData, position, callback); });
+		Task.Run(() => { MeshDataThread(mapData, position, roadPath, callback); });
 	}
 
-	void MeshDataThread(MapData mapData, Vector2 position, Action<MeshData> callback)
+	void MeshDataThread(MapData mapData, Vector2 position, List<Vector3> roadPath, Action<MeshData> callback)
 	{
 		MeshData meshData = MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve,
 			levelOfDetail, position, roadPath, pathWidth, roadSlopeCurve);
@@ -139,16 +128,6 @@ public class MapGenerator : MonoBehaviour
 			lacunarity, offset + centre, Noise.NormalizeMode.Global);
 
 		return new MapData(noiseMap);
-	}
-
-	private void SetRoadPath()
-	{
-		roadPath = new List<Vector3>();
-		for (int i = 0; i < 100; i += 2)
-		{
-			var percent = i / 100f;
-			roadPath.Add(spline.EvaluatePosition(percent));
-		}
 	}
 
 	void OnValidate()
