@@ -6,6 +6,7 @@ using Dreamteck.Splines;
 using TerrainGeneration;
 using Train;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 
@@ -37,7 +38,7 @@ public class EndlessTerrain : MonoBehaviour
         North,
         East,
         South,
-        Null
+        None
     }
     
     void Start()
@@ -49,10 +50,10 @@ public class EndlessTerrain : MonoBehaviour
         propsParent.parent = transform;
         var nextCoord = GetNextCoord(Vector3.zero);
         splineB = GenerateSpline(Vector3.zero, ChunkCoordToPosition(nextCoord));
-        
         Node node = CreateNode(splineB, splineB.GetPoints().Length - 1);
         node.AddConnection(splineB, splineB.GetPoints().Length - 1);
         splineB.AddNodeLink(node, splineB.GetPoints().Length - 1);
+        
 
         List<SplineComputer> splines = new()
         {
@@ -71,7 +72,7 @@ public class EndlessTerrain : MonoBehaviour
     Vector2 GetNextCoord(Vector2 startPos)
     {
         Vector2 pos = Vector2.zero;
-        Direction direction = Direction.Null;
+        Direction direction = Direction.None;
         do
         {
             direction = (Direction)Random.Range(0, 3);
@@ -112,9 +113,11 @@ public class EndlessTerrain : MonoBehaviour
             
             Node nodeA = splineA.GetComponentInChildren<Node>();
             nodeA.AddConnection(splineB, 0);
+            splineA.AddNodeLink(nodeA, splineA.GetPoints().Length - 1);
             
             Node nodeB = CreateNode(splineB, splineB.GetPoints().Length - 1);
             nodeB.AddConnection(splineB, splineB.GetPoints().Length - 1);
+            splineB.AddNodeLink(nodeB, splineB.GetPoints().Length - 1);
             
             List<SplineComputer> splines = new()
             {
@@ -143,6 +146,19 @@ public class EndlessTerrain : MonoBehaviour
         Node node = new GameObject("Node").AddComponent<Node>();
         node.transform.position = spline.GetPointPosition(index);
         node.transform.parent = spline.transform;
+        
+        var junction = node.AddComponent<JunctionSwitch>();
+        junction.bridges = new[]
+        {
+            new JunctionSwitch.Bridge
+            {
+                a = 0,
+                aDirection = JunctionSwitch.Bridge.Direction.Forward,
+                b = 1,
+                bDirection = JunctionSwitch.Bridge.Direction.Forward
+            }
+        };
+        
         return node;
     }
 

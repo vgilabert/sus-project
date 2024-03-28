@@ -60,7 +60,6 @@ namespace Train
         //Called when the tracer has passed a junction (a Node)
         private void OnJunction(List<SplineTracer.NodeConnection> passed)
         {
-            Debug.Log("on node");
             Node node = passed[0].node; //Get the node of the junction
             JunctionSwitch junctionSwitch = node.GetComponent<JunctionSwitch>(); //Look for a JunctionSwitch component
             if (junctionSwitch == null) return; //No JunctionSwitch - ignore it - this isn't a real junction
